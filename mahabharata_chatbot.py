@@ -145,5 +145,13 @@ def chatbot(input, history=[]):
 
 # Launch the Gradio interface for the chatbot
 gr.Interface(fn = chatbot,
+             title = "Mahabharata Chatbot",
+             description = "powered by Neo4j",
+             theme = "soft",
+             clear_btn = "\U0001F5D1 Clear chat",
+             examples = ["Who killed Ghatotakach?",
+                         "Who are the parents of Karna?",
+                         "Who are the kids of Kunti?",
+                         "Who are the siblings of Karna?"],
              inputs = ["text",'state'],
              outputs = ["chatbot",'state']).launch(debug = True, share=True)
