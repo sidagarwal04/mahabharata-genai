@@ -1,4 +1,6 @@
 neo4j-driver
 gradio
-langchain==0.0.314
+langchain==0.1.16
 google-cloud-aiplatform
+langchain-community
+langchain-google-vertexai
