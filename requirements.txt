@@ -1,4 +1,4 @@
-neo4j
+neo4j-driver
 gradio
 langchain==0.0.314
 google-cloud-aiplatform
