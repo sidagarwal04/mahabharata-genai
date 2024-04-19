@@ -59,6 +59,8 @@ Question: Who is Kunti married to?
 Answer: MATCH (p:Person)-[:WIFE_OF]->(husband:Person) WHERE toLower(p.name) contains "kunti" RETURN husband.name
 Question: Who killed Ghatotakach?
 Answer: MATCH (killer:Person)-[:KILLED]->(p:Person) WHERE toLower(p.name) contains "ghatotakach" RETURN killer.name
+Question: Who are the siblings of Karna?
+Answer: MATCH (p1:Person)<-[:FATHER_OF]-(father)-[:FATHER_OF]->(sibling) WHERE sibling <> p1 and toLower(p1.name) contains "karna" RETURN sibling.name AS SiblingName UNION MATCH (p2:Person)<-[:MOTHER_OF]-(mother)-[:MOTHER_OF]->(sibling) WHERE sibling <> p2 and toLower(p2.name) contains "karna" RETURN sibling.name AS SiblingName
 Question: {question}
 Answer: 
 """
