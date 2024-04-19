@@ -48,6 +48,8 @@ CYPHER_GENERATION_TEMPLATE = """You are an expert Neo4j Cypher translator who un
 10. Please generate only one Cypher query per question. 
 11. Cypher is NOT SQL. So, do not mix and match the syntaxes.
 12. Every Cypher query always starts with a MATCH keyword.
+13. Always do fuzzy search for any properties related search. Eg: when the user asks for "karn" instead of "karna", make sure to search for a Person name using use `toLower(c.name) contains 'karn'` 
+14. Always understand the gender of the Person node and map relationship accordingly. Eg: when asked Who is Karna married to, search for HUSBAND_OF relationship coming out of Karna instead of WIFE_OF relationship.
 Schema:
 {schema}
 Samples:
@@ -61,6 +63,8 @@ Question: Who killed Ghatotakach?
 Answer: MATCH (killer:Person)-[:KILLED]->(p:Person) WHERE toLower(p.name) contains "ghatotakach" RETURN killer.name
 Question: Who are the siblings of Karna?
 Answer: MATCH (p1:Person)<-[:FATHER_OF]-(father)-[:FATHER_OF]->(sibling) WHERE sibling <> p1 and toLower(p1.name) contains "karna" RETURN sibling.name AS SiblingName UNION MATCH (p2:Person)<-[:MOTHER_OF]-(mother)-[:MOTHER_OF]->(sibling) WHERE sibling <> p2 and toLower(p2.name) contains "karna" RETURN sibling.name AS SiblingName
+Question: Tell me the names of top 5 characters in Mahabharata.
+Answer: MATCH (p:Person) WITH p, COUNT(*) AS rel_count RETURN p, COUNT(*) AS rel_count ORDER BY rel_count DESC LIMIT 5
 Question: {question}
 Answer: 
 """
@@ -121,6 +125,7 @@ interface = gr.ChatInterface(fn = chat_response,
                              examples = ["Who killed Ghatotakach?",
                                          "Who are the parents of Karna?",
                                          "Who are the kids of Kunti?",
-                                         "Who are the siblings of Karna?"])
+                                         "Who are the siblings of Karna?",
+                                         "Tell me the names of top 5 characters in Mahabharata."])
 
 interface.launch(share=True)
