@@ -126,6 +126,14 @@ interface = gr.ChatInterface(fn = chat_response,
                                          "Who are the parents of Karna?",
                                          "Who are the kids of Kunti?",
                                          "Who are the siblings of Karna?",
-                                         "Tell me the names of top 5 characters in Mahabharata."])
+                                         "Tell me the names of top 5 characters in Mahabharata.",
+                                         "Why did the Mahabharata war happen?",
+                                         "Who killed Karna, and why?",
+                                         "Why did the Pandavas have to go live in the forest for 12 years?",
+                                         "How did the Pandavas receive knowledge from sages and saintly persons during their time in the forest?",
+                                         "What were the specific austerities that Arjuna had to perform in the Himalayan mountains to please Lord Shiva?",
+                                         "How did Lord Krishna's presence in the forest affect the Pandavas' experience during their exile?",
+                                         "What were the specific challenges and difficulties that Yudhisthira and his brothers faced in their daily lives as inhabitants of the forest?",
+                                         "How did Bhima cope with the challenges of living as an ascetic in the forest? Did he face any particular difficulties or struggles during their time in exile?"])
 
 interface.launch(share=True)
