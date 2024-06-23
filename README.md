@@ -48,7 +48,6 @@ LOCATION
 
 ### Database Setup
 1. Start Neo4j Database:
-
 Follow the official [Neo4j installation guide](https://neo4j.com/developer/) to set up your database.
 
 2. Load Data:
