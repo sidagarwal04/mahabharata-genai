@@ -1,4 +1,13 @@
+<<<<<<< HEAD
 gcloud
 google-generativeai
 neo4j-driver
 gradio
+=======
+neo4j-driver
+gradio
+langchain==0.1.16
+google-cloud-aiplatform
+langchain-community
+langchain-google-vertexai
+>>>>>>> refs/remotes/origin/main
