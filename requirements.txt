@@ -1,0 +1,4 @@
+gcloud
+google-generativeai
+neo4j-driver
+gradio
