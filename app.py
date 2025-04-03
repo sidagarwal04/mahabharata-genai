@@ -272,8 +272,8 @@ def get_history_by_session_id(session_id):
 def get_llm(model: str):
     """Retrieve the specified language model based on the model name."""
     model = model.lower().strip()
-    env_key = f"LLM_MODEL_CONFIG_{model}"
-    env_value = os.environ.get(env_key)
+    env_key = f"LLM_MODEL_CONFIG_{model.replace('-', '_').replace('.', '_')}"  # Replace both dashes and periods
+    env_value = os.environ.get(env_key.upper())
 
     if not env_value:
         err = f"Environment variable '{env_key}' is not defined as per format or missing"
