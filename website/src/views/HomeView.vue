@@ -2,6 +2,13 @@
   <v-container fluid class="fill-height">
     <v-row justify="center" align="center">
       <v-col md="6" cols="12" sm="12" order="2" order-sm="2" order-md="1" class="text-center">
+        <!-- <iframe
+          src="https://sidagarwal04-mahabharata-chatbot.hf.space"
+          frameborder="0"
+          width="850"
+          height="450"
+        ></iframe> -->
+
         <gradio-app
           style="border: 0 !important; max-height: 400px"
           src="https://sidagarwal04-mahabharata-chatbot.hf.space"
