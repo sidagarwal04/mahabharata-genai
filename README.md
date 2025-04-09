@@ -53,7 +53,7 @@ Follow the official [Neo4j installation guide](https://neo4j.com/developer/) to 
 2. Load Data:
 Use provided [scripts](mahabharata-genai/blob/main/mahabharata-db-setup.cypher) to load Mahabharata data into Neo4j.
 
-## Play with chatbot: [https://mahabharata-chatbot.web.app/](https://mahabharata-chatbot.web.app/)
+## Play with chatbot: [https://mb-aisage.netlify.app/](https://mb-aisage.netlify.app/)
 
 ## Contributing
 Do share your feedback [here](https://docs.google.com/forms/d/e/1FAIpQLSdradX2oOSBpBGAla01tEroQJGDrA62ZsD8Sa_x7IXbGjkRfg/viewform) to make the Mahabharata chatbot the best resource for exploring this epic tale. I am welcoming contributions! Please follow these steps:
