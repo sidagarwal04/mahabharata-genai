@@ -7,7 +7,7 @@
       <v-toolbar-title class="poppins-medium">
         <p class="mb-0 cii-animation-font">Mahabharata Chatbot</p>
         <p class="mb-0 mt-n1" style="font-size: 55%; color: #616161">
-          Powered By Neo4j & Google Vertex AI
+          Powered By Neo4j, OpenAI, Google Vertex AI & Claude
         </p>
       </v-toolbar-title>
       <v-spacer></v-spacer>
@@ -40,6 +40,9 @@
           color: white;
           cursor: pointer;
         "
+        href="https://www.meetsid.dev"
+        target="_blank"
+        clickable
       >
         <v-avatar left>
           <v-img :src="require('@/assets/img/user.jpeg')"></v-img>

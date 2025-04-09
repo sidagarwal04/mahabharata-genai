@@ -71,10 +71,21 @@
           outlined
           small
           class="mr-2 mb-2"
-          href="https://bit.ly/feedback-mbchatbot"
+          href="https://github.com/sidagarwal04/mahabharata-genai/issues/new"
           target="_blank"
           >Feedback
           <v-icon right>mdi-open-in-new</v-icon>
+        </v-btn>
+        <v-btn
+          depressed
+          rounded
+          outlined
+          small
+          class="mr-2 mb-2"
+          href="https://www.buymeacoffee.com/sidagarwal04"
+          target="_blank"
+          >Buy me a coffee
+          <v-icon right>mdi-coffee</v-icon>
         </v-btn>
         
 
@@ -101,6 +112,18 @@
             class="cii-animation-font"
             target="_blank"
             >Neo4j</a
+          >,
+          <a
+            href="https://openai.com/"
+            class="cii-animation-font"
+            target="_blank"
+            >OpenAI</a
+          >,
+          <a
+            href="https://claude.ai/"
+            class="cii-animation-font"
+            target="_blank"
+            >Claude</a
           >
           and
           <a
@@ -123,7 +146,7 @@
         <p class="mb-0" style="font-size: 80%; display: inline">
           Chatbot by
           <a
-            href="https://www.linkedin.com/in/sidagarwal04/"
+            href="https://www.meetsid.dev"
             class="cii-animation-font"
             target="_blank"
             >Siddhant</a
