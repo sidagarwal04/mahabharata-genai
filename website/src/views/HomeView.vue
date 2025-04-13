@@ -163,6 +163,15 @@
           >
         </p>
       </v-col>
+    <v-col md="12"
+        cols="12"
+        sm="12"
+        class="text-center poppins-regular"
+      
+        style="opacity: 0.7">
+      This site is powered by Netlify
+    </v-col>
+
     </v-row>
   </v-container>
 </template>
