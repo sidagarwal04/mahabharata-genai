@@ -11,7 +11,7 @@
 
         <gradio-app
           style="border: 0 !important; max-height: 400px"
-          src="https://sidagarwal04-mahabharata-chatbot.hf.space"
+          src="https://mb-aisage-258362460261.us-central1.run.app/"
         ></gradio-app>
       </v-col>
       <v-col md="4" cols="12" sm="12" order="1" order-sm="1" order-md="2">
