@@ -3,7 +3,6 @@ import logging
 import google.auth
 from dotenv import load_dotenv
 import gradio as gr
-import boto3
 import threading
 import time
 
@@ -856,6 +855,9 @@ with gr.Blocks(css=custom_css, theme="soft") as demo:
         outputs=chatbot  # Update the chatbot with the new chat history
     )
 
-# Launch the interface
-if __name__ == "__main__":
-    demo.launch()
+# # Launch the interface
+# if __name__ == "__main__":
+#     demo.launch()
+
+# Launch the Gradio interface
+demo.launch(server_name="0.0.0.0", server_port=8080)

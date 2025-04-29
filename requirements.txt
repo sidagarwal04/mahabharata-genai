@@ -1,4 +1,4 @@
-gradio>=4.44.1
+gradio==4.44.1
 boto3==1.36.2
 python-dotenv
 sentence-transformers==3.3.1
