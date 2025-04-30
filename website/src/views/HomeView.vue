@@ -25,10 +25,7 @@
         </p>
         <p style="font-size: 100%" class="poppins-regular text--secondary mb-4">
           <!-- Delve into the legendary Mahabharata, an epic tale teeming with thousands of characters - heroes and villains, gods and mortals, all intertwined in a web of duty, love, and vengeance. Witness the power of relationships that forge alliances and ignite devastating wars. Explore the complex bonds of brotherhood, the unwavering loyalty of friendship, and the devastating consequences of jealousy and betrayal. Will righteousness prevail, or will darkness consume the land? Dive in and discover the timeless wisdom of the Mahabharata! -->
-          The Mahabharata, an ancient Indian epic, explores duty, love, and
-          vengeance amidst complex relationships. It asks whether righteousness
-          or darkness will prevail, offering timeless wisdom through its
-          legendary tale. Dive in and discover the timeless wisdom of the Mahabharata! 
+          The Mahabharata, an ancient Indian epic of duty, love, and vengeance. This legendary tale explores complex relationships and the eternal struggle between righteousness and darkness. Dive in and uncover its timeless wisdom
 
           <!-- A Graph Journey using
           <a
@@ -124,13 +121,19 @@
             class="cii-animation-font"
             target="_blank"
             >Claude</a
-          >
-          and
+          >,
           <a
             href="https://cloud.google.com/vertex-ai"
             class="cii-animation-font"
             target="_blank"
             >Google Vertex AI</a
+          >
+          and
+          <a
+            href="https://elevenlabs.io/"
+            class="cii-animation-font"
+            target="_blank"
+            >Eleven Labs</a
           >
         </p>
         <!-- <p class="mb-0" style="font-size: 90%; display: inline">

@@ -7,7 +7,7 @@
       <v-toolbar-title class="poppins-medium">
         <p class="mb-0 cii-animation-font">Mahabharata Chatbot</p>
         <p class="mb-0 mt-n1" style="font-size: 55%; color: #616161">
-          Powered By Neo4j, OpenAI, Google Vertex AI & Claude
+          When GenAI meets ancient wisdom
         </p>
       </v-toolbar-title>
       <v-spacer></v-spacer>
@@ -56,19 +56,6 @@
     <v-main>
       <router-view />
     </v-main>
-
-    <!-- <v-footer
-      app
-      color="white"
-      class="text-center px-md-10 poppins-light"
-      style="align-items: center; align-content: center; text-align: center"
-    >
-      <p class="mb-0" style="font-size: 90%">Powered By Neo4j</p>
-      <v-spacer></v-spacer>
-      <p class="mb-0" style="font-size: 90%">
-        Designed by <a href="https://vrijraj.xyz/" target="_blank">Vrijraj</a>
-      </p>
-    </v-footer> -->
   </v-app>
 </template>
 

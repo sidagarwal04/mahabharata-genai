@@ -309,6 +309,8 @@ def get_llm(model: str):
 
         elif "claude" in model or "anthropic" in model:
             model_name, api_key = env_value.split(",")
+            logging.info(f"Anthropic model: {model_name}")
+            logging.info(f"Anthropic API key: {api_key}")
             llm = ChatAnthropic(api_key=api_key, model=model_name, temperature=0)
 
         else:
@@ -877,7 +879,7 @@ with gr.Blocks(css=custom_css, theme="soft") as demo:
 
     # Dropdown for LLM selection
     llm_dropdown = gr.Dropdown(
-        choices=["openai-gpt-4o", "gemini-2.5-pro-experimental", "gemini-2.0-pro", "gemini-1.5-pro", "gemini-1.5-flash", "claude"],
+        choices=["openai-gpt-4o", "gemini-2.5-pro-experimental", "gemini-2.0-pro", "gemini-1.5-pro", "gemini-1.5-flash", "anthropic-claude-3-7-sonnet"],
         label="Select Your AI Sage",
         value=None,
         interactive=True,
