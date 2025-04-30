@@ -20,3 +20,7 @@ langchain-anthropic==0.3.3
 # Google Cloud Vertex AI client
 google-auth
 google-cloud-aiplatform
+
+#ElevenLabs and Translation
+elevenlabs
+google-cloud-translate
