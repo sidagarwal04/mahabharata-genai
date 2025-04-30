@@ -30,6 +30,10 @@ from langchain_google_vertexai import ChatVertexAI
 from langchain_anthropic import ChatAnthropic
 from langchain_community.chat_models import ChatOllama
 
+# ElevenLabs and Cloud Translate
+from google.cloud import translate
+from elevenlabs import ElevenLabs, play
+
 # Load environment variables
 load_dotenv()
 
@@ -798,6 +802,66 @@ custom_css = """
 }
 """
 
+# Add the "Listen this in Hindi" button logic
+def listen_in_hindi(response_text):
+    try:
+        if not response_text:
+            raise ValueError("No response text available to translate.")
+        
+        # Translate the response to Hindi
+        project_id = os.getenv("PROJECT_ID")
+        client = translate.TranslationServiceClient()
+        location = "global"
+        parent = f"projects/{project_id}/locations/{location}"
+        response = client.translate_text(
+            request={
+                "parent": parent,
+                "contents": [response_text],
+                "mime_type": "text/plain",
+                "source_language_code": "en-US",
+                "target_language_code": "hi",
+            }
+        )
+        translated_text = response.translations[0].translated_text
+
+        print(f"Translated text: {translated_text}")
+
+        # Generate audio using ElevenLabs
+        ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
+        if not ELEVENLABS_API_KEY:
+            raise ValueError("ELEVENLABS_API_KEY environment variable not set")
+
+        elevenlabs_client = ElevenLabs(api_key=ELEVENLABS_API_KEY)
+        audio = elevenlabs_client.text_to_speech.convert(
+            text=translated_text,
+            voice_id="zgqefOY5FPQ3bB7OZTVR",  # Replace with your desired voice ID
+            model_id="eleven_multilingual_v2",
+            output_format="mp3_44100_128",
+        )
+
+        # Play the audio directly
+        play(audio)
+
+        return "Audio played successfully!"
+
+    except Exception as e:
+        logging.error(f"Error in 'listen_in_hindi': {e}")
+        return None
+
+def get_last_bot_response(chat_history):
+    if not chat_history or not isinstance(chat_history, list):
+        print("Chat history is empty or invalid.")
+        return None
+    
+    # Reverse iterate to find the last assistant message
+    for msg in reversed(chat_history):
+        if isinstance(msg, dict) and msg.get("role") == "assistant":
+            print(f"Last assistant response: {msg.get('content')}")
+            return msg.get("content")
+    
+    print("No assistant response found.")
+    return None
+
 with gr.Blocks(css=custom_css, theme="soft") as demo:
     # Title and description
     gr.Markdown(
@@ -848,11 +912,31 @@ with gr.Blocks(css=custom_css, theme="soft") as demo:
     # Submit button
     submit_button = gr.Button("Submit")
 
+    # "Listen this in Hindi" button
+    listen_button = gr.Button("Listen to this in Hindi", interactive=False)
+
     # Define the interaction logic
     submit_button.click(
         fn=handle_chat,
         inputs=[question_textbox, chatbot, llm_dropdown],  # Pass the question, chat history, and LLM model
         outputs=chatbot  # Update the chatbot with the new chat history
+    ).then(
+        fn=lambda x: gr.update(interactive=True),
+        inputs=None,
+        outputs=listen_button
+    )
+
+    # Define the interaction logic for the "Listen this in Hindi" button
+    listen_button.click(
+        fn=lambda chat_history: listen_in_hindi(get_last_bot_response(chat_history)),
+        inputs=chatbot,
+        outputs=gr.Textbox(label="Status")
+    )
+
+    question_textbox.change(
+        fn=lambda: gr.update(interactive=False),
+        inputs=None,
+        outputs=listen_button
     )
 
 # # Launch the interface
