@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import gradio as gr
 import threading
 import time
+import tempfile
 
 from datetime import datetime
 from typing import Any
@@ -807,46 +808,48 @@ def listen_in_hindi(response_text):
     try:
         if not response_text:
             raise ValueError("No response text available to translate.")
-        
-        # Translate the response to Hindi
+
+        # Translate text to Hindi
         project_id = os.getenv("PROJECT_ID")
+        if not project_id:
+            raise ValueError("PROJECT_ID not set in environment.")
+        
         client = translate.TranslationServiceClient()
-        location = "global"
-        parent = f"projects/{project_id}/locations/{location}"
+        parent = f"projects/{project_id}/locations/global"
+
         response = client.translate_text(
-            request={
-                "parent": parent,
-                "contents": [response_text],
-                "mime_type": "text/plain",
-                "source_language_code": "en-US",
-                "target_language_code": "hi",
-            }
+            parent=parent,
+            contents=[response_text],
+            mime_type="text/plain",
+            source_language_code="en-US",
+            target_language_code="hi",
         )
         translated_text = response.translations[0].translated_text
-
-        print(f"Translated text: {translated_text}")
 
         # Generate audio using ElevenLabs
         ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
         if not ELEVENLABS_API_KEY:
-            raise ValueError("ELEVENLABS_API_KEY environment variable not set")
-
+            raise ValueError("ELEVENLABS_API_KEY not set")
+        
         elevenlabs_client = ElevenLabs(api_key=ELEVENLABS_API_KEY)
-        audio = elevenlabs_client.text_to_speech.convert(
+        audio_generator = elevenlabs_client.text_to_speech.convert(
             text=translated_text,
-            voice_id="zgqefOY5FPQ3bB7OZTVR",  # Replace with your desired voice ID
+            voice_id="MF4J4IDTRo0AxOO4dpFR",
             model_id="eleven_multilingual_v2",
             output_format="mp3_44100_128",
         )
+        audio_bytes = b"".join(audio_generator)
 
-        # Play the audio directly
-        play(audio)
+        # Save to a temp file
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as f:
+            f.write(audio_bytes)
+            audio_path = f.name
 
-        return "Audio played successfully!"
+        return audio_path, "Hindi audio generated!"
 
     except Exception as e:
         logging.error(f"Error in 'listen_in_hindi': {e}")
-        return None
+        return None, f"Error: {e}"
 
 def get_last_bot_response(chat_history):
     if not chat_history or not isinstance(chat_history, list):
@@ -914,6 +917,8 @@ with gr.Blocks(css=custom_css, theme="soft") as demo:
 
     # "Listen this in Hindi" button
     listen_button = gr.Button("Listen to this in Hindi", interactive=False)
+    status_output = gr.Textbox(label="Status")
+    audio_output = gr.Audio(label="Hindi Audio", type="filepath")
 
     # Define the interaction logic
     submit_button.click(
@@ -930,8 +935,9 @@ with gr.Blocks(css=custom_css, theme="soft") as demo:
     listen_button.click(
         fn=lambda chat_history: listen_in_hindi(get_last_bot_response(chat_history)),
         inputs=chatbot,
-        outputs=gr.Textbox(label="Status")
+        outputs=[audio_output, status_output]
     )
+
 
     question_textbox.change(
         fn=lambda: gr.update(interactive=False),
