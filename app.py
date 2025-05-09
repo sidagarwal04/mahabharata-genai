@@ -275,9 +275,9 @@ def get_history_by_session_id(session_id):
 # LLM selector supporting OpenAI, Gemini, Claude
 def get_llm(model: str):
     """Retrieve the specified language model based on the model name."""
-    model = model.lower().strip()
-    env_key = f"LLM_MODEL_CONFIG_{model.replace('-', '_').replace('.', '_')}"  # Replace both dashes and periods
-    env_value = os.environ.get(env_key.upper())
+    model = model.strip().replace(" ", "_").lower()  # Replace spaces with underscores and convert to lowercase
+    env_key = f"LLM_MODEL_CONFIG_{model.replace('-', '_').replace('.', '_')}".upper()  # Convert to uppercase
+    env_value = os.getenv(env_key)
 
     if not env_value:
         err = f"Environment variable '{env_key}' is not defined as per format or missing"
@@ -776,12 +776,16 @@ def handle_chat(question, history, llm):
 
     # Call the process_chat_response function with the updated parameters
     response = process_chat_response(messages, neo4j_history, question, llm, graph, document_names=[])
+    model_name = response["info"].get("model", "Unknown Model")
 
     # Extract the assistant's response text
     assistant_response = response.get("message", "I couldn't process your request.")
 
     # Append the assistant's response to the history
-    history.append({"role": "assistant", "content": assistant_response})
+    history.append({
+        "role": "assistant", 
+        "content": f"{assistant_response}\n\n(Model: {model_name})"
+    })
 
     # Return the updated history
     return history
@@ -810,6 +814,10 @@ def listen_in_hindi(response_text):
     try:
         if not response_text:
             raise ValueError("No response text available to translate.")
+        
+        # Remove any metadata like "(Model: ...)" from the response text
+        if "(Model:" in response_text:
+            response_text = response_text.split("(Model:")[0].strip()
 
         # Translate text to Hindi
         project_id = os.getenv("PROJECT_ID")
@@ -879,7 +887,7 @@ with gr.Blocks(css=custom_css, theme="soft") as demo:
 
     # Dropdown for LLM selection
     llm_dropdown = gr.Dropdown(
-        choices=["openai-gpt-4o", "gemini-2.5-pro-experimental", "gemini-2.0-pro", "gemini-1.5-pro", "gemini-1.5-flash", "anthropic-claude-3-7-sonnet"],
+        choices=["OpenAI GPT4o", "Gemini 2.5 Flash Preview", "Gemini 2.5 Pro Preview", "Claude 3.7 Sonnet"],
         label="Select Your AI Sage",
         value=None,
         interactive=True,

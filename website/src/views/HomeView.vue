@@ -117,23 +117,23 @@
             >OpenAI</a
           >,
           <a
-            href="https://claude.ai/"
-            class="cii-animation-font"
-            target="_blank"
-            >Claude</a
-          >,
-          <a
             href="https://cloud.google.com/vertex-ai"
             class="cii-animation-font"
             target="_blank"
             >Google Vertex AI</a
+          >,
+          <a
+            href="https://claude.ai/"
+            class="cii-animation-font"
+            target="_blank"
+            >Claude</a
           >
           and
           <a
             href="https://elevenlabs.io/"
             class="cii-animation-font"
             target="_blank"
-            >Eleven Labs</a
+            >ElevenLabs</a
           >
         </p>
         <!-- <p class="mb-0" style="font-size: 90%; display: inline">
