@@ -5,9 +5,9 @@
         <img :src="require('@/assets/img/logo.png')" alt="logo" class="mr-3" />
       </v-avatar>
       <v-toolbar-title class="poppins-medium">
-        <p class="mb-0 cii-animation-font">Mahabharata Chatbot</p>
+        <p class="mb-0 cii-animation-font">Mahabharata 2.0</p>
         <p class="mb-0 mt-n1" style="font-size: 55%; color: #616161">
-          When GenAI meets ancient wisdom
+          When GenAI meets Ancient Wisdom
         </p>
       </v-toolbar-title>
       <v-spacer></v-spacer>
