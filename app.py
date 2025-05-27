@@ -6,6 +6,8 @@ import gradio as gr
 import threading
 import time
 import tempfile
+import uuid
+import sys
 
 from datetime import datetime
 from typing import Any
@@ -37,6 +39,15 @@ from elevenlabs import ElevenLabs, play
 
 # Load environment variables
 load_dotenv()
+
+logging.basicConfig(
+    level=logging.INFO,  # Use DEBUG if you want more detail
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[logging.StreamHandler(sys.stdout)]
+)
+
+logging.info("✅ Logging is working!")
+
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
@@ -241,19 +252,6 @@ prompt_template = ChatPromptTemplate.from_messages([
     ("human", "User question: {input}")
 ])
 
-class SessionChatHistory:
-    history_dict = {}
-
-    @classmethod
-    def get_chat_history(cls, session_id):
-        """Retrieve or create chat message history for a given session ID."""
-        if session_id not in cls.history_dict:
-            logging.info(f"Creating new ChatMessageHistory Local for session ID: {session_id}")
-            cls.history_dict[session_id] = ChatMessageHistory()
-        else:
-            logging.info(f"Retrieved existing ChatMessageHistory Local for session ID: {session_id}")
-        return cls.history_dict[session_id]
-
 class CustomCallback(BaseCallbackHandler):
 
     def __init__(self):
@@ -264,13 +262,6 @@ class CustomCallback(BaseCallbackHandler):
     ) -> None:
         logging.info("question transformed")
         self.transformed_question = response.generations[0][0].text.strip()
-
-def get_history_by_session_id(session_id):
-    try:
-        return SessionChatHistory.get_chat_history(session_id)
-    except Exception as e:
-        logging.error(f"Failed to get history for session ID '{session_id}': {e}")
-        raise
 
 # LLM selector supporting OpenAI, Gemini, Claude
 def get_llm(model: str):
@@ -683,73 +674,79 @@ def setup_chat(model, graph, document_names):
     
     return llm, doc_retriever, model_name
 
-def create_neo4j_chat_message_history(graph, session_id, write_access=True):
-    """
-    Creates and returns a Neo4jChatMessageHistory instance.
-
-    """
+def create_neo4j_chat_message_history(graph, session_id):
     try:
-        if write_access: 
-            history = Neo4jChatMessageHistory(
-                graph=graph,
-                session_id=session_id
-            )
-            return history
-        
-        history = get_history_by_session_id(session_id)
+        history = Neo4jChatMessageHistory(
+            graph=graph,
+            session_id=session_id
+        )
         return history
-
     except Exception as e:
         logging.error(f"Error creating Neo4jChatMessageHistory: {e}")
-        raise 
+        raise
 
 # Final response logic
 def process_chat_response(messages, history, question, model, graph, document_names):
     try:
-        llm, doc_retriever, model_version = setup_chat(model, graph, document_names)
-        
-        docs,transformed_question = retrieve_documents(doc_retriever, messages)  
+        overall_start = time.time()
 
+        ### STEP 1: Setup LLM + retriever
+        setup_start = time.time()
+        llm, doc_retriever, model_version = setup_chat(model, graph, document_names)
+        logging.info(f"[Timing] setup_chat() took {time.time() - setup_start:.2f} sec")
+
+        ### STEP 2: Retrieve documents
+        retrieval_start = time.time()
+        docs, transformed_question = retrieve_documents(doc_retriever, messages)
+        logging.info(f"[Timing] retrieve_documents() took {time.time() - retrieval_start:.2f} sec")
+
+        ### STEP 3: Process documents and generate answer
+        process_start = time.time()
         if docs:
-            content, result, total_tokens,formatted_docs = process_documents(docs, question, messages, llm, model)
+            content, result, total_tokens, formatted_docs = process_documents(docs, question, messages, llm, model)
         else:
             content = "I couldn't find any relevant documents to answer your question."
             result = {"sources": list(), "nodedetails": list(), "entities": list()}
             total_tokens = 0
             formatted_docs = ""
-        
-        ai_response = AIMessage(content=content)
-        messages.append(ai_response)
+        logging.info(f"[Timing] process_documents() took {time.time() - process_start:.2f} sec")
 
+        ### STEP 4: Add to message history
+        messages.append(AIMessage(content=content))
+
+        ### STEP 5: Run async summarization
+        summarization_start = time.time()
         summarization_thread = threading.Thread(target=summarize_and_log, args=(history, messages, llm))
         summarization_thread.start()
-        logging.info("Summarization thread started.")
-        # summarize_and_log(history, messages, llm)
-        metric_details = {"question":question,"contexts":formatted_docs,"answer":content}
+        logging.info(f"[Timing] summarization thread launched (not blocking)")
+
+        ### Final timing
+        total_time = time.time() - overall_start
+        logging.info(f"[Timing] Total process_chat_response() took {total_time:.2f} sec")
+
+        metric_details = {"question": question, "contexts": formatted_docs, "answer": content}
         return {
-            "session_id": "",  
+            "session_id": "",
             "message": content,
             "info": {
-                # "metrics" : metrics,
                 "sources": result["sources"],
                 "model": model_version,
                 "nodedetails": result["nodedetails"],
                 "total_tokens": total_tokens,
-                "response_time": 0,
+                "response_time": total_time,
                 "entities": result["entities"],
                 "metric_details": metric_details,
             },
-            
             "user": "chatbot"
         }
-    
+
     except Exception as e:
         logging.exception(f"Error processing chat response at {datetime.now()}: {str(e)}")
         return {
             "session_id": "",
             "message": "Something went wrong",
             "info": {
-                "metrics" : [],
+                "metrics": [],
                 "sources": [],
                 "nodedetails": [],
                 "total_tokens": 0,
@@ -760,34 +757,23 @@ def process_chat_response(messages, history, question, model, graph, document_na
             },
             "user": "chatbot"
         }
-
-def handle_chat(question, history, llm):
-    # Check if the LLM model is selected
+def handle_chat(question, history, llm, session_id):
     if not llm:
         return history + [{"role": "assistant", "content": "Please select your AI Sage (LLM model) to proceed."}]
 
-    # Create or retrieve the chat history from Neo4j
-    neo4j_history = create_neo4j_chat_message_history(graph, session_id=1, write_access=True)
+    neo4j_history = create_neo4j_chat_message_history(graph, session_id=session_id)
+    logging.info(f"Using Neo4jChatMessageHistory for session_id: {session_id}")
     messages = neo4j_history.messages
 
-    # Append the current user question to the history
     messages.append(HumanMessage(content=question))
     history.append({"role": "user", "content": question})
 
-    # Call the process_chat_response function with the updated parameters
     response = process_chat_response(messages, neo4j_history, question, llm, graph, document_names=[])
     model_name = response["info"].get("model", "Unknown Model")
 
-    # Extract the assistant's response text
     assistant_response = response.get("message", "I couldn't process your request.")
+    history.append({"role": "assistant", "content": f"{assistant_response}\n\n(Model: {model_name})"})
 
-    # Append the assistant's response to the history
-    history.append({
-        "role": "assistant", 
-        "content": f"{assistant_response}\n\n(Model: {model_name})"
-    })
-
-    # Return the updated history
     return history
 
 # Define your custom CSS
@@ -885,6 +871,8 @@ with gr.Blocks(css=custom_css, theme="soft") as demo:
         """
     )
 
+    session_state = gr.Textbox(visible=False, value=str(uuid.uuid4()), interactive=False)
+
     # Dropdown for LLM selection
     llm_dropdown = gr.Dropdown(
         choices=["OpenAI GPT4o", "Gemini 2.5 Flash Preview", "Gemini 2.5 Pro Preview", "Claude 3.7 Sonnet"],
@@ -933,10 +921,10 @@ with gr.Blocks(css=custom_css, theme="soft") as demo:
     # Define the interaction logic
     submit_button.click(
         fn=handle_chat,
-        inputs=[question_textbox, chatbot, llm_dropdown],  # Pass the question, chat history, and LLM model
+        inputs=[question_textbox, chatbot, llm_dropdown, session_state],  # Pass the question, chat history, and LLM model
         outputs=chatbot  # Update the chatbot with the new chat history
     ).then(
-        fn=lambda x: gr.update(interactive=True),
+        fn=lambda: gr.update(interactive=True),
         inputs=None,
         outputs=listen_button
     )
@@ -960,4 +948,4 @@ with gr.Blocks(css=custom_css, theme="soft") as demo:
 #     demo.launch()
 
 # Launch the Gradio interface
-demo.launch(server_name="0.0.0.0", server_port=8080)
+demo.queue().launch(server_name="0.0.0.0", server_port=8080)
