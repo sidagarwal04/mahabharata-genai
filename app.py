@@ -264,7 +264,7 @@ class CustomCallback(BaseCallbackHandler):
         self.transformed_question = response.generations[0][0].text.strip()
 
 # LLM selector supporting OpenAI, Gemini, Claude
-def get_llm(model: str):
+def get_llm(model: str, max_tokens: int = 1024):
     """Retrieve the specified language model based on the model name."""
     model = model.strip().replace(" ", "_").lower()  # Replace spaces with underscores and convert to lowercase
     env_key = f"LLM_MODEL_CONFIG_{model.replace('-', '_').replace('.', '_')}".upper()  # Convert to uppercase
@@ -292,17 +292,19 @@ def get_llm(model: str):
                     HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_NONE,
                     HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: HarmBlockThreshold.BLOCK_NONE,
                 },
+                max_output_tokens=max_tokens,
             )
 
         elif "openai" in model:
             model_name, api_key = env_value.split(",")
-            llm = ChatOpenAI(api_key=api_key, model=model_name, temperature=0)
+            llm = ChatOpenAI(api_key=api_key, model=model_name, temperature=0, max_tokens=max_tokens)
+            logging.info(f"OpenAI tokens used: {max_tokens}")
 
         elif "claude" in model or "anthropic" in model:
             model_name, api_key = env_value.split(",")
             logging.info(f"Anthropic model: {model_name}")
             logging.info(f"Anthropic API key: {api_key}")
-            llm = ChatAnthropic(api_key=api_key, model=model_name, temperature=0)
+            llm = ChatAnthropic(api_key=api_key, model=model_name, temperature=0, max_tokens=max_tokens)
 
         else:
             raise ValueError(f"Unsupported model type for: {model}")
@@ -313,7 +315,7 @@ def get_llm(model: str):
         raise Exception(err)
 
     logging.info(f"Model created - Model Version: {model_name}")
-    return llm, model_name
+    return llm, model_name, max_tokens
 
 
 def summarize_and_log(history, stored_messages, llm):
@@ -503,6 +505,7 @@ def process_documents(docs, question, messages, llm, model):
 
         content = ai_response.content
         total_tokens = get_total_tokens(ai_response, llm)
+        logging.info(f"Total tokens used: {total_tokens}")
         
         predict_time = time.time() - start_time
         logging.info(f"Final response predicted in {predict_time:.2f} seconds")
@@ -653,13 +656,13 @@ def get_neo4j_retriever(graph, document_names, score_threshold=0.5):
         logging.error(f"Error retrieving Neo4jVector index  {index_name} or creating retriever: {e}")
         raise Exception(f"An error occurred while retrieving the Neo4jVector index or creating the retriever. Please drop and create a new vector index '{index_name}': {e}") from e 
 
-def setup_chat(model, graph, document_names):
+def setup_chat(model, graph, document_names, max_tokens=1024):
     start_time = time.time()
     try:
         if model == "diffbot":
             model = os.getenv('DEFAULT_DIFFBOT_CHAT_MODEL')
         
-        llm, model_name = get_llm(model=model)
+        llm, model_name, max_tokens = get_llm(model=model, max_tokens=max_tokens)
         logging.info(f"Model called in chat: {model} (version: {model_name})")
 
         retriever = get_neo4j_retriever(graph=graph, document_names=document_names)
@@ -686,13 +689,13 @@ def create_neo4j_chat_message_history(graph, session_id):
         raise
 
 # Final response logic
-def process_chat_response(messages, history, question, model, graph, document_names):
+def process_chat_response(messages, history, question, model, graph, document_names, session_id=None):
     try:
         overall_start = time.time()
 
         ### STEP 1: Setup LLM + retriever
         setup_start = time.time()
-        llm, doc_retriever, model_version = setup_chat(model, graph, document_names)
+        llm, doc_retriever, model_version = setup_chat(model, graph, document_names, max_tokens=2048)
         logging.info(f"[Timing] setup_chat() took {time.time() - setup_start:.2f} sec")
 
         ### STEP 2: Retrieve documents
@@ -726,7 +729,7 @@ def process_chat_response(messages, history, question, model, graph, document_na
 
         metric_details = {"question": question, "contexts": formatted_docs, "answer": content}
         return {
-            "session_id": "",
+            "session_id": session_id or "",
             "message": content,
             "info": {
                 "sources": result["sources"],
@@ -768,13 +771,13 @@ def handle_chat(question, history, llm, session_id):
     messages.append(HumanMessage(content=question))
     history.append({"role": "user", "content": question})
 
-    response = process_chat_response(messages, neo4j_history, question, llm, graph, document_names=[])
+    response = process_chat_response(messages, neo4j_history, question, llm, graph, document_names=[], session_id=session_id)
     model_name = response["info"].get("model", "Unknown Model")
 
     assistant_response = response.get("message", "I couldn't process your request.")
     history.append({"role": "assistant", "content": f"{assistant_response}\n\n(Model: {model_name})"})
 
-    return history
+    return history, session_id
 
 # Define your custom CSS
 custom_css = """
@@ -871,7 +874,7 @@ with gr.Blocks(css=custom_css, theme="soft") as demo:
         """
     )
 
-    session_state = gr.Textbox(visible=False, value=str(uuid.uuid4()), interactive=False)
+    session_state = gr.Textbox(value=str(uuid.uuid4()), visible=False, interactive=False)
 
     # Dropdown for LLM selection
     llm_dropdown = gr.Dropdown(
@@ -922,7 +925,7 @@ with gr.Blocks(css=custom_css, theme="soft") as demo:
     submit_button.click(
         fn=handle_chat,
         inputs=[question_textbox, chatbot, llm_dropdown, session_state],  # Pass the question, chat history, and LLM model
-        outputs=chatbot  # Update the chatbot with the new chat history
+        outputs=[chatbot, session_state]  # Update the chatbot with the new chat history
     ).then(
         fn=lambda: gr.update(interactive=True),
         inputs=None,
