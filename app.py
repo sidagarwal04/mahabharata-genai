@@ -878,7 +878,7 @@ with gr.Blocks(css=custom_css, theme="soft") as demo:
 
     # Dropdown for LLM selection
     llm_dropdown = gr.Dropdown(
-        choices=["OpenAI GPT4o", "Gemini 2.5 Flash Preview", "Gemini 2.5 Pro Preview", "Claude 3.7 Sonnet"],
+        choices=["OpenAI GPT4o", "Gemini 2.5 Flash", "Gemini 2.5 Pro", "Claude 3.7 Sonnet"],
         label="Select Your AI Sage",
         value=None,
         interactive=True,
