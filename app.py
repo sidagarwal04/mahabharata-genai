@@ -20,6 +20,17 @@ from langchain.retrievers import ContextualCompressionRetriever
 from langchain_core.runnables import RunnableBranch
 from langchain_core.callbacks import StdOutCallbackHandler, BaseCallbackHandler
 
+
+
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain.retrievers.document_compressors import EmbeddingsFilter, DocumentCompressorPipeline
+from langchain.retrievers import ContextualCompressionRetriever
+
+
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_core.retrievers.document_compressors import EmbeddingsFilter, DocumentCompressorPipeline
+from langchain_core.retrievers import ContextualCompressionRetriever
+
 from langchain_google_vertexai import HarmBlockThreshold, HarmCategory
 from langchain_neo4j import Neo4jVector, Neo4jGraph, Neo4jChatMessageHistory
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
@@ -28,7 +39,7 @@ from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_huggingface import HuggingFaceEmbeddings
 
 # LangChain chat models
-from langchain_openai import ChatOpenAI, AzureChatOpenAI
+from langchain_openai import ChatOpenAI, AzureChatOpenAI, OpenAIEmbeddings
 from langchain_google_vertexai import ChatVertexAI
 from langchain_anthropic import ChatAnthropic
 from langchain_community.chat_models import ChatOllama
@@ -60,7 +71,8 @@ NEO4J_DATABASE = os.getenv("NEO4J_DATABASE")
 project_id = os.getenv("PROJECT_ID")
 credentials = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 
-embedding_function = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+# embedding_function = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+embedding_function = OpenAIEmbeddings(model="text-embedding-3-small")
 
 ### Vector graph search 
 VECTOR_GRAPH_SEARCH_ENTITY_LIMIT = 40
@@ -878,7 +890,7 @@ with gr.Blocks(css=custom_css, theme="soft") as demo:
 
     # Dropdown for LLM selection
     llm_dropdown = gr.Dropdown(
-        choices=["OpenAI GPT4o", "Gemini 2.5 Flash", "Gemini 2.5 Pro", "Claude 3.7 Sonnet"],
+        choices=["OpenAI GPT-5.1", "OpenAI GPT-4o", "Gemini 3 Pro Preview", "Gemini 2.5 Flash", "Gemini 2.5 Pro", "Claude 3.7 Sonnet"],
         label="Select Your AI Sage",
         value=None,
         interactive=True,
@@ -951,4 +963,4 @@ with gr.Blocks(css=custom_css, theme="soft") as demo:
 #     demo.launch()
 
 # Launch the Gradio interface
-demo.queue().launch(server_name="0.0.0.0", server_port=8080)
+demo.queue().launch(server_name="0.0.0.0", server_port=5050)

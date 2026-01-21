@@ -8,7 +8,7 @@ WORKDIR /app
 
 COPY . ./
 
-RUN pip install -r requirements.txt
+RUN pip install --upgrade -r requirements.txt
 
 # Pre-download the HuggingFace model
 RUN python3 -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('all-MiniLM-L6-v2')"
