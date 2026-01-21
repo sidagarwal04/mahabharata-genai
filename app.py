@@ -14,22 +14,11 @@ from typing import Any
 
 
 from langchain_core.output_parsers import StrOutputParser
-from langchain_text_splitters import TokenTextSplitter
-from langchain.retrievers.document_compressors import EmbeddingsFilter, DocumentCompressorPipeline
-from langchain.retrievers import ContextualCompressionRetriever
+from langchain_text_splitters import TokenTextSplitter, RecursiveCharacterTextSplitter
+from langchain_community.retrievers.document_compressors import EmbeddingsFilter, DocumentCompressorPipeline
+from langchain_community.retrievers import ContextualCompressionRetriever
 from langchain_core.runnables import RunnableBranch
 from langchain_core.callbacks import StdOutCallbackHandler, BaseCallbackHandler
-
-
-
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain.retrievers.document_compressors import EmbeddingsFilter, DocumentCompressorPipeline
-from langchain.retrievers import ContextualCompressionRetriever
-
-
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_core.retrievers.document_compressors import EmbeddingsFilter, DocumentCompressorPipeline
-from langchain_core.retrievers import ContextualCompressionRetriever
 
 from langchain_google_vertexai import HarmBlockThreshold, HarmCategory
 from langchain_neo4j import Neo4jVector, Neo4jGraph, Neo4jChatMessageHistory
