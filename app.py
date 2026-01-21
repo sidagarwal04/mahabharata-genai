@@ -60,8 +60,13 @@ NEO4J_DATABASE = os.getenv("NEO4J_DATABASE")
 project_id = os.getenv("PROJECT_ID")
 credentials = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 
-# embedding_function = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-embedding_function = OpenAIEmbeddings(model="text-embedding-3-small")
+# Initialize HuggingFace embeddings with explicit settings
+embedding_function = HuggingFaceEmbeddings(
+    model_name="all-MiniLM-L6-v2",
+    model_kwargs={'device': 'cpu'},
+    encode_kwargs={'normalize_embeddings': True}
+)
+# embedding_function = OpenAIEmbeddings(model="text-embedding-3-small")
 
 ### Vector graph search 
 VECTOR_GRAPH_SEARCH_ENTITY_LIMIT = 40
@@ -581,13 +586,32 @@ def create_document_retriever_chain(llm, retriever):
 
 def initialize_neo4j_vector(graph):
     try:
-        retrieval_query = VECTOR_GRAPH_SEARCH_QUERY
+        # Use a simpler retrieval query that's compatible with HuggingFace embeddings
+        retrieval_query = """
+        WITH node as chunk, score
+        MATCH (chunk)-[:PART_OF]->(d:Document)
+        WITH d, collect(DISTINCT {chunk: chunk, score: score}) AS chunks, avg(score) as avg_score
+        OPTIONAL MATCH (chunk)-[:HAS_ENTITY]->(e)
+        WITH d, chunks, avg_score, collect(DISTINCT e) as entities
+        RETURN
+           apoc.text.join([c in chunks | c.chunk.text], "\n----\n") as text,
+           avg_score AS score,
+           {
+               length: size([c in chunks | c.chunk.text][0]),
+               source: COALESCE(CASE WHEN d.url CONTAINS "None" THEN d.fileName ELSE d.url END, d.fileName),
+               chunkdetails: [c IN chunks | {id: c.chunk.id, score: c.score}],
+               entities : {
+                   entityids: [e in entities | elementId(e)],
+                   relationshipids: []
+               }
+           } AS metadata
+        """
+        
         index_name = "vector"
         keyword_index = "keyword"
         node_label = "Chunk"
         embedding_node_property = "embedding"
         text_node_properties = ["text"]
-
 
         if not retrieval_query or not index_name:
             raise ValueError("Required settings 'retrieval_query' or 'index_name' are missing.")
