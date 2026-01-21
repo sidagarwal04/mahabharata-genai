@@ -15,14 +15,14 @@ from typing import Any
 
 from langchain_core.output_parsers import StrOutputParser
 from langchain_text_splitters import TokenTextSplitter, RecursiveCharacterTextSplitter
-from langchain_community.retrievers.document_compressors import EmbeddingsFilter, DocumentCompressorPipeline
-from langchain_community.retrievers import ContextualCompressionRetriever
+from langchain_classic.retrievers.document_compressors import EmbeddingsFilter, DocumentCompressorPipeline
+from langchain_classic.retrievers import ContextualCompressionRetriever
 from langchain_core.runnables import RunnableBranch
 from langchain_core.callbacks import StdOutCallbackHandler, BaseCallbackHandler
 
 from langchain_google_vertexai import HarmBlockThreshold, HarmCategory
 from langchain_neo4j import Neo4jVector, Neo4jGraph, Neo4jChatMessageHistory
-from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.messages import HumanMessage, AIMessage
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_huggingface import HuggingFaceEmbeddings
@@ -865,7 +865,7 @@ def get_last_bot_response(chat_history):
     print("No assistant response found.")
     return None
 
-with gr.Blocks(css=custom_css, theme="soft") as demo:
+with gr.Blocks() as demo:
     # Title and description
     gr.Markdown(
         """
@@ -894,7 +894,7 @@ with gr.Blocks(css=custom_css, theme="soft") as demo:
     )
 
     # Chat interface
-    chatbot = gr.Chatbot(type="messages", height=450, label="Mahabharata Chat")
+    chatbot = gr.Chatbot(height=450, label="Mahabharata Chat")
 
     # Examples component
     examples = gr.Examples(
@@ -952,4 +952,4 @@ with gr.Blocks(css=custom_css, theme="soft") as demo:
 #     demo.launch()
 
 # Launch the Gradio interface
-demo.queue().launch(server_name="0.0.0.0", server_port=5050)
+demo.queue().launch(server_name="0.0.0.0", server_port=5050, css=custom_css, theme="soft")
