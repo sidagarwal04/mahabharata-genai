@@ -15,7 +15,8 @@ export default defineNuxtConfig({
         { name: 'description', content: 'Step into the epic world of the Mahabharata! Ask questions, explore characters, unravel mysteries, and gain insights from the vast knowledge stored in our AI-powered database.' }
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico?v=2' },
+        { rel: 'icon', type: 'image/png', href: '/favicon.png?v=2' }
       ]
     }
   }

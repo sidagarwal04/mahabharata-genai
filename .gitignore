@@ -2,7 +2,6 @@
 .env
 .env.local
 .env.*.local
-example.backend.env
 frontend/.env
 frontend/.env.local
 frontend/.env.*.local
@@ -72,6 +71,7 @@ pnpm-lock.yaml
 
 # OS generated files
 .DS_Store
+**/.DS_Store
 .DS_Store?
 ._*
 .Spotlight-V100
