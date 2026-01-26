@@ -28,6 +28,7 @@ body {
     radial-gradient(circle at 90% 80%, rgba(244, 114, 182, 0.1) 0%, transparent 40%);
   color: var(--text-light);
   height: 100vh;
+  height: 100dvh;
   margin: 0;
   overflow: hidden;
   display: flex;
@@ -38,6 +39,7 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  height: 100dvh;
   flex: 1;
   min-height: 0;
 }
