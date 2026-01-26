@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen">
+  <div class="app-layout">
     <!-- Header -->
     <header class="header">
       <div class="header-content">
@@ -118,7 +118,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, nextTick, watch } from 'vue'
 
 // Generate UUID without external library
 function generateUUID() {
@@ -138,6 +138,18 @@ const chatContainer = ref(null)
 const audioPlayer = ref(null)
 const sessionId = ref('')
 const generatingAudioId = ref(null)
+
+// Watch for messages change to scroll to bottom
+watch(messages, () => {
+  scrollToBottom()
+}, { deep: true })
+
+// Watch for typing state to scroll
+watch(isTyping, (val) => {
+  if (val) {
+    scrollToBottom()
+  }
+})
 
 // Audio playback state
 const activeAudioId = ref(null)

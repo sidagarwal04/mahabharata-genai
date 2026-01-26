@@ -28,9 +28,18 @@ body {
     radial-gradient(circle at 90% 80%, rgba(244, 114, 182, 0.1) 0%, transparent 40%);
   color: var(--text-light);
   height: 100vh;
+  margin: 0;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+}
+
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  flex: 1;
+  min-height: 0;
 }
 
 /* Header Styles */
@@ -490,4 +499,107 @@ body {
   font-size: 0.8rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .header-title {
+    font-size: 1.5rem;
+  }
+
+  .header-title img {
+    height: 32px !important;
+  }
+
+  .welcome-title {
+    font-size: 1.75rem;
+  }
+
+  .examples-grid {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+  }
+
+  .main-content {
+    padding: 0.5rem;
+  }
+
+  .chat-container {
+    border-radius: 1rem;
+  }
+
+  .chat-messages {
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+
+  .chat-bubble {
+    padding: 1rem;
+  }
+
+  .avatar-container {
+    width: 60px !important;
+    height: 60px !important;
+  }
+
+  .avatar-img {
+    width: 45px !important;
+    height: 45px !important;
+  }
+
+  .avatar-emoji {
+    font-size: 30px !important;
+  }
+
+  .message-header .flex-shrink-0 {
+    padding-right: 1rem;
+    margin-right: 1rem;
+  }
+
+  .chat-input-section {
+    padding: 1rem;
+  }
+
+  .input-form {
+    gap: 0.5rem;
+  }
+
+  .btn-primary {
+    padding: 0 1rem;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-subtitle {
+    font-size: 0.75rem;
+  }
+
+  .welcome-icon img {
+    height: 3rem;
+  }
+
+  /* Hide avatars for more text space on very narrow screens */
+  .message-header .flex-shrink-0 {
+    display: none !important;
+  }
+
+  .chat-bubble {
+    font-size: 0.9rem;
+  }
+
+  .btn-primary span {
+    display: none;
+  }
+
+  /* Icon only for button on very small screens */
+  .btn-primary::after {
+    content: '🏹';
+    font-size: 1.2rem;
+  }
+
+  .listen-btn {
+    width: 100%;
+    max-width: none;
+  }
 }
