@@ -35,7 +35,7 @@
                 <svg v-else class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
                 </svg>
-                <span>{{ isPlaybackActive ? 'Pause' : 'Listen' }}</span>
+                <span>{{ isPlaybackActive ? 'Pause' : (isGeneratingAudio ? 'Generating Audio...' : 'Listen in Hindi') }}</span>
               </button>
             </div>
           </div>
@@ -62,6 +62,10 @@ const props = defineProps({
   isAudioPlaying: {
     type: Boolean,
     default: false
+  },
+  generatingAudioId: {
+    type: String,
+    default: null
   }
 })
 
@@ -69,6 +73,10 @@ const emit = defineEmits(['listen-hindi'])
 
 const isPlaybackActive = computed(() => {
   return props.activeAudioId === props.message.id && props.isAudioPlaying
+})
+
+const isGeneratingAudio = computed(() => {
+  return props.generatingAudioId === props.message.id
 })
 
 const bubbleClass = computed(() => {

@@ -36,6 +36,7 @@
               :message="message" 
               :active-audio-id="activeAudioId"
               :is-audio-playing="isAudioPlaying"
+              :generating-audio-id="generatingAudioId"
               @listen-hindi="handleListenHindi(message)"
             />
           </div>
@@ -48,6 +49,16 @@
               <div class="typing-dot"></div>
             </div>
             <span style="color: #6b7280;">AI Sage is thinking...</span>
+          </div>
+
+          <!-- Audio Generation Indicator -->
+          <div v-if="generatingAudioId" class="typing-indicator">
+            <div class="typing-dots">
+              <div class="typing-dot"></div>
+              <div class="typing-dot"></div>
+              <div class="typing-dot"></div>
+            </div>
+            <span style="color: #6b7280;">Generating Audio...</span>
           </div>
         </div>
 
@@ -140,6 +151,7 @@ const isTyping = ref(false)
 const chatContainer = ref(null)
 const audioPlayer = ref(null)
 const sessionId = ref('')
+const generatingAudioId = ref(null)
 
 // Audio playback state
 const activeAudioId = ref(null)
@@ -221,7 +233,7 @@ async function sendMessage(message) {
     const data = await response.json()
     
     // Add assistant response
-    messages.value.push({
+    const assistantMessage = {
       id: generateUUID(),
       role: 'assistant',
       content: data.message,
@@ -230,9 +242,13 @@ async function sendMessage(message) {
       totalTokens: data.total_tokens || 0,
       timeTaken: data.time_taken || 0,
       model: data.model || 'gpt-4o'
-    })
+    }
+    messages.value.push(assistantMessage)
     
     sessionId.value = data.session_id
+    
+    // Pre-generate audio in background without playing
+    handleListenHindi(assistantMessage, false)
     
   } catch (error) {
     console.error('Error sending message:', error)
@@ -250,19 +266,26 @@ async function sendMessage(message) {
 }
 
 // Handle Hindi audio generation and playback
-async function handleListenHindi(message) {
-  if (!message.content) return
+async function handleListenHindi(message, autoplay = true) {
+  if (!message.content || generatingAudioId.value === message.id) return
   
-  // If this message is already the active one, just toggle play/pause
-  if (activeAudioId.value === message.id && audioPlayer.value.src) {
-    toggleAudio()
+  // If message already has pre-generated audio, just play/toggle it
+  if (message.audioUrl) {
+    if (activeAudioId.value === message.id) {
+      if (autoplay) toggleAudio()
+    } else {
+      activeAudioId.value = message.id
+      audioPlayer.value.src = message.audioUrl
+      if (autoplay) {
+        audioPlayer.value.play()
+        isAudioPlaying.value = true
+      }
+    }
     return
   }
 
   try {
-    activeAudioId.value = message.id
-    isAudioPlaying.value = false
-    
+    generatingAudioId.value = message.id
     const response = await fetch(`${API_BASE}/audio/hindi`, {
       method: 'POST',
       headers: {
@@ -278,7 +301,12 @@ async function handleListenHindi(message) {
     const audioBlob = await response.blob()
     const audioUrl = URL.createObjectURL(audioBlob)
     
-    if (audioPlayer.value) {
+    // Store URL on message so it's ready for instant playback
+    message.audioUrl = audioUrl
+    
+    // Only play if autoplay is requested (manual clicks)
+    if (autoplay && audioPlayer.value) {
+      activeAudioId.value = message.id
       audioPlayer.value.src = audioUrl
       audioPlayer.value.play()
       isAudioPlaying.value = true
@@ -288,6 +316,8 @@ async function handleListenHindi(message) {
     console.error('Error generating Hindi audio:', error)
     alert('Sorry, there was an error generating the Hindi audio.')
     activeAudioId.value = null
+  } finally {
+    generatingAudioId.value = null
   }
 }
 
