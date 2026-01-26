@@ -228,7 +228,7 @@ async function sendMessage(message) {
       sources: data.sources || [],
       totalTokens: data.total_tokens || 0,
       timeTaken: data.time_taken || 0,
-      model: data.model || 'gpt-4o'
+      model: data.model || 'gpt-5.2'
     }
     messages.value.push(assistantMessage)
     

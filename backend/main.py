@@ -28,7 +28,7 @@ from langchain_core.messages import HumanMessage, AIMessage
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_huggingface import HuggingFaceEmbeddings
 
-# LangChain chat models - Fixed to OpenAI GPT-4o only
+# LangChain chat models - Fixed to OpenAI GPT-5.2 only
 from langchain_openai import ChatOpenAI, AzureChatOpenAI, OpenAIEmbeddings
 
 # ElevenLabs and Cloud Translate
@@ -94,29 +94,47 @@ RETURN
 # Neo4j graph will be initialized during startup
 graph = None
 
-# Chat token cutoff for GPT-4o
-CHAT_TOKEN_CUT_OFF = 28  # Fixed for GPT-4o
+# Chat token cutoff for GPT-5.2
+CHAT_TOKEN_CUT_OFF = 100  # Fixed for GPT-5.2
 
 # System template (same as original)
+# CHAT_SYSTEM_TEMPLATE = """
+# You are an AI-powered question-answering agent. Your task is to provide accurate and comprehensive responses to user queries based on the given context, chat history, and available resources.
+
+# ### Response Guidelines:
+# 1. **Be Concise and Direct**: Provide your answer in a **single, well-structured paragraph**.
+# 2. **No Bullet Points or Lists**: Avoid using bullet points, numbered lists, or headers. Write in plain paragraph form only.
+# 3. **Response Length**: Keep the response concise, ideally between 4-6 sentences.
+# 4. **Be Helpful and Informative**: Provide a complete and engaging answer about the Mahabharata using the provided context and your knowledge.
+# 5. **Tone and Style**: Maintain a professional, approachable, and informative tone.
+
+
+# ### Context:
+# <context>
+# {context}
+# </context>
+
+# AI Sage, use the provided context to answer the user's question as best as you can. If the context is sparse, use your general knowledge of the Mahabharata to fill in the gaps, while staying true to the spirit of the provided information.
+
+# Note: Your primary goal is to be helpful and informative about the Mahabharata.
+# """
+
 CHAT_SYSTEM_TEMPLATE = """
-You are an AI-powered question-answering agent. Your task is to provide accurate and comprehensive responses to user queries based on the given context, chat history, and available resources.
+You are an AI-powered question-answering agent specializing in the Mahabharata. Provide accurate, comprehensive, and well-structured responses.
 
 ### Response Guidelines:
-1. **Be Concise and Direct**: Provide your answer in a **single, well-structured paragraph**.
-2. **No Bullet Points or Lists**: Avoid using bullet points, numbered lists, or headers. Write in plain paragraph form only.
-3. **Response Length**: Keep the response concise, ideally between 4-6 sentences.
-4. **Be Helpful and Informative**: Provide a complete and engaging answer about the Mahabharata using the provided context and your knowledge.
-5. **Tone and Style**: Maintain a professional, approachable, and informative tone.
-
+1. **Clarity First**: Write naturally and clearly. Use 1-3 paragraphs as needed.
+2. **Appropriate Length**: Aim for 100-150 words. Be thorough but concise.
+3. **Natural Structure**: Use paragraph breaks for readability. Avoid bullet points unless listing specific items makes sense.
+4. **Depth**: Provide sufficient context and explanation. Don't oversimplify complex topics.
+5. **Tone**: Professional, engaging, and informative - like an expert guide.
 
 ### Context:
 <context>
 {context}
 </context>
 
-AI Sage, use the provided context to answer the user's question as best as you can. If the context is sparse, use your general knowledge of the Mahabharata to fill in the gaps, while staying true to the spirit of the provided information.
-
-Note: Your primary goal is to be helpful and informative about the Mahabharata.
+Using the provided context and your knowledge of the Mahabharata, answer the user's question comprehensively. If context is limited, supplement with relevant background while staying faithful to the epic's core narrative.
 """
 
 # Global variables for app state
@@ -132,9 +150,9 @@ class CustomCallback(BaseCallbackHandler):
         logging.info("question transformed")
         self.transformed_question = response.generations[0][0].text.strip()
 
-# Fixed LLM getter for GPT-4o only
-def get_gpt4o_llm(max_tokens: int = 1024):
-    """Get GPT-4o model - fixed configuration."""
+# Fixed LLM getter for GPT-5.2 only
+def get_gpt5_2_llm(max_tokens: int = 1024):
+    """Get GPT-5.2 model - fixed configuration."""
     try:
         # Get OpenAI API key from environment
         openai_api_key = os.getenv("OPENAI_API_KEY")
@@ -143,16 +161,16 @@ def get_gpt4o_llm(max_tokens: int = 1024):
         
         llm = ChatOpenAI(
             api_key=openai_api_key,
-            model="gpt-4o",
+            model="gpt-5.2",
             temperature=0,
             max_tokens=max_tokens
         )
         
-        logging.info(f"GPT-4o model created with max_tokens: {max_tokens}")
-        return llm, "gpt-4o", max_tokens
+        logging.info(f"GPT-5.2 model created with max_tokens: {max_tokens}")
+        return llm, "gpt-5.2", max_tokens
         
     except Exception as e:
-        err = f"Error while creating GPT-4o LLM: {str(e)}"
+        err = f"Error while creating GPT-5.2 LLM: {str(e)}"
         logging.error(err)
         raise Exception(err)
 
@@ -258,7 +276,7 @@ def get_rag_chain(llm, system_template=CHAT_SYSTEM_TEMPLATE):
         raise
 
 def format_documents(documents, model):
-    prompt_token_cutoff = CHAT_TOKEN_CUT_OFF  # Fixed for GPT-4o
+    prompt_token_cutoff = CHAT_TOKEN_CUT_OFF  # Fixed for GPT-5.2
     
     # LangChain Document objects don't have a 'state' attribute.
     # We'll assume the retriever returns them in order of relevance (which it does).
@@ -415,8 +433,8 @@ async def lifespan(app: FastAPI):
     global llm_instance, retriever, graph
     try:
         # Initialize LLM
-        llm_instance, _, _ = get_gpt4o_llm()
-        logging.info("GPT-4o LLM initialized")
+        llm_instance, _, _ = get_gpt5_2_llm()
+        logging.info("GPT-5.2 LLM initialized")
         
         # Check Neo4j configuration
         logging.info(f"Checking Neo4j configuration...")
@@ -467,7 +485,7 @@ async def lifespan(app: FastAPI):
 # FastAPI app initialization
 app = FastAPI(
     title="Mahabharata AI Sage API",
-    description="FastAPI backend for Mahabharata chatbot with GPT-4o",
+    description="FastAPI backend for Mahabharata chatbot with GPT-5.2",
     version="1.0.0",
     lifespan=lifespan
 )
@@ -492,7 +510,7 @@ async def root():
 
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy", "model": "gpt-4o"}
+    return {"status": "healthy", "model": "gpt-5.2"}
 
 @app.post("/chat", response_model=ChatResponse)
 async def chat_endpoint(request: ChatRequest):
@@ -528,7 +546,7 @@ async def chat_endpoint(request: ChatRequest):
         
         # Process documents and generate response
         logging.info("Starting process_documents...")
-        response = process_documents(docs, request.message, messages, llm_instance, "gpt-4o")
+        response = process_documents(docs, request.message, messages, llm_instance, "gpt-5.2")
         logging.info(f"AI Response generated: {response['message'][:100]}...")
         
         # Add assistant response to history

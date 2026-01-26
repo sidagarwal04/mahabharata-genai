@@ -19,7 +19,7 @@ langchain-huggingface>=1.1.0
 # Neo4j support
 langchain-neo4j>=0.6.0
 
-# Fixed LLM provider - OpenAI only for GPT-4o
+# Fixed LLM provider - OpenAI only for GPT-5.2
 langchain-openai>=1.1.1
 
 # Legacy LLM providers (keeping for app.py compatibility)

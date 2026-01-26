@@ -4,7 +4,7 @@
 
 ## 🌟 Features
 
-- **🤖 GPT-4o Powered**: Advanced AI responses using OpenAI's latest model
+- **🤖 GPT-5.2 Powered**: Advanced AI responses using OpenAI's latest model
 - **🗄️ Graph Database**: Neo4j-powered knowledge graph for rich contextual information
 - **🎨 Modern UI**: Beautiful Nuxt.js frontend with responsive design
 - **🚀 FastAPI Backend**: High-performance API with automatic documentation
@@ -19,7 +19,7 @@ This project has been upgraded from a simple Gradio interface to a modern, scala
 
 ### Backend (`main.py`)
 - **FastAPI** server with automatic API documentation
-- **Fixed to GPT-4o** model (no more model selection)
+- **Fixed to GPT-5.2** model (no more model selection)
 - **Neo4j integration** for graph-based retrieval
 - **Session management** with automatic conversation summarization
 - **CORS enabled** for frontend integration
