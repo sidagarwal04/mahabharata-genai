@@ -1,3 +1,9 @@
+# FastAPI and web server dependencies
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+python-multipart>=0.0.6
+
+# Original dependencies (keeping gradio for legacy app.py)
 gradio>=6.1.0
 boto3==1.36.2
 python-dotenv
@@ -13,8 +19,10 @@ langchain-huggingface>=1.1.0
 # Neo4j support
 langchain-neo4j>=0.6.0
 
-# Supported LLM providers
+# Fixed LLM provider - OpenAI only for GPT-4o
 langchain-openai>=1.1.1
+
+# Legacy LLM providers (keeping for app.py compatibility)
 langchain-google-vertexai>=3.2.0
 langchain-anthropic>=1.2.0
 

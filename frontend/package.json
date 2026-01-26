@@ -1,0 +1,25 @@
+{
+  "name": "mahabharata-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "@types/node": "^18",
+    "nuxt": "^3.8.0"
+  },
+  "dependencies": {
+    "@headlessui/vue": "^1.7.16",
+    "@heroicons/vue": "^2.0.18",
+    "@nuxtjs/tailwindcss": "^6.8.4",
+    "autoprefixer": "^10.4.23",
+    "axios": "^1.6.0",
+    "postcss": "^8.5.6"
+  }
+}

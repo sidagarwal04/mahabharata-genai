@@ -1,5 +1,96 @@
-# Introduction
-Mahabharata Chatbot is a sophisticated chatbot designed to provide detailed insights and answer questions related to the epic Mahabharata. Leveraging advanced NLP techniques and deep learning models, the bot offers a unique interactive experience, bringing the ancient text to life.
+# 🏛️ Mahabharata AI Sage
+
+> Step into the epic world of the Mahabharata! Ask questions, explore characters, unravel mysteries, and gain insights from the vast knowledge powered by AI and graph databases.
+
+## 🌟 Features
+
+- **🤖 GPT-4o Powered**: Advanced AI responses using OpenAI's latest model
+- **🗄️ Graph Database**: Neo4j-powered knowledge graph for rich contextual information
+- **🎨 Modern UI**: Beautiful Nuxt.js frontend with responsive design
+- **🚀 FastAPI Backend**: High-performance API with automatic documentation
+- **🇮🇳 Hindi Audio**: Listen to responses in Hindi using ElevenLabs TTS
+- **📱 Responsive**: Works perfectly on desktop and mobile devices
+- **🔍 Source Attribution**: See exactly where information comes from
+- **💬 Session Management**: Maintains conversation context with automatic summarization
+
+## 🏗️ Architecture
+
+This project has been upgraded from a simple Gradio interface to a modern, scalable architecture:
+
+### Backend (`main.py`)
+- **FastAPI** server with automatic API documentation
+- **Fixed to GPT-4o** model (no more model selection)
+- **Neo4j integration** for graph-based retrieval
+- **Session management** with automatic conversation summarization
+- **CORS enabled** for frontend integration
+
+### Frontend (`frontend/`)
+- **Nuxt.js 3** application with TypeScript support
+- **Tailwind CSS** for modern styling
+- **Custom chat interface** replacing Gradio
+- **Real-time typing indicators**
+- **Audio playback** for Hindi translations
+- **Responsive design** for all devices
+
+### Legacy (`app.py`)
+- Original Gradio interface (preserved but not actively used)
+- Multiple model support (kept for reference)
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- **Python 3.8+**
+- **Node.js 16+**
+- **Neo4j Database** (with your Mahabharata data loaded)
+- **OpenAI API Key**
+- **Google Cloud credentials** (for translation)
+- **ElevenLabs API Key** (for Hindi audio)
+
+### 1. Initial Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/sidagarwal04/mahabharata-genai.git
+cd mahabharata-genai
+
+# Run the setup script
+./setup.sh
+```
+
+### 2. Configure Environment
+
+Edit the `.env` file with your credentials:
+
+```env
+# OpenAI Configuration
+OPENAI_API_KEY=your_openai_api_key_here
+
+# Neo4j Database
+NEO4J_URI=your_neo4j_uri
+NEO4J_USERNAME=your_username
+NEO4J_PASSWORD=your_password
+NEO4J_DATABASE=your_database
+
+# Google Cloud (for translation)
+PROJECT_ID=your_project_id
+GOOGLE_APPLICATION_CREDENTIALS=path/to/service-account.json
+
+# ElevenLabs (for Hindi audio)
+ELEVENLABS_API_KEY=your_elevenlabs_key
+```
+
+### 3. Start Development Servers
+
+```bash
+# Start both backend and frontend
+./start-dev.sh
+```
+
+This will start:
+- **Backend API**: http://localhost:8000
+- **Frontend**: http://localhost:3000
+- **API Documentation**: http://localhost:8000/docs
 
 ## Background
 Have you ever been captivated by a story brimming with complex relationships? Stories like the Mahabharata, an ancient Indian epic, weave a spell with a multitude of characters and their intricate connections. These connections - familial bonds, alliances, rivalries - form the very foundation of the narrative, driving the plot and shaping the destinies of its heroes and villains.

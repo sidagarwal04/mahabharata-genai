@@ -1,9 +1,164 @@
-# .gitignore
+# Environment variables
 .env
+.env.local
+.env.*.local
+example.backend.env
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+
+# Credentials and API keys
 sid-sandbox-369614-00f614ffd543.json
-creds.txt
-.gradio
-11labs.py
-venv
 sid-gemini-ce56f639e3f5.json
+creds.txt
+
+# Python virtual environment
+venv/
+env/
+ENV/
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Frontend build outputs
+frontend/dist/
+frontend/build/
+frontend/.output/
+frontend/.nuxt/
+frontend/.nitro/
+frontend/coverage/
+
+# Package lock files (keep one, ignore others)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# Gradio cache
+.gradio/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+.parcel-cache/
+
+# Audio files (generated)
+*.mp3
+*.wav
+*.m4a
+
+# Backup files
+*.bak
+*.backup
+
+# Local development files
+11labs.py
 sarvam.py
+
+# FastAPI/Uvicorn
+.uvicorn/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# Poetry
+poetry.lock
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
