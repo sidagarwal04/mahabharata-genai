@@ -70,120 +70,26 @@ VECTOR_GRAPH_SEARCH_ENTITY_LIMIT_MINMAX_CASE = 20
 VECTOR_GRAPH_SEARCH_ENTITY_LIMIT_MAX_CASE = 40
 
 # Include all the same Cypher queries and constants from original app.py
-VECTOR_GRAPH_SEARCH_QUERY_PREFIX = """
+# Simple retrieval query that worked in app.py
+VECTOR_GRAPH_SEARCH_QUERY = """
 WITH node as chunk, score
-// find the document of the chunk
 MATCH (chunk)-[:PART_OF]->(d:Document)
-// aggregate chunk-details
 WITH d, collect(DISTINCT {chunk: chunk, score: score}) AS chunks, avg(score) as avg_score
-// fetch entities
-CALL { WITH chunks
-UNWIND chunks as chunkScore
-WITH chunkScore.chunk as chunk
-"""
-
-VECTOR_GRAPH_SEARCH_ENTITY_QUERY = """
-    OPTIONAL MATCH (chunk)-[:HAS_ENTITY]->(e)
-    WITH e, count(*) AS numChunks 
-    ORDER BY numChunks DESC 
-    LIMIT {no_of_entites}
-
-    WITH 
-    CASE 
-        WHEN e.embedding IS NULL OR ({embedding_match_min} <= vector.similarity.cosine($embedding, e.embedding) AND vector.similarity.cosine($embedding, e.embedding) <= {embedding_match_max}) THEN 
-            collect {{
-                OPTIONAL MATCH path=(e)(()-[rels:!HAS_ENTITY&!PART_OF]-()){{0,1}}(:!Chunk&!Document&!__Community__) 
-                RETURN path LIMIT {entity_limit_minmax_case}
-            }}
-        WHEN e.embedding IS NOT NULL AND vector.similarity.cosine($embedding, e.embedding) >  {embedding_match_max} THEN
-            collect {{
-                OPTIONAL MATCH path=(e)(()-[rels:!HAS_ENTITY&!PART_OF]-()){{0,2}}(:!Chunk&!Document&!__Community__) 
-                RETURN path LIMIT {entity_limit_max_case} 
-            }} 
-        ELSE 
-            collect {{ 
-                MATCH path=(e) 
-                RETURN path 
-            }}
-    END AS paths, e
-"""
-
-VECTOR_GRAPH_SEARCH_QUERY_SUFFIX = """
-   WITH apoc.coll.toSet(apoc.coll.flatten(collect(DISTINCT paths))) AS paths,
-        collect(DISTINCT e) AS entities
-   // De-duplicate nodes and relationships across chunks
-   RETURN
-       collect {
-           UNWIND paths AS p
-           UNWIND relationships(p) AS r
-           RETURN DISTINCT r
-       } AS rels,
-       collect {
-           UNWIND paths AS p
-           UNWIND nodes(p) AS n
-           RETURN DISTINCT n
-       } AS nodes,
-       entities
-}
-// Generate metadata and text components for chunks, nodes, and relationships
-WITH d, avg_score,
-    [c IN chunks | c.chunk.text] AS texts,
-    [c IN chunks | {id: c.chunk.id, score: c.score}] AS chunkdetails,
-    [n IN nodes | elementId(n)] AS entityIds,
-    [r IN rels | elementId(r)] AS relIds,
-    apoc.coll.sort([
-        n IN nodes |
-        coalesce(apoc.coll.removeAll(labels(n), ['__Entity__'])[0], "") + ":" +
-        coalesce(
-            n.id,
-            n[head([k IN keys(n) WHERE k =~ "(?i)(name|title|id|description)$"])],
-            ""
-        ) +
-        (CASE WHEN n.description IS NOT NULL THEN " (" + n.description + ")" ELSE "" END)
-    ]) AS nodeTexts,
-    apoc.coll.sort([
-        r IN rels |
-        coalesce(apoc.coll.removeAll(labels(startNode(r)), ['__Entity__'])[0], "") + ":" +
-        coalesce(
-            startNode(r).id,
-            startNode(r)[head([k IN keys(startNode(r)) WHERE k =~ "(?i)(name|title|id|description)$"])],
-            ""
-        ) + " " + type(r) + " " +
-        coalesce(apoc.coll.removeAll(labels(endNode(r)), ['__Entity__'])[0], "") + ":" +
-        coalesce(
-            endNode(r).id,
-            endNode(r)[head([k IN keys(endNode(r)) WHERE k =~ "(?i)(name|title|id|description)$"])],
-            ""
-        )
-    ]) AS relTexts,
-    entities
-// Combine texts into response text
-WITH d, avg_score, chunkdetails, entityIds, relIds,
-    "Text Content:\n" + apoc.text.join(texts, "\n----\n") +
-    "\n----\nEntities:\n" + apoc.text.join(nodeTexts, "\n") +
-    "\n----\nRelationships:\n" + apoc.text.join(relTexts, "\n") AS text,
-    entities
+OPTIONAL MATCH (chunk)-[:HAS_ENTITY]->(e)
+WITH d, chunks, avg_score, collect(DISTINCT e) as entities
 RETURN
-   text,
+   apoc.text.join([c in chunks | c.chunk.text], "\n----\n") as text,
    avg_score AS score,
    {
-       length: size(text),
+       length: size([c in chunks | c.chunk.text][0]),
        source: COALESCE(CASE WHEN d.url CONTAINS "None" THEN d.fileName ELSE d.url END, d.fileName),
-       chunkdetails: chunkdetails,
+       chunkdetails: [c IN chunks | {id: c.chunk.id, score: c.score}],
        entities : {
-           entityids: entityIds,
-           relationshipids: relIds
+           entityids: [e in entities | elementId(e)],
+           relationshipids: []
        }
    } AS metadata
 """
-
-VECTOR_GRAPH_SEARCH_QUERY = VECTOR_GRAPH_SEARCH_QUERY_PREFIX + VECTOR_GRAPH_SEARCH_ENTITY_QUERY.format(
-    no_of_entites=VECTOR_GRAPH_SEARCH_ENTITY_LIMIT,
-    embedding_match_min=VECTOR_GRAPH_SEARCH_EMBEDDING_MIN_MATCH,
-    embedding_match_max=VECTOR_GRAPH_SEARCH_EMBEDDING_MAX_MATCH,
-    entity_limit_minmax_case=VECTOR_GRAPH_SEARCH_ENTITY_LIMIT_MINMAX_CASE,
-    entity_limit_max_case=VECTOR_GRAPH_SEARCH_ENTITY_LIMIT_MAX_CASE
-) + VECTOR_GRAPH_SEARCH_QUERY_SUFFIX
 
 # Neo4j graph will be initialized during startup
 graph = None
@@ -199,38 +105,18 @@ You are an AI-powered question-answering agent. Your task is to provide accurate
 1. **Direct Answers**: Provide clear and thorough answers to the user's queries without headers unless requested. Avoid speculative responses.
 2. **Utilize History and Context**: Leverage relevant information from previous interactions, the current user input, and the context provided below.
 3. **No Greetings in Follow-ups**: Start with a greeting in initial interactions. Avoid greetings in subsequent responses unless there's a significant break or the chat restarts.
-4. **Admit Unknowns**: Clearly state if an answer is unknown. Avoid making unsupported statements.
-5. **Avoid Hallucination**: Only provide information based on the context provided. Do not invent information.
-6. **Response Length**: Keep responses concise and relevant. Aim for clarity and completeness within 4-5 sentences unless more detail is requested.
-7. **Tone and Style**: Maintain a professional and informative tone. Be friendly and approachable.
-8. **Error Handling**: If a query is ambiguous or unclear, ask for clarification rather than providing a potentially incorrect answer.
-9. **Fallback Options**: If the required information is not available in the provided context, provide a polite and helpful response. Example: "I don't have that information right now." or "I'm sorry, but I don't have that information. Is there something else I can help with?"
-10. **Context Availability**: If the context is empty, do not provide answers based solely on internal knowledge. Instead, respond appropriately by indicating the lack of information.
+4. **Be Helpful and Informative**: Provide the most complete and engaging answer possible about the Mahabharata.
+5. **Tone and Style**: Maintain a professional and informative tone. Be friendly and approachable.
 
-**IMPORTANT** : DO NOT ANSWER FROM YOUR KNOWLEDGE BASE USE THE BELOW CONTEXT
 
 ### Context:
 <context>
 {context}
 </context>
 
-### Example Responses:
-User: Hi 
-AI Response: 'Hello there! How can I assist you today?'
+AI Sage, use the provided context to answer the user's question as best as you can. If the context is sparse, use your general knowledge of the Mahabharata to fill in the gaps, while staying true to the spirit of the provided information.
 
-User: "What is Langchain?"
-AI Response: "Langchain is a framework that enables the development of applications powered by large language models, such as chatbots. It simplifies the integration of language models into various applications by providing useful tools and components."
-
-User: "Can you explain how to use memory management in Langchain?"
-AI Response: "Langchain's memory management involves utilizing built-in mechanisms to manage conversational context effectively. It ensures that the conversation remains coherent and relevant by maintaining the history of interactions and using it to inform responses."
-
-User: "I need help with PyCaret's classification model."
-AI Response: "PyCaret simplifies the process of building and deploying machine learning models. For classification tasks, you can use PyCaret's setup function to prepare your data. After setup, you can compare multiple models to find the best one, and then fine-tune it for better performance."
-
-User: "What can you tell me about the latest realtime trends in AI?"
-AI Response: "I don't have that information right now. Is there something else I can help with?"
-
-Note: This system does not generate answers based solely on internal knowledge. It answers from the information provided in the user's current and previous inputs, and from the context.
+Note: Your primary goal is to be helpful and informative about the Mahabharata.
 """
 
 # Global variables for app state
@@ -416,6 +302,7 @@ def process_documents(docs, question, messages, llm, model):
     
     try:
         formatted_docs, sources, entitydetails, communities = format_documents(docs, model)
+        logging.info(f"FORMATTED CONTEXT SENT TO LLM:\n{formatted_docs}")
         
         rag_chain = get_rag_chain(llm=llm)
         
@@ -464,12 +351,13 @@ def create_neo4j_retriever():
             index_name="vector",
             node_label="Chunk",
             text_node_property="text",
-            embedding_node_property="embedding"
+            embedding_node_property="embedding",
+            retrieval_query=VECTOR_GRAPH_SEARCH_QUERY
         )
 
         retriever = vector_store.as_retriever(
             search_type="similarity_score_threshold",
-            search_kwargs={"score_threshold": 0.8, "k": 15}
+            search_kwargs={"score_threshold": 0.1, "k": 20}
         )
 
         logging.info("Neo4j retriever created successfully")
@@ -628,11 +516,20 @@ async def chat_endpoint(request: ChatRequest):
         messages = history.messages
         
         # Perform retrieval
+        logging.info(f"Querying retriever with: {request.message}")
         docs = retriever.invoke(request.message)
         logging.info(f"Retrieved {len(docs)} documents")
+        for i, doc in enumerate(docs):
+            logging.info(f"Doc {i} metadata: {doc.metadata}")
+            logging.info(f"Doc {i} content snippet: {doc.page_content[:200]}...")
+        
+        if not docs:
+            logging.warning("No documents were retrieved!")
         
         # Process documents and generate response
+        logging.info("Starting process_documents...")
         response = process_documents(docs, request.message, messages, llm_instance, "gpt-4o")
+        logging.info(f"AI Response generated: {response['message'][:100]}...")
         
         # Add assistant response to history
         history.add_ai_message(response['message'])
