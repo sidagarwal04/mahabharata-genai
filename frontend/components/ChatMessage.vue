@@ -2,44 +2,47 @@
   <div class="flex" :class="message.role === 'user' ? 'justify-end' : 'justify-start'">
     <div class="chat-bubble" :class="bubbleClass">
       <!-- Avatar and Role -->
-      <div class="flex items-start space-x-3">
-        <div class="flex-shrink-0">
-          <div class="w-4 h-4 flex-shrink-0 flex items-center justify-center mt-1">
-            <span v-if="message.role === 'user'" class="text-sm">👤</span>
-            <img v-else src="~/assets/logo.png" alt="AI Sage" class="w-full h-full object-contain" />
+      <div class="flex items-start message-header">
+        <!-- Optimized Avatar Size -->
+        <div class="flex-shrink-0 mr-3">
+          <div class="w-6 h-6 rounded-full flex items-center justify-center bg-white/10 border border-white/20 overflow-hidden">
+            <span v-if="message.role === 'user'" class="text-xs leading-none">👤</span>
+            <img v-else src="~/assets/logo.png" alt="AI Sage" class="w-3 h-3 object-contain" />
           </div>
         </div>
         
-        <div class="flex-1">
+        <div class="flex-1 min-w-0">
           <!-- Message Content -->
-          <div class="prose prose-sm max-w-none">
-            <div class="whitespace-pre-wrap" v-html="formattedContent"></div>
-          </div>
-          
-          <!-- Assistant Message Metadata -->
-          <div v-if="message.role === 'assistant' && !message.isError" class="mt-3 pt-3 border-t border-gray-200">
-            <!-- Metadata (Audio Only) -->
-            <div class="flex items-center justify-end text-xs text-gray-500">
-              
-              <!-- Hindi Audio Button -->
-              <button
-                @click="$emit('listen-hindi', message)"
-                class="flex items-center space-x-1 px-2 py-1 bg-orange-100 text-orange-700 rounded hover-orange transition-colors"
-                title="Listen in Hindi"
-              >
-                <!-- Play Icon -->
-                <svg v-if="!isPlaybackActive" class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z"/>
-                </svg>
-                <!-- Pause Icon -->
-                <svg v-else class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                </svg>
-                <span>{{ isPlaybackActive ? 'Pause' : 'Listen in Hindi' }}</span>
-              </button>
-            </div>
+          <div class="prose prose-invert prose-sm max-w-none">
+            <div class="content-text leading-tight" v-html="formattedContent"></div>
           </div>
         </div>
+      </div>
+      
+      <!-- Assistant Actions Below Content -->
+      <div v-if="message.role === 'assistant' && !message.isError" class="mt-4 pl-9">
+        <button
+          @click="$emit('listen-hindi', message)"
+          class="listen-btn"
+          :class="{ 'playing': isPlaybackActive, 'generating': isGeneratingAudio }"
+        >
+          <div class="flex items-center gap-2">
+            <!-- Loading Spinner for Generating -->
+            <svg v-if="isGeneratingAudio" class="animate-spin h-3.5 w-3.5 text-cyan-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <!-- Play Icon -->
+            <svg v-else-if="!isPlaybackActive" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+            </svg>
+            <!-- Pause Icon -->
+            <svg v-else class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6" />
+            </svg>
+            <span class="font-medium tracking-wide">{{ isGeneratingAudio ? 'Engraving the Eternal Word...' : (isPlaybackActive ? 'Pause Playback' : 'Listen in Hindi') }}</span>
+          </div>
+        </button>
       </div>
       
 

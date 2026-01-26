@@ -3,12 +3,12 @@
     <!-- Header -->
     <header class="header">
       <div class="header-content">
-        <h1 class="header-title flex items-center justify-center gap-2 text-xl">
-          <img src="~/assets/logo.png" alt="Logo" class="h-4 w-4 object-contain" />
-          Mahabharata AI Sage
+        <h1 class="header-title">
+          <img src="~/assets/logo.png" alt="Logo" />
+          MAHABHARATA AI SAGE
         </h1>
         <p class="header-subtitle">
-          Step into the epic world of the Mahabharata! Ask questions, explore characters, and unravel mysteries.
+          Voyage through the cosmic tapestry of the Great Epic
         </p>
       </div>
     </header>
@@ -21,10 +21,10 @@
         <div ref="chatContainer" class="chat-messages">
           <div v-if="messages.length === 0" class="welcome-message">
             <div class="welcome-icon">
-              <img src="~/assets/logo.png" alt="Logo" class="w-6 h-6 mx-auto object-contain" />
+              <img src="~/assets/logo.png" alt="Logo" />
             </div>
-            <h3 class="welcome-title">Welcome to the Mahabharata AI Sage</h3>
-            <p class="header-subtitle">Ask me anything about the great epic and its characters!</p>
+            <h3 class="welcome-title">The Sage Awaits</h3>
+            <p class="header-subtitle">Inquire about the legends, the warriors, and the dharma of the Kurukshetra.</p>
           </div>
           
           <div
@@ -48,17 +48,7 @@
               <div class="typing-dot"></div>
               <div class="typing-dot"></div>
             </div>
-            <span style="color: #6b7280;">AI Sage is thinking...</span>
-          </div>
-
-          <!-- Audio Generation Indicator -->
-          <div v-if="generatingAudioId" class="typing-indicator">
-            <div class="typing-dots">
-              <div class="typing-dot"></div>
-              <div class="typing-dot"></div>
-              <div class="typing-dot"></div>
-            </div>
-            <span style="color: #6b7280;">Generating Audio...</span>
+            <span style="color: var(--accent-cyan);">AI Sage is recalling....</span>
           </div>
         </div>
 
@@ -66,7 +56,7 @@
         <div class="chat-input-section">
           <!-- Example Questions -->
           <div v-if="messages.length === 0" class="examples-section">
-            <p class="examples-title">Example Questions:</p>
+            <p class="examples-title mb-4">Divine Inquiries:</p>
             <div class="examples-grid">
               <button
                 v-for="example in examples"
@@ -94,8 +84,8 @@
               :disabled="isLoading || !currentMessage.trim()"
               class="btn-primary"
             >
-              <span v-if="isLoading">Sending...</span>
-              <span v-else>Send</span>
+              <span v-if="isLoading">Channeling...</span>
+              <span v-else>Seek Wisdom</span>
             </button>
           </form>
 
@@ -124,10 +114,6 @@
       </audio>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-      <p>Powered by GPT-4o • Built with FastAPI & Nuxt.js</p>
-    </footer>
   </div>
 </template>
 
