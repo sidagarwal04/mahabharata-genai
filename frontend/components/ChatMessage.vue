@@ -5,9 +5,9 @@
       <div class="flex items-start message-header">
         <!-- Optimized Avatar Size -->
         <div class="flex-shrink-0 mr-3">
-          <div class="w-6 h-6 rounded-full flex items-center justify-center bg-white/10 border border-white/20 overflow-hidden">
+          <div class="avatar-container rounded-full bg-white/10 border border-white/20 overflow-hidden">
             <span v-if="message.role === 'user'" class="text-xs leading-none">👤</span>
-            <img v-else src="~/assets/logo.png" alt="AI Sage" class="w-3 h-3 object-contain" />
+            <img v-else src="~/assets/logo.png" alt="AI Sage" class="avatar-img" />
           </div>
         </div>
         

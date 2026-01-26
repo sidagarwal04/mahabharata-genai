@@ -64,8 +64,8 @@ body {
 }
 
 .header-title img {
-  height: 2.5rem;
-  width: auto;
+  height: 40px !important;
+  width: auto !important;
   filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.4));
 }
 
@@ -138,6 +138,21 @@ body {
   transition: transform 0.2s ease;
 }
 
+.avatar-container {
+  width: 20px !important;
+  height: 20px !important;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-img {
+  width: 10px !important;
+  height: 10px !important;
+  object-fit: contain;
+}
+
 .user-bubble {
   background: var(--user-gradient);
   color: white;
@@ -167,7 +182,7 @@ body {
 }
 
 .welcome-icon img {
-  height: 6rem;
+  height: 3rem;
   width: auto;
   margin-bottom: 2rem;
   animation: float 6s ease-in-out infinite;
@@ -352,10 +367,10 @@ body {
   cursor: pointer;
   transition: all 0.2s;
   margin-top: 1rem;
-  min-width: 160px;
-  /* Force minimum width to prevent jumpy resizing */
+  min-width: 240px;
+  width: 240px;
+  /* Fixed width to accommodate longest text */
   white-space: nowrap;
-  /* Prevent text wrapping */
   justify-content: center;
 }
 
