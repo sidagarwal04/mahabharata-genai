@@ -129,28 +129,34 @@ body {
 
 /* Chat Bubbles */
 .chat-bubble {
-  max-width: 80%;
+  width: 100%;
   padding: 1.25rem 1.5rem;
   border-radius: 1.25rem;
   position: relative;
   line-height: 1.6;
   font-size: 1rem;
-  transition: transform 0.2s ease;
+  transition: all 0.3s ease;
+  min-height: fit-content;
+  /* Ensure height is responsive to text */
 }
 
 .avatar-container {
-  width: 20px !important;
-  height: 20px !important;
+  width: 80px !important;
+  height: 80px !important;
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .avatar-img {
-  width: 10px !important;
-  height: 10px !important;
+  width: 60px !important;
+  height: 60px !important;
   object-fit: contain;
+}
+
+.avatar-emoji {
+  font-size: 40px !important;
 }
 
 .user-bubble {
@@ -168,6 +174,7 @@ body {
   border-bottom-left-radius: 0.25rem;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
   align-self: flex-start;
+  width: 100%;
 }
 
 /* Welcome Screen */
@@ -355,23 +362,30 @@ body {
 
 /* Metadata and Audio Buttons */
 .listen-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.1);
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.6rem;
+  background: rgba(255, 255, 255, 0.08);
   border: 1px solid var(--glass-border);
   color: var(--accent-cyan);
-  padding: 0.5rem 1rem;
-  border-radius: 2rem;
-  font-size: 0.8rem;
+  height: 38px;
+  width: 190px;
+  /* Fixed width, slightly smaller */
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   margin-top: 1rem;
-  min-width: 240px;
-  width: 240px;
-  /* Fixed width to accommodate longest text */
   white-space: nowrap;
-  justify-content: center;
+  overflow: hidden;
+  padding: 0 1rem;
+}
+
+.listen-btn span {
+  display: inline-block;
+  line-height: 1;
 }
 
 .listen-btn:hover {
@@ -398,16 +412,40 @@ body {
 }
 
 .message-header .flex-shrink-0 {
-  display: flex;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding-right: 1.25rem;
+  border-right: 1px solid var(--glass-border);
+  margin-right: 1.25rem;
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-muted);
+  border: 1px solid var(--glass-border);
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.75rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin: 1rem auto;
+  display: inline-flex;
   align-items: center;
-  height: 1.5rem;
-  /* Match w-6 h-6 leading space */
+  gap: 0.5rem;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border-color: var(--secondary-pink);
 }
 
 .content-text p {
   margin: 0 !important;
-  display: inline;
-  /* Keep in line with header if possible, though prose adds blocks */
+  line-height: 1.6;
 }
 
 @keyframes pulse-border {
