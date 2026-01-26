@@ -12,8 +12,8 @@ if [ ! -d "venv" ]; then
 fi
 
 # Check if .env file exists
-if [ ! -f ".env" ]; then
-    echo "❌ Backend .env file not found. Please copy example.backend.env to .env and configure it."
+if [ ! -f "backend/.env" ]; then
+    echo "❌ Backend .env file not found. Please copy backend/example.backend.env to backend/.env and configure it."
     exit 1
 fi
 
@@ -31,12 +31,14 @@ source venv/bin/activate
 
 # Install Python dependencies if needed
 echo "📦 Checking Python dependencies..."
-pip install -q -r requirements.txt
+pip install -q -r backend/requirements.txt
 
 # Start backend server in background
 echo "🚀 Starting FastAPI backend server..."
-uvicorn main:app --host 0.0.0.0 --port 8000 --reload &
+cd backend
+uvicorn main:app --host 0.0.0.0 --port 8001 --reload &
 BACKEND_PID=$!
+cd ..
 
 # Wait for backend to start
 echo "⏳ Waiting for backend to start..."
@@ -71,9 +73,9 @@ trap cleanup SIGINT
 echo ""
 echo "🎉 Development environment is ready!"
 echo "=================================="
-echo "📋 Backend API: http://localhost:8000"
+echo "📋 Backend API: http://localhost:8001"
 echo "🌐 Frontend: http://localhost:3000"
-echo "📖 API Docs: http://localhost:8000/docs"
+echo "📖 API Docs: http://localhost:8001/docs"
 echo ""
 echo "Press Ctrl+C to stop all servers"
 

@@ -1,17 +1,21 @@
 /* Custom styles for Mahabharata AI Sage */
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+html {
+  font-family: system-ui, -apple-system, sans-serif;
 }
 
 body {
   background: linear-gradient(135deg, #fffbeb 0%, #fed7aa 100%);
   min-height: 100vh;
-  font-family: system-ui, -apple-system, sans-serif;
   color: #1f2937;
 }
+
+/* We can keep custom CSS here if needed, but since we are using Tailwind now, 
+   we can mostly rely on utility classes. However, for some components,
+   we can keep the custom classes or migrate them iteratively. 
+   
+   For now, I'll keep the existing styles but wrapped or just appended so they coexist.
+   But the error is likely because we aren't importing tailwind directives properly.
+*/
 
 .container {
   max-width: 64rem;
@@ -40,6 +44,12 @@ body {
   -webkit-background-clip: text;
   color: transparent;
   margin-bottom: 0.5rem;
+}
+
+.header-title img {
+  height: 1.5rem;
+  width: 1.5rem;
+  display: inline-block;
 }
 
 .header-subtitle {
@@ -78,8 +88,14 @@ body {
 }
 
 .welcome-icon {
-  font-size: 4rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.welcome-icon img {
+  height: 4rem;
+  width: 4rem;
 }
 
 .welcome-title {
@@ -108,6 +124,11 @@ body {
   align-self: flex-start;
 }
 
+.chat-bubble img {
+  height: 1.25rem;
+  width: 1.25rem;
+}
+
 .typing-indicator {
   display: flex;
   align-items: center;
@@ -132,8 +153,13 @@ body {
   animation: bounce 1.4s infinite ease-in-out;
 }
 
-.typing-dot:nth-child(1) { animation-delay: -0.32s; }
-.typing-dot:nth-child(2) { animation-delay: -0.16s; }
+.typing-dot:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.typing-dot:nth-child(2) {
+  animation-delay: -0.16s;
+}
 
 .chat-input-section {
   border-top: 1px solid #e5e7eb;
@@ -251,9 +277,13 @@ body {
 }
 
 @keyframes bounce {
-  0%, 80%, 100% {
+
+  0%,
+  80%,
+  100% {
     transform: scale(0);
   }
+
   40% {
     transform: scale(1);
   }
@@ -264,39 +294,147 @@ body {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
+/* Utility classes */
+.flex {
+  display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-start {
+  justify-content: flex-start;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.object-contain {
+  object-fit: contain;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.min-h-screen {
+  min-height: 100vh;
+}
+
+.w-3 {
+  width: 0.75rem;
+}
+
+.h-3 {
+  height: 0.75rem;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.rounded {
+  border-radius: 0.25rem;
+}
+
+.transition-colors {
+  transition: all 0.2s;
+}
+
+.mt-3 {
+  margin-top: 0.75rem;
+}
+
+.pt-3 {
+  padding-top: 0.75rem;
+}
+
+.border-t {
+  border-top: 1px solid #e5e7eb;
+}
+
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.bg-orange-100 {
+  background-color: #ffedd5;
+}
+
+.text-orange-700 {
+  color: #c2410c;
+}
+
+.hover-orange:hover {
+  background-color: #fed7aa;
+}
+
+
 /* Responsive design */
 @media (max-width: 768px) {
   .container {
     padding: 0 1rem;
   }
-  
+
   .main-content {
     padding: 1rem;
   }
-  
+
   .chat-container {
     height: 500px;
   }
-  
+
   .header-title {
     font-size: 1.5rem;
   }
-  
+
   .examples-grid {
     grid-template-columns: 1fr;
+    gap: 0.5rem;
   }
-  
+
   .input-form {
     flex-direction: column;
     gap: 0.5rem;
   }
-  
+
   .btn-primary {
     width: 100%;
   }

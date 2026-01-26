@@ -373,9 +373,10 @@ def get_rag_chain(llm, system_template=CHAT_SYSTEM_TEMPLATE):
 
 def format_documents(documents, model):
     prompt_token_cutoff = CHAT_TOKEN_CUT_OFF  # Fixed for GPT-4o
-
-    sorted_documents = sorted(documents, key=lambda doc: doc.state.get("query_similarity_score", 0), reverse=True)
-    sorted_documents = sorted_documents[:prompt_token_cutoff]
+    
+    # LangChain Document objects don't have a 'state' attribute.
+    # We'll assume the retriever returns them in order of relevance (which it does).
+    sorted_documents = documents[:prompt_token_cutoff]
 
     formatted_docs = list()
     sources = set()
@@ -460,10 +461,10 @@ def create_neo4j_retriever():
             username=NEO4J_USERNAME,
             password=NEO4J_PASSWORD,
             database=NEO4J_DATABASE,
-            index_name="chunkVectorIndex",
+            index_name="vector",
             node_label="Chunk",
-            text_node_properties=["text"],
-            embedding_node_property="textEmbedding"
+            text_node_property="text",
+            embedding_node_property="embedding"
         )
 
         retriever = vector_store.as_retriever(
@@ -523,42 +524,7 @@ def get_or_create_session(session_id: Optional[str] = None) -> str:
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup
-    global llm_instance
-    try:
-        llm_instance, _, _ = get_gpt4o_llm()
-        logging.info("FastAPI app started successfully")
-    except Exception as e:
-        logging.error(f"Failed to initialize app: {e}")
-        raise
-    
-    yield
-    
-    # Shutdown
-    logging.info("FastAPI app shutting down")
-
-# FastAPI app initialization
-app = FastAPI(
-    title="Mahabharata AI Sage API",
-    description="FastAPI backend for Mahabharata chatbot with GPT-4o",
-    version="1.0.0",
-    lifespan=lifespan
-)
-
-# Add CORS middleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Configure appropriately for production
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# Initialize retriever at startup
-retriever = None
-
-@app.on_event("startup")
-async def startup_event():
-    global retriever, llm_instance, graph
+    global llm_instance, retriever, graph
     try:
         # Initialize LLM
         llm_instance, _, _ = get_gpt4o_llm()
@@ -566,10 +532,6 @@ async def startup_event():
         
         # Check Neo4j configuration
         logging.info(f"Checking Neo4j configuration...")
-        logging.info(f"NEO4J_URI: {NEO4J_URI}")
-        logging.info(f"NEO4J_USERNAME: {NEO4J_USERNAME}")
-        logging.info(f"NEO4J_DATABASE: {NEO4J_DATABASE}")
-        
         if not all([NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD, NEO4J_DATABASE]):
             missing = []
             if not NEO4J_URI: missing.append("NEO4J_URI")
@@ -596,16 +558,44 @@ async def startup_event():
         logging.info("Neo4j retriever initialized successfully")
         
         logging.info("All components initialized successfully!")
-        
     except Exception as e:
-        logging.error(f"Failed to initialize components: {e}")
-        logging.error(f"Exception type: {type(e).__name__}")
-        import traceback
-        logging.error(f"Traceback: {traceback.format_exc()}")
-        # Set components to None so we can handle it in endpoints
-        retriever = None
-        graph = None
-        # Don't raise - let server start but components will be None
+        logging.error(f"Failed to initialize app: {e}")
+        # We don't raise here to allow the app to start (and return 503s), 
+        # or we could raise to crash it. The previous logic allowed starting.
+        # But if lifespan fails, the app usually fails to start.
+        # Let's log it.
+        pass
+    
+    yield
+    
+    # Shutdown
+    logging.info("FastAPI app shutting down")
+    if graph:
+        try:
+            graph._driver.close()
+        except:
+            pass
+
+# FastAPI app initialization
+app = FastAPI(
+    title="Mahabharata AI Sage API",
+    description="FastAPI backend for Mahabharata chatbot with GPT-4o",
+    version="1.0.0",
+    lifespan=lifespan
+)
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Configure appropriately for production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Initialize retriever at startup
+retriever = None
+
 
 # API Endpoints
 @app.get("/")

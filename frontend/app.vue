@@ -3,8 +3,9 @@
     <!-- Header -->
     <header class="header">
       <div class="header-content">
-        <h1 class="header-title">
-          🏛️ Mahabharata AI Sage
+        <h1 class="header-title flex items-center justify-center gap-2 text-xl">
+          <img src="~/assets/logo.png" alt="Logo" class="h-4 w-4 object-contain" />
+          Mahabharata AI Sage
         </h1>
         <p class="header-subtitle">
           Step into the epic world of the Mahabharata! Ask questions, explore characters, and unravel mysteries.
@@ -19,7 +20,9 @@
         <!-- Chat Messages -->
         <div ref="chatContainer" class="chat-messages">
           <div v-if="messages.length === 0" class="welcome-message">
-            <div class="welcome-icon">🕉️</div>
+            <div class="welcome-icon">
+              <img src="~/assets/logo.png" alt="Logo" class="w-6 h-6 mx-auto object-contain" />
+            </div>
             <h3 class="welcome-title">Welcome to the Mahabharata AI Sage</h3>
             <p class="header-subtitle">Ask me anything about the great epic and its characters!</p>
           </div>
@@ -31,7 +34,9 @@
           >
             <ChatMessage 
               :message="message" 
-              @listen-hindi="handleListenHindi"
+              :active-audio-id="activeAudioId"
+              :is-audio-playing="isAudioPlaying"
+              @listen-hindi="handleListenHindi(message)"
             />
           </div>
           
@@ -97,7 +102,13 @@
       </div>
 
       <!-- Audio Player (Hidden) -->
-      <audio ref="audioPlayer" controls class="hidden" @ended="audioEnded">
+      <audio 
+        ref="audioPlayer" 
+        class="hidden" 
+        @ended="audioEnded"
+        @play="handleAudioPlay"
+        @pause="handleAudioPause"
+      >
         Your browser does not support the audio element.
       </audio>
     </main>
@@ -129,6 +140,10 @@ const isTyping = ref(false)
 const chatContainer = ref(null)
 const audioPlayer = ref(null)
 const sessionId = ref('')
+
+// Audio playback state
+const activeAudioId = ref(null)
+const isAudioPlaying = ref(false)
 
 // Configuration
 const config = useRuntimeConfig()
@@ -179,6 +194,7 @@ async function sendMessage(message) {
   
   // Add user message
   messages.value.push({
+    id: generateUUID(),
     role: 'user',
     content: message,
     timestamp: new Date()
@@ -206,6 +222,7 @@ async function sendMessage(message) {
     
     // Add assistant response
     messages.value.push({
+      id: generateUUID(),
       role: 'assistant',
       content: data.message,
       timestamp: new Date(),
@@ -232,44 +249,72 @@ async function sendMessage(message) {
   }
 }
 
-// Handle Hindi audio generation
-async function handleListenHindi(messageContent) {
-  if (!messageContent) return
+// Handle Hindi audio generation and playback
+async function handleListenHindi(message) {
+  if (!message.content) return
   
+  // If this message is already the active one, just toggle play/pause
+  if (activeAudioId.value === message.id && audioPlayer.value.src) {
+    toggleAudio()
+    return
+  }
+
   try {
-    // Show loading state for audio
+    activeAudioId.value = message.id
+    isAudioPlaying.value = false
+    
     const response = await fetch(`${API_BASE}/audio/hindi`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        text: messageContent
+        text: message.content
       })
     })
     
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
     
-    // Get audio blob and play
     const audioBlob = await response.blob()
     const audioUrl = URL.createObjectURL(audioBlob)
     
     if (audioPlayer.value) {
       audioPlayer.value.src = audioUrl
       audioPlayer.value.play()
+      isAudioPlaying.value = true
     }
     
   } catch (error) {
     console.error('Error generating Hindi audio:', error)
-    alert('Sorry, there was an error generating the Hindi audio. Please try again.')
+    alert('Sorry, there was an error generating the Hindi audio.')
+    activeAudioId.value = null
   }
+}
+
+function toggleAudio() {
+  if (!audioPlayer.value) return
+  
+  if (audioPlayer.value.paused) {
+    audioPlayer.value.play()
+    isAudioPlaying.value = true
+  } else {
+    audioPlayer.value.pause()
+    isAudioPlaying.value = false
+  }
+}
+
+function handleAudioPlay() {
+  isAudioPlaying.value = true
+}
+
+function handleAudioPause() {
+  isAudioPlaying.value = false
 }
 
 // Audio ended event
 function audioEnded() {
-  // Clean up object URL
+  isAudioPlaying.value = false
+  activeAudioId.value = null
   if (audioPlayer.value && audioPlayer.value.src) {
     URL.revokeObjectURL(audioPlayer.value.src)
   }

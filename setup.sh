@@ -34,16 +34,22 @@ source venv/bin/activate
 # Install Python dependencies
 echo "📦 Installing Python dependencies..."
 pip install --upgrade pip
-pip install -r requirements.txt
+if [ -f "backend/requirements.txt" ]; then
+    pip install -r backend/requirements.txt
+else
+    pip install -r requirements.txt
+fi
 
 # Setup environment files
 echo "⚙️ Setting up environment configuration..."
 
 # Backend environment
-if [ ! -f ".env" ]; then
-    cp example.backend.env .env
-    echo "📋 Created .env from example.backend.env"
-    echo "⚠️  Please edit .env with your actual credentials"
+if [ ! -f "backend/.env" ]; then
+    if [ -f "backend/example.backend.env" ]; then
+        cp backend/example.backend.env backend/.env
+        echo "📋 Created backend/.env from backend/example.backend.env"
+        echo "⚠️  Please edit backend/.env with your actual credentials"
+    fi
 else
     echo "✅ Backend .env file already exists"
 fi
