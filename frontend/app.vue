@@ -24,7 +24,10 @@
               <img src="~/assets/logo.png" alt="Logo" />
             </div>
             <h3 class="welcome-title">The Sage Awaits</h3>
-            <p class="header-subtitle mb-8">Inquire about the legends, the warriors, and the dharma of the Kurukshetra.</p>
+            <p class="welcome-description">
+              Seek the ancient wisdom of the Bharata. Inquire about the divine laws of Dharma, 
+              the legendary warriors of the Kuru dynasty, and the cosmic tapestry of the Great Epic.
+            </p>
             
             <!-- Example Questions Moved Here -->
             <div class="examples-section w-full max-w-2xl px-4">
