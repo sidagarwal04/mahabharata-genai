@@ -24,7 +24,23 @@
               <img src="~/assets/logo.png" alt="Logo" />
             </div>
             <h3 class="welcome-title">The Sage Awaits</h3>
-            <p class="header-subtitle">Inquire about the legends, the warriors, and the dharma of the Kurukshetra.</p>
+            <p class="header-subtitle mb-8">Inquire about the legends, the warriors, and the dharma of the Kurukshetra.</p>
+            
+            <!-- Example Questions Moved Here -->
+            <div class="examples-section w-full max-w-2xl px-4">
+              <p class="examples-title mb-4 opacity-50 text-xs tracking-widest uppercase">Divine Inquiries</p>
+              <div class="examples-grid">
+                <button
+                  v-for="example in examples"
+                  :key="example"
+                  @click="sendMessage(example)"
+                  :disabled="isLoading"
+                  class="example-button"
+                >
+                  {{ example }}
+                </button>
+              </div>
+            </div>
           </div>
           
           <div
@@ -54,21 +70,6 @@
 
         <!-- Input Section -->
         <div class="chat-input-section">
-          <!-- Example Questions -->
-          <div v-if="messages.length === 0" class="examples-section">
-            <p class="examples-title mb-4">Divine Inquiries:</p>
-            <div class="examples-grid">
-              <button
-                v-for="example in examples"
-                :key="example"
-                @click="sendMessage(example)"
-                :disabled="isLoading"
-                class="example-button"
-              >
-                {{ example }}
-              </button>
-            </div>
-          </div>
           
           <!-- Message Input -->
           <form @submit.prevent="handleSubmit" class="input-form">
