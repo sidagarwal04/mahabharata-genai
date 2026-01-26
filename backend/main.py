@@ -95,7 +95,7 @@ RETURN
 graph = None
 
 # Chat token cutoff for GPT-5.2
-CHAT_TOKEN_CUT_OFF = 100  # Fixed for GPT-5.2
+CHAT_TOKEN_CUT_OFF = 50  # Fixed for GPT-5.2
 
 # System template (same as original)
 # CHAT_SYSTEM_TEMPLATE = """
