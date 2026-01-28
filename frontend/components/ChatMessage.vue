@@ -20,7 +20,7 @@
       </div>
       
       <!-- Assistant Actions Below Content -->
-      <div v-if="message.role === 'assistant' && !message.isError" class="mt-4 pl-9">
+      <div v-if="message.role === 'assistant' && !message.isError" class="mt-4" style="padding-left: 7rem;">
         <button
           @click="$emit('listen-hindi', message)"
           class="listen-btn"
