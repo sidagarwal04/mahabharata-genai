@@ -73,6 +73,14 @@ body::before {
   overflow-x: hidden;
 }
 
+/* Allow natural height on mobile */
+@media (max-width: 768px) {
+  .app-layout {
+    min-height: auto;
+    height: auto;
+  }
+}
+
 /* Content Container for centered layout */
 .content-container {
   max-width: 1400px;
@@ -82,6 +90,14 @@ body::before {
   flex-direction: column;
   flex: 1;
   min-height: 0;
+}
+
+/* Allow natural height on mobile */
+@media (max-width: 768px) {
+  .content-container {
+    flex: none;
+    min-height: auto;
+  }
 }
 
 /* Header Enhancements */
@@ -183,6 +199,16 @@ body::before {
   position: relative;
   min-height: 0;
   height: 100%;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .chat-container {
+    flex: none;
+    height: auto;
+    min-height: auto;
+    overflow: visible;
+  }
 }
 
 .chat-container::before {
@@ -311,6 +337,29 @@ body::before {
     max-height: 60vh;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Allow natural layout flow on mobile */
+  .app-layout {
+    height: auto;
+    min-height: auto;
+  }
+  
+  .content-container {
+    flex: none;
+    height: auto;
+  }
+  
+  .main-content {
+    flex: none;
+    height: auto;
+    overflow-y: visible;
+  }
+  
+  .chat-container {
+    flex: none;
+    height: auto;
+    overflow: visible;
   }
 }
 
