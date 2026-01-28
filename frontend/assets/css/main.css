@@ -292,7 +292,8 @@ body::before {
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   min-height: 0;
   gap: 0.3rem;
 }
