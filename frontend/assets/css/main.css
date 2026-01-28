@@ -3,7 +3,7 @@
 :root {
   --primary-deep: #1a0b2e;
   --primary-glow: #6d28d9;
-  --secondary-gold: #b8860b;
+  --secondary-purple: #a855f7;
   --accent-cyan: #22d3ee;
   --text-light: #f8fafc;
   --text-muted: #94a3b8;
@@ -15,7 +15,7 @@
 
   --user-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
   --sage-gradient: linear-gradient(180deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
-  --epic-gold-gradient: linear-gradient(to right, #b8860b, #cd853f, #b8860b);
+  --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
 }
 
 * {
@@ -106,7 +106,7 @@ body::before {
 }
 
 .header-brand-link:hover .header-title {
-  filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.4));
+  filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.4));
 }
 
 .header-brand-link:hover .header-title img {
@@ -118,7 +118,7 @@ body::before {
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  background: var(--epic-gold-gradient);
+  background: var(--primary-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -126,7 +126,7 @@ body::before {
   align-items: center;
   gap: 1rem;
   margin-bottom: 0.25rem;
-  filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.2));
+  filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.3));
   transition: all 0.3s ease;
 }
 
@@ -309,7 +309,7 @@ body::before {
   font-weight: 800;
   margin-bottom: 0.25rem;
   /* Reduced */
-  background: var(--epic-gold-gradient);
+  background: var(--primary-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -338,7 +338,7 @@ body::before {
 .examples-title {
   font-size: 0.75rem;
   letter-spacing: 0.3em;
-  color: var(--secondary-gold);
+  color: var(--secondary-purple);
   margin-bottom: 0.75rem;
   text-transform: uppercase;
   opacity: 0.6;
@@ -449,9 +449,9 @@ body::before {
 
 .example-button:hover {
   background: rgba(255, 255, 255, 0.1);
-  border-color: var(--secondary-gold);
+  border-color: var(--secondary-purple);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.2);
 }
 
 /* Input Section */
@@ -546,7 +546,7 @@ body::before {
 .typing-dot {
   width: 6px;
   height: 6px;
-  background-color: var(--secondary-gold);
+  background-color: var(--secondary-purple);
   border-radius: 50%;
   animation: pulse 1.5s infinite ease-in-out;
 }
@@ -610,7 +610,7 @@ body::before {
   gap: 0.6rem;
   background: var(--glass-highlight);
   border: 1px solid var(--glass-border);
-  color: var(--secondary-gold);
+  color: var(--secondary-purple);
   height: auto;
   width: auto;
   border-radius: 100px;
@@ -805,7 +805,7 @@ body::before {
 }
 
 .footer-author {
-  color: var(--secondary-gold);
+  color: var(--secondary-purple);
   text-decoration: none;
   transition: all 0.2s;
 }
@@ -926,7 +926,7 @@ body::before {
   font-size: 2.2rem;
   font-weight: 700;
   letter-spacing: 0.05em;
-  background: var(--epic-gold-gradient);
+  background: var(--primary-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -980,7 +980,7 @@ body::before {
 .section-title {
   font-size: 1.2rem;
   font-weight: 600;
-  color: var(--secondary-gold);
+  color: var(--secondary-purple);
   margin: 0 0 0.75rem 0;
   letter-spacing: 0.025em;
 }
@@ -1016,7 +1016,7 @@ body::before {
 .tech-header-title {
   font-size: 1rem;
   font-weight: 600;
-  color: var(--secondary-gold);
+  color: var(--secondary-purple);
   letter-spacing: 0.02em;
 }
 
@@ -1118,7 +1118,7 @@ body::before {
 }
 
 .credit-link {
-  color: var(--secondary-gold);
+  color: var(--secondary-purple);
   text-decoration: none;
   font-weight: 600;
   transition: all 0.2s;
@@ -1153,7 +1153,7 @@ body::before {
 
 .dharma-quote-section {
   background: var(--glass-bg);
-  border: 2px solid var(--secondary-gold);
+  border: 2px solid var(--secondary-purple);
   border-radius: 1.5rem;
   padding: 2rem;
   text-align: center;
@@ -1190,7 +1190,7 @@ body::before {
 
 .quote-mark {
   font-size: 2rem;
-  color: var(--secondary-gold);
+  color: var(--secondary-purple);
   line-height: 0.8;
   font-weight: bold;
   align-self: flex-start;
