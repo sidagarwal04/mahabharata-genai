@@ -34,8 +34,8 @@
             </p>
             
             <!-- Example Questions Moved Here -->
-            <div class="examples-section w-full max-w-2xl px-4">
-              <p class="examples-title mb-4 opacity-50 text-xs tracking-widest uppercase">Divine Inquiries</p>
+            <div class="examples-section">
+              <p class="examples-title">Divine Inquiries</p>
               <div class="examples-grid">
                 <button
                   v-for="example in examples"
