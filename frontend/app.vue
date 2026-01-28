@@ -207,18 +207,21 @@
               </div>
             </div>
             
-            <!-- Tech Section (Smaller) -->
+            <!-- Tech Section (Compact) -->
             <div class="tech-section">
-              <h3 class="tech-title">🤖 Powered By</h3>
-              <div class="tech-stack">
-                <div class="tech-item">
-                  <span class="tech-label">AI:</span>
-                  <span class="tech-value">GPT-5.2 with Neo4j Knowledge Graph</span>
-                </div>
-                <div class="tech-item">
-                  <span class="tech-label">Voice:</span>
-                  <span class="tech-value">Hindi Audio with Sarvam AI TTS</span>
-                </div>
+              <div class="tech-header">
+                <span class="tech-header-icon">⚡</span>
+                <span class="tech-header-title">Powered By</span>
+                <span class="tech-header-text">
+                  GPT-5.2 intelligence, Neo4j knowledge graph, and Sarvam AI Hindi audio unite to 
+                  deliver fast, contextual answers rooted in the epic’s wisdom.
+                </span>
+              </div>
+              <div class="tech-badges">
+                <span class="tech-badge">🤖 GPT-5.2</span>
+                <span class="tech-badge">🗄️ Neo4j</span>
+                <span class="tech-badge">🇮🇳 Hindi Audio</span>
+                <span class="tech-badge">📱 Responsive</span>
               </div>
             </div>
             
