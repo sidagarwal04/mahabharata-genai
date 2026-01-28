@@ -18,11 +18,11 @@ export default defineNuxtConfig({
         { property: 'og:url', content: 'https://mb-aisage.netlify.app/' },
         { property: 'og:title', content: 'Mahabharata AI Sage' },
         { property: 'og:description', content: 'Explore the legends, warriors, and dharma of the Kurukshetra with our AI-powered Mahabharata Sage.' },
-        { property: 'og:image', content: 'https://raw.githubusercontent.com/sidagarwal04/mahabharata-genai/refs/heads/main/images/mb_2_0.png' },
+        { property: 'og:image', content: 'https://raw.githubusercontent.com/sidagarwal04/mahabharata-genai/refs/heads/main/frontend/public/images/mb_2_0.png' },
         { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:title', content: 'Mahabharata AI Sage' },
         { name: 'twitter:description', content: 'Explore the legends, warriors, and dharma of the Kurukshetra.' },
-        { name: 'twitter:image', content: 'https://raw.githubusercontent.com/sidagarwal04/mahabharata-genai/refs/heads/main/images/mb_2_0.png' }
+        { name: 'twitter:image', content: 'https://raw.githubusercontent.com/sidagarwal04/mahabharata-genai/refs/heads/main/frontend/public/images/mb_2_0.png' }
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico?v=2' },
@@ -47,7 +47,7 @@ export default defineNuxtConfig({
             "@context": "https://schema.org",
             "@type": "Organization",
             "url": "https://mb-aisage.netlify.app/",
-            "logo": "https://raw.githubusercontent.com/sidagarwal04/mahabharata-genai/refs/heads/main/images/mb_2_0.png",
+            "logo": "https://raw.githubusercontent.com/sidagarwal04/mahabharata-genai/refs/heads/main/frontend/public/images/mb_2_0.png",
             "name": "Mahabharata AI Sage"
           }),
           type: 'application/ld+json'

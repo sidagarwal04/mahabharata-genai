@@ -99,7 +99,7 @@ Have you ever been captivated by a story brimming with complex relationships? St
 
 It all began with a simple conversation. My wife, engrossed in C. Rajagopalachari's masterful translation of the [Mahabharata](https://www.amazon.in/Mahabharata-C-Rajagopalachari/dp/8172764766), sparked my curiosity about the intricate web of relationships within the epic. The idea of translating these connections into a powerful graph model, leveraging the capabilities of [Neo4j](www.neo4j.com) (a leader in Graph Database Industry), became an irresistible challenge.
 
-![alt text](https://github.com/sidagarwal04/mahabharata-genai/blob/main/images/dall-e-mahabharata.png)
+![alt text](https://github.com/sidagarwal04/mahabharata-genai/blob/main/frontend/public/images/dall-e-mahabharata.png)
 
 This is when I decided to embark on a fascinating journey to explore the Mahabharata through the lens of graph theory. But this was just the first chapter in my journey. I then decided to unveil an ambitious step forward: a Neo4j-powered chatbot. This innovative tool stems from a desire to make the epic’s complex relationships accessible to everyone, transcending traditional query methods.
 
@@ -127,26 +127,74 @@ The Mahabharata Chatbot is built using:
 + **Deployment:** Hugging Face Space, Firebase
 
 ## Configuration
-### Environment Variables
-Make sure to add following  environment variables in your Hugging Face project and follow the instructions in setup.md file:
+## 🚀 Deployment
 
+This application is deployed using a modern architecture:
+- **Backend**: Deployed on Render (FastAPI + Neo4j)
+- **Frontend**: Deployed on Netlify (Nuxt.js)
+
+### Live Demo
+🎯 **[https://mb-aisage.netlify.app/](https://mb-aisage.netlify.app/)**
+
+### Deploy Your Own
+See [DEPLOYMENT.md](DEPLOYMENT.md) for complete deployment instructions.
+
+## 💻 Local Development
+
+### Prerequisites
+- **Python 3.8+**
+- **Node.js 16+**
+- **Neo4j Database** (with your Mahabharata data loaded)
+- **OpenAI API Key**
+- **Sarvam AI API Key** (for Hindi translation and audio)
+
+### Backend Setup
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+
+# Copy and configure environment file
+cp example.backend.env .env
+# Edit .env with your API keys and database credentials
+
+# Start backend
+uvicorn main:app --reload --port 8001
 ```
-BOB
-NEO4J_USERNAME
-NEO4J_URI
-NEO4J_PASSWORD
-PROJECT_ID
-LOCATION
+
+### Frontend Setup
+```bash
+cd frontend
+npm install
+
+# Copy and configure environment file
+cp example.frontend.env .env
+# Edit .env with your backend URL (default: http://localhost:8001)
+
+# Start frontend
+npm run dev
 ```
 
 ### Database Setup
-1. Start Neo4j Database:
-Follow the official [Neo4j installation guide](https://neo4j.com/developer/) to set up your database.
+1. **Start Neo4j Database**: Follow the official [Neo4j installation guide](https://neo4j.com/developer/)
+2. **Load Data**: Use the provided [mahabharata-db-setup.cypher](backend/mahabharata-db-setup.cypher) script
 
-2. Load Data:
-Use provided [scripts](mahabharata-genai/blob/main/mahabharata-db-setup.cypher) to load Mahabharata data into Neo4j.
+### Environment Variables
+**Backend (.env)**:
+```
+OPENAI_API_KEY=your_openai_api_key_here
+NEO4J_URI=your_neo4j_uri
+NEO4J_USERNAME=your_neo4j_username
+NEO4J_PASSWORD=your_neo4j_password
+SARVAM_API_KEY=your_sarvam_api_key_here
+PROJECT_ID=your_google_cloud_project_id
+```
 
-## Play with chatbot: [https://mb-aisage.netlify.app/](https://mb-aisage.netlify.app/)
+**Frontend (.env)**:
+```
+API_BASE_URL=http://localhost:8001
+```
 
 ## Contributing
 Do share your feedback [here](https://docs.google.com/forms/d/e/1FAIpQLSdradX2oOSBpBGAla01tEroQJGDrA62ZsD8Sa_x7IXbGjkRfg/viewform) to make the Mahabharata chatbot the best resource for exploring this epic tale. I am welcoming contributions! Please follow these steps:
