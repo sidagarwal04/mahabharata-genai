@@ -1067,6 +1067,7 @@ body::before {
   justify-content: center;
   gap: 0.25rem;
   flex-wrap: nowrap;
+  width: 100%;
 }
 
 .quote-mark {
