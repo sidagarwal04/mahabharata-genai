@@ -320,7 +320,7 @@ body::before {
   font-size: 1.05rem;
   line-height: 1.5;
   color: var(--text-muted);
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   max-width: 900px;
   text-align: center;
   padding: 0 1rem;
@@ -331,7 +331,7 @@ body::before {
   width: 100%;
   max-width: 1200px;
   padding: 0 0.5rem;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   flex-shrink: 0;
 }
 
@@ -339,7 +339,7 @@ body::before {
   font-size: 0.75rem;
   letter-spacing: 0.3em;
   color: var(--secondary-gold);
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   text-transform: uppercase;
   opacity: 0.6;
   text-align: center;
@@ -1256,7 +1256,7 @@ body::before {
 
   .welcome-description {
     font-size: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     padding: 0 0.5rem;
   }
 
@@ -1404,7 +1404,7 @@ body::before {
 
   .welcome-description {
     font-size: 0.9rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.75rem;
     padding: 0 0.25rem;
     line-height: 1.4;
   }
@@ -1423,6 +1423,7 @@ body::before {
 
   .examples-section {
     padding: 0 0.25rem;
+    margin-top: 0.25rem;
   }
 
   .examples-grid {
