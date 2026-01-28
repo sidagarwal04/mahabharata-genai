@@ -1,20 +1,24 @@
 <template>
   <div class="app-layout">
-    <!-- Header -->
-    <header class="header">
-      <div class="header-content">
-        <h1 class="header-title">
-          <img src="~/assets/logo.png" alt="Logo" />
-          MAHABHARATA AI SAGE
-        </h1>
-        <p class="header-subtitle">
-          Voyage through the cosmic tapestry of the Great Epic
-        </p>
-      </div>
-    </header>
+    <!-- Content Container (for centered layout) -->
+    <div class="content-container">
+      <!-- Header -->
+      <header class="header">
+        <div class="header-content">
+          <NuxtLink to="/" class="header-brand-link">
+            <h1 class="header-title">
+              <img src="~/assets/logo.png" alt="Logo" />
+              MAHABHARATA AI SAGE
+            </h1>
+            <p class="header-subtitle">
+              Voyage through the cosmic tapestry of the Great Epic
+            </p>
+          </NuxtLink>
+        </div>
+      </header>
 
-    <!-- Main Content -->
-    <main class="main-content">
+      <!-- Main Content -->
+      <main class="main-content">
       <!-- Chat Container -->
       <div class="chat-container">
         <!-- Chat Messages -->
@@ -23,7 +27,7 @@
             <div class="welcome-icon">
               <img src="~/assets/logo.png" alt="Logo" />
             </div>
-            <h3 class="welcome-title">The Sage Awaits</h3>
+            <h3 class="welcome-title">The AI Sage Awaits</h3>
             <p class="welcome-description">
               Seek the ancient wisdom of the Bharata. Inquire about the divine laws of Dharma, 
               the legendary warriors of the Kuru dynasty, and the cosmic tapestry of the Great Epic.
@@ -117,6 +121,39 @@
         Your browser does not support the audio element.
       </audio>
     </main>
+    </div>
+    <!-- End Content Container -->
+
+    <!-- Footer (Full Width) -->
+    <footer class="app-footer">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="#" class="footer-link">
+            <span class="footer-icon">🕉️</span>
+            About
+          </a>
+          <a href="#" class="footer-link">
+            <span class="footer-icon">⚖️</span>
+            Dharma
+          </a>
+          <a href="https://sidagarwal04.medium.com/list/mahabharatachatbot-cbf1d049d017" target="_blank" class="footer-link">
+            <span class="footer-icon">🏹</span>
+            Wisdom
+          </a>
+          <a href="https://github.com/sidagarwal04/mahabharata-genai" target="_blank" class="footer-link">
+            <span class="footer-icon">📖</span>
+            Repository
+          </a>
+        </div>
+        
+        <div class="footer-credits">
+          <span class="footer-powered">Powered by AI • Built with ❤️ for seekers of ancient wisdom</span>
+          <div class="footer-copyright">
+            © 2026 Mahabharata AI Sage • <a href="https://meetsid.dev" target="_blank" class="footer-author">meetsid.dev</a>
+          </div>
+        </div>
+      </div>
+    </footer>
 
   </div>
 </template>
