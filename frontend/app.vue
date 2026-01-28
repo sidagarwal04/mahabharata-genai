@@ -128,7 +128,7 @@
     <footer class="app-footer">
       <div class="footer-content">
         <div class="footer-links">
-          <a href="#" class="footer-link">
+          <a href="#" @click.prevent="openAboutModal" class="footer-link">
             <span class="footer-icon">🕉️</span>
             About
           </a>
@@ -155,11 +155,94 @@
       </div>
     </footer>
 
+    <!-- About Modal -->
+    <div v-if="showAboutModal" class="modal-overlay" @click="closeAboutModal">
+      <div class="modal-container" @click.stop>
+        <button class="modal-close-btn" @click="closeAboutModal">
+          <span class="close-icon">✕</span>
+        </button>
+        
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="modal-brand">
+              <img src="~/assets/logo.png" alt="Mahabharata AI Logo" class="modal-logo" />
+              <div class="modal-brand-text">
+                <h2 class="modal-title">Mahabharata AI Sage</h2>
+                <p class="modal-tagline">Step into the epic world of the Mahabharata</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="modal-body">
+            <!-- Features Grid -->
+            <div class="features-grid">
+              <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3 class="feature-title">GPT-5.2 Powered</h3>
+                <p class="feature-text">Advanced AI responses using OpenAI's latest model</p>
+              </div>
+              
+              <div class="feature-card">
+                <div class="feature-icon">🗄️</div>
+                <h3 class="feature-title">Graph Database</h3>
+                <p class="feature-text">Neo4j-powered knowledge graph for rich contextual information</p>
+              </div>
+              
+              <div class="feature-card">
+                <div class="feature-icon">🇮🇳</div>
+                <h3 class="feature-title">Hindi Audio</h3>
+                <p class="feature-text">Listen to responses in Hindi using Sarvam AI TTS</p>
+              </div>
+              
+              <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3 class="feature-title">Responsive Design</h3>
+                <p class="feature-text">Works perfectly on desktop and mobile devices</p>
+              </div>
+            </div>
+            
+            <!-- Tech Stack -->
+            <div class="tech-section">
+              <h3 class="tech-title">🏗️ Modern Architecture</h3>
+              <div class="tech-stack">
+                <div class="tech-item">
+                  <span class="tech-label">Frontend:</span>
+                  <span class="tech-value">Nuxt.js 3, TypeScript, Tailwind CSS</span>
+                </div>
+                <div class="tech-item">
+                  <span class="tech-label">Backend:</span>
+                  <span class="tech-value">FastAPI, Neo4j, OpenAI GPT-5.2</span>
+                </div>
+                <div class="tech-item">
+                  <span class="tech-label">AI Services:</span>
+                  <span class="tech-value">Sarvam AI TTS, Graph-based RAG</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Credits & Links -->
+            <div class="credits-section">
+              <div class="credits-content">
+                <div class="credits-text">
+                  <p>📖 <a href="https://sidagarwal04.medium.com/list/mahabharatachatbot-cbf1d049d017" target="_blank" class="credit-link">Read the Blog Series</a></p>
+                  <p>🔗 <a href="https://github.com/sidagarwal04/mahabharata-genai" target="_blank" class="credit-link">Explore the Code</a></p>
+                </div>
+                <div class="credits-author">
+                  <p>Built with ❤️ by <a href="https://meetsid.dev" target="_blank" class="credit-link">meetsid.dev</a></p>
+                  <p class="credits-purpose">Making ancient wisdom accessible through modern AI</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, watch } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick, watch } from 'vue'
 
 // Generate UUID without external library
 function generateUUID() {
@@ -179,6 +262,7 @@ const chatContainer = ref(null)
 const audioPlayer = ref(null)
 const sessionId = ref('')
 const generatingAudioId = ref(null)
+const showAboutModal = ref(false)
 
 // Watch for messages change to scroll to bottom
 watch(messages, () => {
@@ -207,7 +291,33 @@ const examples = ref([])
 onMounted(async () => {
   sessionId.value = generateUUID()
   await fetchExamples()
+  
+  // Add ESC key listener for modal
+  document.addEventListener('keydown', handleKeyDown)
 })
+
+// Cleanup event listener
+onUnmounted(() => {
+  document.removeEventListener('keydown', handleKeyDown)
+})
+
+// Handle ESC key press
+function handleKeyDown(event) {
+  if (event.key === 'Escape' && showAboutModal.value) {
+    closeAboutModal()
+  }
+}
+
+// Modal control functions
+function openAboutModal() {
+  showAboutModal.value = true
+  document.body.style.overflow = 'hidden'
+}
+
+function closeAboutModal() {
+  showAboutModal.value = false
+  document.body.style.overflow = 'auto'
+}
 
 // Fetch example questions
 async function fetchExamples() {

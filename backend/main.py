@@ -463,11 +463,11 @@ async def generate_hindi_audio(request: AudioRequest):
             tts_response = client.text_to_speech.convert(
                 inputs=[chunk],
                 target_language_code="hi-IN",
-                speaker="abhilash",
+                speaker="shubh",
                 pace=1.1,
                 speech_sample_rate=22050,
                 enable_preprocessing=True,
-                model="bulbul:v2"
+                model="bulbul:v3-beta"
             )
             
             if hasattr(tts_response, 'audios') and tts_response.audios:
