@@ -32,10 +32,17 @@ body {
   height: 100vh;
   height: 100dvh;
   margin: 0;
-  overflow: hidden;
+  overflow: auto;
   display: flex;
   flex-direction: column;
   position: relative;
+}
+
+/* Hide overflow on larger screens only */
+@media (min-width: 1024px) {
+  body {
+    overflow: hidden;
+  }
 }
 
 /* Atmospheric Background */
@@ -296,6 +303,15 @@ body::before {
   overflow-x: hidden;
   min-height: 0;
   gap: 0.3rem;
+}
+
+/* Enable scrolling on mobile */
+@media (max-width: 768px) {
+  .welcome-message {
+    max-height: 60vh;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 .welcome-title {
