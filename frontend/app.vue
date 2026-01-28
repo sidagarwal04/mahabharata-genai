@@ -132,7 +132,7 @@
             <span class="footer-icon">🕉️</span>
             About
           </a>
-          <a href="#" class="footer-link">
+          <a href="#" @click.prevent="openDharmaModal" class="footer-link">
             <span class="footer-icon">⚖️</span>
             Dharma
           </a>
@@ -247,6 +247,103 @@
       </div>
     </div>
 
+    <!-- Dharma Modal -->
+    <div v-if="showDharmaModal" class="modal-overlay" @click="closeDharmaModal">
+      <div class="modal-container" @click.stop>
+        <button class="modal-close-btn" @click="closeDharmaModal">
+          <span class="close-icon">✕</span>
+        </button>
+        
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="modal-brand">
+              <div class="dharma-symbol">⚖️</div>
+              <div class="modal-brand-text">
+                <h2 class="modal-title">Dharmic Wisdom</h2>
+                <p class="modal-tagline">Timeless teachings from the Great Epic</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="modal-body">
+            <!-- Dharma Sections -->
+            <div class="main-sections">
+              <div class="section-card">
+                <div class="section-icon">📿</div>
+                <h3 class="section-title">What is Dharma?</h3>
+                <p class="section-text">
+                  Dharma is righteous duty, moral law, and the path of virtue. In the Mahabharata, 
+                  it represents the cosmic order that sustains life and society. Each person must 
+                  follow their dharma according to their role, circumstances, and inner nature.
+                </p>
+              </div>
+              
+              <div class="section-card">
+                <div class="section-icon">⚡</div>
+                <h3 class="section-title">Moral Dilemmas</h3>
+                <p class="section-text">
+                  The epic presents complex ethical choices: Arjuna's reluctance to fight family, 
+                  Yudhishthira's struggle between truth and compassion, and Karna's conflict between 
+                  loyalty and justice. These dilemmas teach us that dharma is often contextual.
+                </p>
+              </div>
+              
+              <div class="section-card">
+                <div class="section-icon">💎</div>
+                <h3 class="section-title">Timeless Teachings</h3>
+                <p class="section-text">
+                  "Better is one's own dharma, though imperfectly performed, than the dharma of 
+                  another well performed." Krishna's teachings emphasize duty over desire, 
+                  righteousness over convenience, and the eternal over the temporal.
+                </p>
+              </div>
+              
+              <div class="section-card">
+                <div class="section-icon">🎆</div>
+                <h3 class="section-title">Karma & Action</h3>
+                <p class="section-text">
+                  Every action has consequences that extend beyond the immediate. The Mahabharata 
+                  teaches that righteous action, performed without attachment to results, 
+                  purifies the soul and upholds the cosmic order of dharma.
+                </p>
+              </div>
+              
+              <div class="section-card">
+                <div class="section-icon">🪔</div>
+                <h3 class="section-title">Truth & Sacrifice</h3>
+                <p class="section-text">
+                  Truth (Satya) and sacrifice (Yajna) are pillars of dharmic life. Yudhishthira's 
+                  commitment to truth, even at great personal cost, and the sacrifices made by 
+                  noble characters demonstrate the price and power of righteousness.
+                </p>
+              </div>
+              
+              <div class="section-card">
+                <div class="section-icon">🌟</div>
+                <h3 class="section-title">Modern Relevance</h3>
+                <p class="section-text">
+                  Today's ethical challenges mirror those in the Mahabharata: balancing personal 
+                  ambition with social responsibility, choosing truth over convenience, and finding 
+                  the courage to do what is right despite difficult consequences.
+                </p>
+              </div>
+            </div>
+            
+            <!-- Dharmic Quote -->
+            <div class="dharma-quote-section">
+              <div class="dharma-quote">
+                <span class="quote-mark">"</span>
+                <span class="quote-text">धर्मो रक्षति रक्षितः</span>
+                <span class="quote-mark">"</span>
+              </div>
+              <div class="quote-translation">"Dharma protects those who protect it"</div>
+              <div class="quote-attribution">— Mahabharata</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -272,6 +369,7 @@ const audioPlayer = ref(null)
 const sessionId = ref('')
 const generatingAudioId = ref(null)
 const showAboutModal = ref(false)
+const showDharmaModal = ref(false)
 
 // Watch for messages change to scroll to bottom
 watch(messages, () => {
@@ -312,8 +410,12 @@ onUnmounted(() => {
 
 // Handle ESC key press
 function handleKeyDown(event) {
-  if (event.key === 'Escape' && showAboutModal.value) {
-    closeAboutModal()
+  if (event.key === 'Escape') {
+    if (showAboutModal.value) {
+      closeAboutModal()
+    } else if (showDharmaModal.value) {
+      closeDharmaModal()
+    }
   }
 }
 
@@ -325,6 +427,17 @@ function openAboutModal() {
 
 function closeAboutModal() {
   showAboutModal.value = false
+  document.body.style.overflow = 'auto'
+}
+
+// Dharma Modal control functions
+function openDharmaModal() {
+  showDharmaModal.value = true
+  document.body.style.overflow = 'hidden'
+}
+
+function closeDharmaModal() {
+  showDharmaModal.value = false
   document.body.style.overflow = 'auto'
 }
 

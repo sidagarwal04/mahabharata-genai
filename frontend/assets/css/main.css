@@ -855,6 +855,7 @@ body::before {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1rem;
+  max-width: 100%;
 }
 
 .section-card {
@@ -1024,6 +1025,77 @@ body::before {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
+}
+
+/* Dharma Modal Specific Styles */
+.dharma-symbol {
+  font-size: 3rem;
+  filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.4));
+}
+
+.dharma-quote-section {
+  background: var(--glass-bg);
+  border: 2px solid var(--secondary-gold);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.dharma-quote-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, rgba(245, 158, 11, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.dharma-quote {
+  position: relative;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  flex-wrap: nowrap;
+}
+
+.quote-mark {
+  font-size: 2rem;
+  color: var(--secondary-gold);
+  line-height: 0.8;
+  font-weight: bold;
+  align-self: flex-start;
+}
+
+.quote-text {
+  font-size: 1.5rem;
+  color: var(--text-light);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+  text-align: center;
+  line-height: 1.2;
+  margin: 0;
+  align-self: center;
+}
+
+.quote-translation {
+  font-size: 1.1rem;
+  color: var(--accent-cyan);
+  font-style: italic;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.quote-attribution {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  opacity: 0.8;
 }
 
 /* Responsive Design */
@@ -1308,6 +1380,31 @@ body::before {
     font-size: 0.8rem;
   }
 
+  /* Dharma modal mobile styles */
+  .dharma-symbol {
+    font-size: 2rem;
+  }
+
+  .dharma-quote-section {
+    padding: 1.25rem 0.75rem;
+  }
+
+  .quote-mark {
+    font-size: 2rem;
+  }
+
+  .quote-text {
+    font-size: 1rem;
+  }
+
+  .quote-translation {
+    font-size: 0.9rem;
+  }
+
+  .quote-attribution {
+    font-size: 0.8rem;
+  }
+
   /* Additional footer mobile styles */
   .app-footer {
     padding: 0.75rem 1rem 0.5rem 1rem;
@@ -1455,5 +1552,22 @@ body::before {
 
   .credits-text p, .credits-links p {
     font-size: 0.85rem;
+  }
+
+  /* Dharma modal responsive styles */
+  .dharma-symbol {
+    font-size: 2.5rem;
+  }
+
+  .dharma-quote-section {
+    padding: 1.5rem 1rem;
+  }
+
+  .quote-text {
+    font-size: 1.2rem;
+  }
+
+  .quote-translation {
+    font-size: 1rem;
   }
 }
