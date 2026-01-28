@@ -399,103 +399,34 @@ async def generate_hindi_audio(request: AudioRequest):
             target_language_code="hi-IN",
             speaker_gender="Male",
             mode="formal",
-            model="sarvam-translate:v1",  # Fixed model name
-            enable_preprocessing=False,
+            model="sarvam-translate:v1",
             numerals_format="native"
         )
         
         # Extract translated text from the response
         translated_text = translation_response.translated_text
         
-        # Smart text chunking for TTS (500 character limit per input)
-        def smart_chunk_text(text, max_length=450):
-            """Split text into chunks at sentence boundaries while staying under max_length."""
-            if len(text) <= max_length:
-                return [text]
-            
-            chunks = []
-            # Split by sentence endings first
-            sentences = text.replace('।', '।\n').replace('.', '.\n').replace('!', '!\n').replace('?', '?\n').split('\n')
-            sentences = [s.strip() for s in sentences if s.strip()]
-            
-            current_chunk = ""
-            for sentence in sentences:
-                # If adding this sentence would exceed limit, save current chunk
-                if len(current_chunk + " " + sentence) > max_length and current_chunk:
-                    chunks.append(current_chunk.strip())
-                    current_chunk = sentence
-                else:
-                    current_chunk = (current_chunk + " " + sentence).strip()
-            
-            # Add the last chunk
-            if current_chunk:
-                chunks.append(current_chunk.strip())
-            
-            # If any chunk is still too long, split by words
-            final_chunks = []
-            for chunk in chunks:
-                if len(chunk) <= max_length:
-                    final_chunks.append(chunk)
-                else:
-                    # Split long chunks by words
-                    words = chunk.split()
-                    current_word_chunk = ""
-                    for word in words:
-                        if len(current_word_chunk + " " + word) > max_length and current_word_chunk:
-                            final_chunks.append(current_word_chunk.strip())
-                            current_word_chunk = word
-                        else:
-                            current_word_chunk = (current_word_chunk + " " + word).strip()
-                    if current_word_chunk:
-                        final_chunks.append(current_word_chunk.strip())
-            
-            return final_chunks
+        # Convert text to speech using bulbul:v3-beta (supports up to 2500 characters)
+        tts_response = client.text_to_speech.convert(
+            text=translated_text,
+            target_language_code="hi-IN",
+            speaker="shubh",
+            pace=1.1,
+            speech_sample_rate=22050,
+            enable_preprocessing=True,
+            model="bulbul:v3-beta"
+        )
         
-        # Split translated text into chunks
-        text_chunks = smart_chunk_text(translated_text)
-        logging.info(f"Split text into {len(text_chunks)} chunks for TTS")
-        
-        # Convert each chunk to speech
-        audio_chunks = []
-        for i, chunk in enumerate(text_chunks):
-            logging.info(f"Processing TTS chunk {i+1}/{len(text_chunks)} ({len(chunk)} chars)")
-            
-            tts_response = client.text_to_speech.convert(
-                inputs=[chunk],
-                target_language_code="hi-IN",
-                speaker="shubh",
-                pace=1.1,
-                speech_sample_rate=22050,
-                enable_preprocessing=True,
-                model="bulbul:v3-beta"
-            )
-            
-            if hasattr(tts_response, 'audios') and tts_response.audios:
-                audio_chunks.append(tts_response.audios[0])  # Base64 encoded audio
-            else:
-                logging.warning(f"No audio data received for chunk {i+1}")
-        
-        # Combine audio chunks and save to temporary file
-        if not audio_chunks:
-            raise HTTPException(status_code=500, detail="No audio data generated")
-        
+        # Save audio to temporary file
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as f:
-            # If single chunk, just decode and write
-            if len(audio_chunks) == 1:
-                audio_bytes = base64.b64decode(audio_chunks[0])
+            if hasattr(tts_response, 'audios') and tts_response.audios:
+                # Decode base64 audio data and write to file
+                audio_bytes = base64.b64decode(tts_response.audios[0])
                 f.write(audio_bytes)
+                audio_path = f.name
+                logging.info(f"Generated audio file: {audio_path}")
             else:
-                # For multiple chunks, we need to combine them
-                # Note: This is a simple concatenation. For better results,
-                # you might want to use audio processing libraries like pydub
-                combined_audio = b""
-                for audio_base64 in audio_chunks:
-                    audio_bytes = base64.b64decode(audio_base64)
-                    combined_audio += audio_bytes
-                f.write(combined_audio)
-            
-            audio_path = f.name
-            logging.info(f"Generated audio file: {audio_path} ({len(audio_chunks)} chunks combined)")
+                raise HTTPException(status_code=500, detail="No audio data received from TTS API")
         
         return FileResponse(
             audio_path,

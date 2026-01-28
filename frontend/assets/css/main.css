@@ -724,6 +724,7 @@ body::before {
   z-index: 1000;
   padding: 1rem;
   animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
 }
 
 .modal-container {
@@ -1019,6 +1020,18 @@ body::before {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .header {
+    padding: 1rem 0;
+  }
+
+  .header-content {
+    padding: 0 1rem;
+  }
+
+  .header-brand-link {
+    padding: 0.5rem;
+  }
+
   .header-title {
     font-size: 1.75rem;
     gap: 0.5rem;
@@ -1046,16 +1059,21 @@ body::before {
     gap: 0.75rem;
   }
 
+  .content-container {
+    padding: 0 0.5rem;
+  }
+
   .main-content {
-    padding: 0.5rem 1rem 1rem 1rem;
+    padding: 0.5rem 0.5rem 1rem 0.5rem;
   }
 
   .chat-container {
     border-radius: 1.5rem;
+    margin: 0 0.25rem;
   }
 
   .chat-messages {
-    padding: 1.5rem;
+    padding: 1.5rem 1rem;
     gap: 1rem;
   }
 
@@ -1113,6 +1131,39 @@ body::before {
 }
 
 @media (max-width: 480px) {
+  .header-brand-link {
+    padding: 0.25rem;
+  }
+
+  .header-title {
+    font-size: 1.4rem;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  .header-title img {
+    height: 28px !important;
+  }
+
+  .header-subtitle {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+  }
+
+  .content-container {
+    padding: 0 0.25rem;
+  }
+
+  .main-content {
+    padding: 0.25rem 0.25rem 0.5rem 0.25rem;
+  }
+
+  .chat-container {
+    margin: 0;
+    border-radius: 1rem;
+  }
+
   .welcome-title {
     font-size: 1.75rem;
   }
@@ -1124,6 +1175,7 @@ body::before {
   .chat-bubble {
     padding: 1rem;
     border-radius: 1.25rem;
+    font-size: 0.9rem;
   }
 
   .btn-primary span {
@@ -1136,7 +1188,116 @@ body::before {
   }
 
   .chat-input-section {
-    padding: 1rem;
+    padding: 1rem 0.75rem;
+  }
+
+  /* Mobile modal fixes */
+  .modal-overlay {
+    padding: 0.25rem;
+    padding-top: 0.5rem;
+    align-items: flex-start;
+  }
+
+  .modal-container {
+    max-height: calc(100vh - 1rem);
+    max-width: calc(100vw - 0.5rem);
+    border-radius: 1rem;
+    width: 100%;
+  }
+
+  .modal-close-btn {
+    width: 36px;
+    height: 36px;
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+
+  .modal-header {
+    padding: 1rem 0.75rem 0.75rem 0.75rem;
+  }
+
+  .modal-brand {
+    gap: 0.5rem;
+  }
+
+  .modal-title {
+    font-size: 1.2rem;
+    line-height: 1.2;
+  }
+
+  .modal-tagline {
+    font-size: 0.8rem;
+  }
+
+  .modal-body {
+    padding: 0.75rem;
+    gap: 0.75rem;
+  }
+
+  .main-sections {
+    gap: 0.5rem;
+  }
+
+  .section-card {
+    padding: 0.75rem;
+  }
+
+  .section-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .section-title {
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .section-text {
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+
+  .tech-section {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .tech-header {
+    gap: 0.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .tech-header-icon {
+    font-size: 1.3rem;
+  }
+
+  .tech-header-title {
+    font-size: 0.9rem;
+  }
+
+  .tech-header-text {
+    font-size: 0.75rem;
+    line-height: 1.3;
+  }
+
+  .tech-badges {
+    gap: 0.4rem;
+  }
+
+  .tech-badge {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.6rem;
+  }
+
+  .credits-section {
+    padding: 0.75rem;
+  }
+
+  .credits-content {
+    gap: 0.75rem;
+  }
+
+  .credits-text p, .credits-links p {
+    font-size: 0.8rem;
   }
 
   /* Additional footer mobile styles */
@@ -1178,12 +1339,17 @@ body::before {
   /* Modal responsive styles */
   .modal-overlay {
     padding: 0.5rem;
+    align-items: flex-start;
+    padding-top: 1rem;
   }
 
   .modal-container {
-    max-height: 95vh;
+    max-height: calc(100vh - 2rem);
+    height: auto;
     border-radius: 1.5rem;
-    max-width: 95vw;
+    max-width: calc(100vw - 1rem);
+    width: 100%;
+    min-height: auto;
   }
 
   .modal-close-btn {
@@ -1194,52 +1360,59 @@ body::before {
   }
 
   .modal-header {
-    padding: 2rem 1.5rem 1.25rem 1.5rem;
+    padding: 1.5rem 1rem 1rem 1rem;
   }
 
   .modal-brand {
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.75rem;
     text-align: center;
   }
 
   .modal-logo {
-    height: 40px;
+    height: 36px;
   }
 
   .modal-title {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+    line-height: 1.2;
   }
 
   .modal-tagline {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    line-height: 1.3;
   }
 
   .modal-body {
-    padding: 1.5rem;
-    gap: 1.25rem;
+    padding: 1rem;
+    gap: 1rem;
+    min-height: 0;
+    flex: 1;
+    overflow-y: auto;
   }
 
   .main-sections {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 0.75rem;
   }
 
   .section-card {
-    padding: 1.25rem;
+    padding: 1rem;
   }
 
   .section-icon {
-    font-size: 2rem;
-    margin-bottom: 0.75rem;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
   }
 
   .section-title {
-    font-size: 1.1rem;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
   }
 
   .section-text {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
   }
 
   .tech-section {
