@@ -189,8 +189,6 @@ body::before {
 .avatar-container {
   width: 54px !important;
   height: 54px !important;
-  background: rgba(255, 255, 255, 0.03);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .avatar-img {

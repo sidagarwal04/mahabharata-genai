@@ -5,7 +5,7 @@
       <div class="flex items-start message-header">
         <!-- Optimized Avatar Size -->
         <div class="flex-shrink-0">
-          <div class="avatar-container rounded-full border border-white/10 overflow-hidden">
+          <div class="avatar-container rounded-full overflow-hidden">
             <span v-if="message.role === 'user'" class="avatar-emoji leading-none">🏹</span>
             <img v-else src="~/assets/logo.png" alt="AI Sage" class="avatar-img" />
           </div>
