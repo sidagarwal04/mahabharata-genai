@@ -1041,6 +1041,11 @@ body::before {
   text-align: center;
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 120px;
 }
 
 .dharma-quote-section::before {
