@@ -27,8 +27,7 @@ from sarvamai import SarvamAI
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.messages import HumanMessage, AIMessage
 from langchain_neo4j import Neo4jVector, Neo4jGraph
-from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_openai import ChatOpenAI
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
 load_dotenv()
 
@@ -195,15 +194,19 @@ async def lifespan(app: FastAPI):
     try:
         logging.info("🚀 Initializing...")
         
-        # Embedding model
+        # Embedding model - using OpenAI embeddings (no local model loading)
         start = time.time()
-        embedding_model = HuggingFaceEmbeddings(
-            model_name="all-MiniLM-L6-v2",
-            model_kwargs={'device': 'cpu'},
-            encode_kwargs={'normalize_embeddings': True, 'batch_size': 32}
+        openai_api_key = os.getenv("OPENAI_API_KEY")
+        if not openai_api_key:
+            raise ValueError("OPENAI_API_KEY not set")
+        
+        embedding_model = OpenAIEmbeddings(
+            api_key=openai_api_key,
+            model="text-embedding-3-small",
+            dimensions=384  # Match your Neo4j vector index dimensions
         )
         app.state.embedding_model = embedding_model
-        logging.info(f"✅ Embeddings loaded ({time.time()-start:.2f}s)")
+        logging.info(f"✅ Embeddings initialized ({time.time()-start:.2f}s)")
         
         # LLM with optimized settings
         openai_api_key = os.getenv("OPENAI_API_KEY")
