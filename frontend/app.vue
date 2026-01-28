@@ -174,48 +174,50 @@
           </div>
           
           <div class="modal-body">
-            <!-- Features Grid -->
-            <div class="features-grid">
-              <div class="feature-card">
-                <div class="feature-icon">🤖</div>
-                <h3 class="feature-title">GPT-5.2 Powered</h3>
-                <p class="feature-text">Advanced AI responses using OpenAI's latest model</p>
+            <!-- Main Sections Grid -->
+            <div class="main-sections">
+              <div class="section-card">
+                <div class="section-icon">🌟</div>
+                <h3 class="section-title">The Vision</h3>
+                <p class="section-text">
+                  Journey through the cosmic tapestry of the Great Epic with our AI-powered sage. 
+                  This platform brings the timeless wisdom of the Mahabharata to the digital age, 
+                  making the profound teachings accessible to seekers worldwide.
+                </p>
               </div>
               
-              <div class="feature-card">
-                <div class="feature-icon">🗄️</div>
-                <h3 class="feature-title">Graph Database</h3>
-                <p class="feature-text">Neo4j-powered knowledge graph for rich contextual information</p>
+              <div class="section-card">
+                <div class="section-icon">⚔️</div>
+                <h3 class="section-title">The Epic</h3>
+                <p class="section-text">
+                  The Mahabharata, composed by sage Vyasa, is not just a story of war between 
+                  cousins—it's a comprehensive guide to dharma, karma, and the complexities of 
+                  human nature. With over 100,000 verses, it stands as the world's longest epic poem.
+                </p>
               </div>
               
-              <div class="feature-card">
-                <div class="feature-icon">🇮🇳</div>
-                <h3 class="feature-title">Hindi Audio</h3>
-                <p class="feature-text">Listen to responses in Hindi using Sarvam AI TTS</p>
-              </div>
-              
-              <div class="feature-card">
-                <div class="feature-icon">📱</div>
-                <h3 class="feature-title">Responsive Design</h3>
-                <p class="feature-text">Works perfectly on desktop and mobile devices</p>
+              <div class="section-card">
+                <div class="section-icon">🎯</div>
+                <h3 class="section-title">The Purpose</h3>
+                <p class="section-text">
+                  In an age of moral complexity, the Mahabharata's teachings remain remarkably 
+                  relevant. This AI sage serves as a bridge between ancient wisdom and modern 
+                  inquiries, helping you navigate life's challenges through dharmic understanding.
+                </p>
               </div>
             </div>
             
-            <!-- Tech Stack -->
+            <!-- Tech Section (Smaller) -->
             <div class="tech-section">
-              <h3 class="tech-title">🏗️ Modern Architecture</h3>
+              <h3 class="tech-title">🤖 Powered By</h3>
               <div class="tech-stack">
                 <div class="tech-item">
-                  <span class="tech-label">Frontend:</span>
-                  <span class="tech-value">Nuxt.js 3, TypeScript, Tailwind CSS</span>
+                  <span class="tech-label">AI:</span>
+                  <span class="tech-value">GPT-5.2 with Neo4j Knowledge Graph</span>
                 </div>
                 <div class="tech-item">
-                  <span class="tech-label">Backend:</span>
-                  <span class="tech-value">FastAPI, Neo4j, OpenAI GPT-5.2</span>
-                </div>
-                <div class="tech-item">
-                  <span class="tech-label">AI Services:</span>
-                  <span class="tech-value">Sarvam AI TTS, Graph-based RAG</span>
+                  <span class="tech-label">Voice:</span>
+                  <span class="tech-value">Hindi Audio with Sarvam AI TTS</span>
                 </div>
               </div>
             </div>
@@ -224,12 +226,13 @@
             <div class="credits-section">
               <div class="credits-content">
                 <div class="credits-text">
-                  <p>📖 <a href="https://sidagarwal04.medium.com/list/mahabharatachatbot-cbf1d049d017" target="_blank" class="credit-link">Read the Blog Series</a></p>
-                  <p>🔗 <a href="https://github.com/sidagarwal04/mahabharata-genai" target="_blank" class="credit-link">Explore the Code</a></p>
+                  <p>🙏 Created with reverence for the sacred text and gratitude to all the scholars, 
+                  translators, and sages who have preserved this wisdom across millennia.</p>
                 </div>
-                <div class="credits-author">
-                  <p>Built with ❤️ by <a href="https://meetsid.dev" target="_blank" class="credit-link">meetsid.dev</a></p>
-                  <p class="credits-purpose">Making ancient wisdom accessible through modern AI</p>
+                <div class="credits-links">
+                  <p>📖 <a href="https://sidagarwal04.medium.com/list/mahabharatachatbot-cbf1d049d017" target="_blank" class="credit-link">Read the Blog Series</a></p>
+                  <p>💻 <a href="https://github.com/sidagarwal04/mahabharata-genai" target="_blank" class="credit-link">View Source Code</a></p>
+                  <p class="credits-author">Built with ❤️ by <a href="https://meetsid.dev" target="_blank" class="credit-link">meetsid.dev</a></p>
                 </div>
               </div>
             </div>

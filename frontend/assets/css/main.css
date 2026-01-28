@@ -842,45 +842,46 @@ body::before {
   min-height: 0;
 }
 
-.features-grid {
+.main-sections {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1rem;
 }
 
-.feature-card {
+.section-card {
   background: var(--sage-gradient);
   border: 1px solid var(--glass-border);
-  border-radius: 1rem;
-  padding: 1.25rem;
-  text-align: center;
+  border-radius: 1.25rem;
+  padding: 1.5rem;
   transition: all 0.3s ease;
 }
 
-.feature-card:hover {
+.section-card:hover {
   border-color: var(--accent-cyan);
   transform: translateY(-2px);
   box-shadow: 0 8px 25px -8px rgba(34, 211, 238, 0.2);
 }
 
-.feature-icon {
-  font-size: 2rem;
-  margin-bottom: 0.75rem;
+.section-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
   display: block;
 }
 
-.feature-title {
-  font-size: 1rem;
+.section-title {
+  font-size: 1.2rem;
   font-weight: 600;
   color: var(--secondary-gold);
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 0.75rem 0;
+  letter-spacing: 0.025em;
 }
 
-.feature-text {
-  font-size: 0.85rem;
-  color: var(--text-muted);
+.section-text {
+  color: var(--text-light);
+  line-height: 1.6;
+  font-size: 0.95rem;
   margin: 0;
-  line-height: 1.4;
+  opacity: 0.9;
 }
 
 .tech-section {
@@ -938,31 +939,34 @@ body::before {
 }
 
 .credits-text {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  flex: 1;
 }
 
 .credits-text p {
   margin: 0;
   font-size: 0.9rem;
   color: var(--text-light);
+  line-height: 1.5;
+  opacity: 0.9;
 }
 
-.credits-author {
+.credits-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   text-align: right;
 }
 
-.credits-author p {
+.credits-links p {
   margin: 0;
   font-size: 0.9rem;
   color: var(--text-light);
 }
 
-.credits-purpose {
-  opacity: 0.7;
-  font-size: 0.8rem !important;
-  margin-top: 0.25rem !important;
+.credits-author {
+  margin-top: 0.5rem !important;
+  opacity: 0.8;
+  font-size: 0.85rem !important;
 }
 
 .credit-link {
@@ -1196,26 +1200,26 @@ body::before {
     gap: 1.25rem;
   }
 
-  .features-grid {
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 0.75rem;
+  .main-sections {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
-  .feature-card {
-    padding: 1rem;
+  .section-card {
+    padding: 1.25rem;
   }
 
-  .feature-icon {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
+  .section-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
   }
 
-  .feature-title {
+  .section-title {
+    font-size: 1.1rem;
+  }
+
+  .section-text {
     font-size: 0.9rem;
-  }
-
-  .feature-text {
-    font-size: 0.8rem;
   }
 
   .tech-section, .credits-section {
@@ -1246,11 +1250,11 @@ body::before {
     gap: 1rem;
   }
 
-  .credits-author {
+  .credits-links {
     text-align: left;
   }
 
-  .credits-text p, .credits-author p {
+  .credits-text p, .credits-links p {
     font-size: 0.85rem;
   }
 }
