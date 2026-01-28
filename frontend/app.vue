@@ -27,10 +27,10 @@
             <div class="welcome-icon">
               <img src="~/assets/logo.png" alt="Logo" />
             </div>
-            <h3 class="welcome-title">The AI Sage Awaits</h3>
+            <h3 class="welcome-title">Seek Wisdom from the AI Sage</h3>
             <p class="welcome-description">
-              Seek the ancient wisdom of the Bharata. Inquire about the divine laws of Dharma, 
-              the legendary warriors of the Kuru dynasty, and the cosmic tapestry of the Great Epic.
+              Journey through the greatest epic ever told. Discover timeless teachings on dharma, explore the depths of human nature, 
+              and unravel the mysteries of divine cosmic law through AI-powered insights.
             </p>
             
             <!-- Example Questions Moved Here -->
@@ -458,10 +458,10 @@ async function fetchExamples() {
     examples.value = [
       "Why did the Mahabharata war happen?",
       "Who killed Karna, and why?",
-      "Who killed Ghatotakach?",
-      "Who were the siblings of Karna?",
-      "What was the role of Krishna during the war?",
-      "Who was the wife of all five Pandavas?"
+      "Why did the Pandavas have to go live in the forest for 12 years?",
+      "Who was the wife of all five Pandavas, and how did that marriage come to be?",
+      "What was the role of Krishna during the Kurukshetra war? Did he fight?",
+      "Describe the relationship between Karna and Kunti. How did it affect the war?"
     ]
   }
 }
