@@ -38,6 +38,15 @@ body {
   position: relative;
 }
 
+/* Mobile adjustments - remove height constraints */
+@media (max-width: 768px) {
+  body {
+    height: auto;
+    min-height: 100vh;
+    overflow: auto;
+  }
+}
+
 /* Hide overflow on larger screens only */
 @media (min-width: 1024px) {
   body {
