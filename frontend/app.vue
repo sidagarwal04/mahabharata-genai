@@ -171,7 +171,7 @@
               <img src="~/assets/logo.png" alt="Mahabharata AI Logo" class="modal-logo" />
               <div class="modal-brand-text">
                 <h2 class="modal-title">Mahabharata AI Sage</h2>
-                <p class="modal-tagline">Step into the epic world of the Mahabharata</p>
+                <p class="modal-tagline">Dive into the timeless wisdom of an ancient Indian epic</p>
               </div>
             </div>
           </div>
@@ -216,15 +216,20 @@
                 <span class="tech-header-icon">⚡</span>
                 <span class="tech-header-title">Powered By</span>
                 <span class="tech-header-text">
-                  GPT-5.2 intelligence, Neo4j knowledge graph, and Sarvam AI Hindi audio unite to 
+                  GPT-5.2 intelligence, Neo4j knowledge graph, and Sarvam AI's Indic support for translation and text-to-speech unite in a responsive design to 
                   deliver fast, contextual answers rooted in the epic’s wisdom.
                 </span>
               </div>
               <div class="tech-badges">
-                <span class="tech-badge">🤖 GPT-5.2</span>
-                <span class="tech-badge">🗄️ Neo4j</span>
-                <span class="tech-badge">🇮🇳 Hindi Audio</span>
-                <span class="tech-badge">📱 Responsive</span>
+                <span class="tech-badge">
+                  <img src="/about/openai.svg" alt="OpenAI" class="tech-logo" /> GPT-5.2
+                </span>
+                <span class="tech-badge">
+                  <img src="/about/neo4j.svg" alt="Neo4j" class="tech-logo" /> Neo4j
+                </span>
+                <span class="tech-badge">
+                  <img src="/about/sarvam.webp" alt="Sarvam AI" class="tech-logo" /> Indic Support
+                </span>
               </div>
             </div>
             

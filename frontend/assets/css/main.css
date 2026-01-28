@@ -946,6 +946,25 @@ body::before {
   font-weight: 500;
   transition: all 0.2s ease;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tech-logo {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.tech-logo[src*="openai"] {
+  filter: brightness(0) invert(1);
+}
+
+.tech-logo[src*="sarvam"] {
+  filter: brightness(0) invert(1);
+  width: 20px;
+  height: 20px;
 }
 
 .tech-badge:hover {

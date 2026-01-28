@@ -1,6 +1,6 @@
 # 🏛️ Mahabharata AI Sage
 
-> Step into the epic world of the Mahabharata! Ask questions, explore characters, unravel mysteries, and gain insights from the vast knowledge powered by AI and graph databases.
+> Dive into the timeless wisdom of an ancient Indian epic! Ask questions, explore characters, unravel mysteries, and gain insights from the vast knowledge powered by AI and graph databases.
 
 ## 🌟 Features
 
