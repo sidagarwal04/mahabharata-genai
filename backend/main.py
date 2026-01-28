@@ -2,13 +2,23 @@ import os
 import logging
 import uuid
 import time
+import tempfile
+import base64
 from typing import List, Optional
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from dotenv import load_dotenv
+
+# Sarvam AI integration
+from sarvamai import SarvamAI
+
+# Commented out ElevenLabs and Google Translate imports
+# from google.cloud import translate
+# from elevenlabs import ElevenLabs
 
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.messages import HumanMessage, AIMessage
@@ -278,6 +288,9 @@ class ChatResponse(BaseModel):
     model: str
     time_taken: float
 
+class AudioRequest(BaseModel):
+    text: str
+
 @app.get("/")
 async def root():
     return {"message": "Mahabharata AI Sage - Ultra Optimized"}
@@ -355,6 +368,120 @@ async def get_examples():
             "Who killed Dronacharya and how was he tricked into giving up his weapons?"
         ]
     }
+
+@app.post("/audio/hindi")
+async def generate_hindi_audio(request: AudioRequest):
+    """Audio generation endpoint using Sarvam AI."""
+    try:
+        if not request.text:
+            raise HTTPException(status_code=400, detail="No text provided")
+        
+        text = request.text.split("(Model:")[0].strip() if "(Model:" in request.text else request.text
+        
+        # # Limit text length for Sarvam AI translation (mayura:v1 has 1000 character limit)
+        # MAX_TRANSLATION_LENGTH = 950  # Leave some buffer
+        # if len(text) > MAX_TRANSLATION_LENGTH:
+        #     text = text[:MAX_TRANSLATION_LENGTH].rsplit(' ', 1)[0]  # Truncate at word boundary
+        #     logging.info(f"Text truncated to {len(text)} characters for translation")
+        
+        # Get Sarvam AI API key
+        SARVAM_API_KEY = os.getenv("SARVAM_API_KEY")
+        if not SARVAM_API_KEY:
+            raise HTTPException(status_code=500, detail="SARVAM_API_KEY not configured")
+        
+        # Initialize Sarvam AI client
+        client = SarvamAI(api_subscription_key=SARVAM_API_KEY)
+        
+        # Translate text to Hindi
+        translation_response = client.text.translate(
+            input=text,
+            source_language_code="en-IN",
+            target_language_code="hi-IN",
+            speaker_gender="Male",
+            mode="formal",
+            model="sarvam-translate:v1",
+            enable_preprocessing=False,
+            numerals_format="native"
+        )
+        
+        # Extract translated text from the response
+        translated_text = translation_response.translated_text
+        
+        # Convert text to speech
+        tts_response = client.text_to_speech.convert(
+            inputs=[translated_text],  # Changed from 'text' to 'inputs' and made it a list
+            target_language_code="hi-IN",
+            speaker="abhilash",  # Using available speaker from the list
+            pace=1.1,
+            speech_sample_rate=22050,
+            enable_preprocessing=True,
+            model="bulbul:v2"
+        )
+        
+        # Save audio to temporary file
+        # Sarvam AI returns audio as base64 encoded strings in the 'audios' field
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as f:
+            if hasattr(tts_response, 'audios') and tts_response.audios:
+                # Take the first audio from the list and decode from base64
+                import base64
+                audio_base64 = tts_response.audios[0]
+                audio_bytes = base64.b64decode(audio_base64)
+                f.write(audio_bytes)
+            else:
+                # Fallback handling
+                audio_data = tts_response if isinstance(tts_response, bytes) else str(tts_response).encode()
+                f.write(audio_data)
+            audio_path = f.name
+        
+        return FileResponse(
+            audio_path,
+            media_type="audio/mpeg",
+            filename="hindi_audio.mp3"
+        )
+        
+        # COMMENTED OUT: Original ElevenLabs + Google Translate implementation
+        # project_id = os.getenv("PROJECT_ID")
+        # if not project_id:
+        #     raise HTTPException(status_code=500, detail="PROJECT_ID not configured")
+        # 
+        # client = translate.TranslationServiceClient()
+        # parent = f"projects/{project_id}/locations/global"
+        # 
+        # response = client.translate_text(
+        #     parent=parent,
+        #     contents=[text],
+        #     mime_type="text/plain",
+        #     source_language_code="en-US",
+        #     target_language_code="hi",
+        # )
+        # translated_text = response.translations[0].translated_text
+        # 
+        # ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
+        # if not ELEVENLABS_API_KEY:
+        #     raise HTTPException(status_code=500, detail="ELEVENLABS_API_KEY not configured")
+        # 
+        # elevenlabs_client = ElevenLabs(api_key=ELEVENLABS_API_KEY)
+        # audio_generator = elevenlabs_client.text_to_speech.convert(
+        #     text=translated_text,
+        #     voice_id="MF4J4IDTRo0AxOO4dpFR",
+        #     model_id="eleven_multilingual_v2",
+        #     output_format="mp3_44100_128",
+        # )
+        # audio_bytes = b"".join(audio_generator)
+        # 
+        # with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as f:
+        #     f.write(audio_bytes)
+        #     audio_path = f.name
+        # 
+        # return FileResponse(
+        #     audio_path,
+        #     media_type="audio/mpeg",
+        #     filename="hindi_audio.mp3"
+        # )
+        
+    except Exception as e:
+        logging.error(f"❌ Audio error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     import uvicorn

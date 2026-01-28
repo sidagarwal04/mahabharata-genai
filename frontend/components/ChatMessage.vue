@@ -20,7 +20,7 @@
       </div>
       
       <!-- Assistant Actions Below Content -->
-      <!-- <div v-if="message.role === 'assistant' && !message.isError" class="mt-4 pl-9">
+      <div v-if="message.role === 'assistant' && !message.isError" class="mt-4 pl-9">
         <button
           @click="$emit('listen-hindi', message)"
           class="listen-btn"
@@ -38,7 +38,7 @@
           </svg>
           <span>{{ isGeneratingAudio ? 'Engraving...' : (isPlaybackActive ? 'Pause' : 'Listen in Hindi') }}</span>
         </button>
-      </div> -->
+      </div>
       
 
     </div>
@@ -67,9 +67,8 @@ const props = defineProps({
   }
 })
 
-// const emit = defineEmits(['listen-hindi'])
+const emit = defineEmits(['listen-hindi'])
 
-/*
 const isPlaybackActive = computed(() => {
   return props.activeAudioId === props.message.id && props.isAudioPlaying
 })
@@ -77,7 +76,6 @@ const isPlaybackActive = computed(() => {
 const isGeneratingAudio = computed(() => {
   return props.generatingAudioId === props.message.id
 })
-*/
 
 const bubbleClass = computed(() => {
   if (props.message.role === 'user') {

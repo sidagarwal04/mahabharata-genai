@@ -8,7 +8,7 @@
 - **🗄️ Graph Database**: Neo4j-powered knowledge graph for rich contextual information
 - **🎨 Modern UI**: Beautiful Nuxt.js frontend with responsive design
 - **🚀 FastAPI Backend**: High-performance API with automatic documentation
-- **🇮🇳 Hindi Audio**: Listen to responses in Hindi using ElevenLabs TTS
+- **🇮🇳 Hindi Audio**: Listen to responses in Hindi using Sarvam AI TTS
 - **📱 Responsive**: Works perfectly on desktop and mobile devices
 - **🔍 Source Attribution**: See exactly where information comes from
 - **💬 Session Management**: Maintains conversation context with automatic summarization
@@ -29,7 +29,7 @@ This project has been upgraded from a simple Gradio interface to a modern, scala
 - **Tailwind CSS** for modern styling
 - **Custom chat interface** replacing Gradio
 - **Real-time typing indicators**
-- **Audio playback** for Hindi translations
+- **Audio playback** for Hindi translations using Sarvam AI
 - **Responsive design** for all devices
 
 ### Legacy (`app.py`)
@@ -44,8 +44,7 @@ This project has been upgraded from a simple Gradio interface to a modern, scala
 - **Node.js 16+**
 - **Neo4j Database** (with your Mahabharata data loaded)
 - **OpenAI API Key**
-- **Google Cloud credentials** (for translation)
-- **ElevenLabs API Key** (for Hindi audio)
+- **Sarvam AI API Key** (for Hindi translation and audio)
 
 ### 1. Initial Setup
 
@@ -72,12 +71,15 @@ NEO4J_USERNAME=your_username
 NEO4J_PASSWORD=your_password
 NEO4J_DATABASE=your_database
 
-# Google Cloud (for translation)
-PROJECT_ID=your_project_id
-GOOGLE_APPLICATION_CREDENTIALS=path/to/service-account.json
+# Sarvam AI (for Hindi translation and audio)
+SARVAM_API_KEY=your_sarvam_api_key
 
+# COMMENTED OUT: Legacy services (replaced with Sarvam AI)
+# Google Cloud (for translation)
+# PROJECT_ID=your_project_id
+# GOOGLE_APPLICATION_CREDENTIALS=path/to/service-account.json
 # ElevenLabs (for Hindi audio)
-ELEVENLABS_API_KEY=your_elevenlabs_key
+# ELEVENLABS_API_KEY=your_elevenlabs_key
 ```
 
 ### 3. Start Development Servers

@@ -30,6 +30,9 @@ langchain-anthropic>=1.2.0
 google-auth
 google-cloud-aiplatform
 
-#ElevenLabs and Translation
-elevenlabs
-google-cloud-translate
+# Sarvam AI for translation and TTS
+sarvamai
+
+# Commented out ElevenLabs and Google Translate (replaced with Sarvam AI)
+# elevenlabs
+# google-cloud-translate

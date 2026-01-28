@@ -56,6 +56,7 @@
               :active-audio-id="activeAudioId"
               :is-audio-playing="isAudioPlaying"
               :generating-audio-id="generatingAudioId"
+              @listen-hindi="handleListenHindi"
             />
           </div>
           
@@ -249,7 +250,7 @@ async function sendMessage(message) {
     sessionId.value = data.session_id
     
     // Pre-generate audio in background without playing
-    // handleListenHindi(assistantMessage, false)
+    handleListenHindi(assistantMessage, false)
     
   } catch (error) {
     console.error('Error sending message:', error)
@@ -266,7 +267,6 @@ async function sendMessage(message) {
   }
 }
 
-/*
 // Handle Hindi audio generation and playback
 async function handleListenHindi(message, autoplay = true) {
   if (!message.content || generatingAudioId.value === message.id) return
@@ -322,7 +322,6 @@ async function handleListenHindi(message, autoplay = true) {
     generatingAudioId.value = null
   }
 }
-*/
 
 function toggleAudio() {
   if (!audioPlayer.value) return
