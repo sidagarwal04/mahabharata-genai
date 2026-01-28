@@ -35,7 +35,12 @@ NEO4J_DATABASE=neo4j
 ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
 OPENAI_API_KEY=your_openai_api_key_here
 SARVAM_API_KEY=your_sarvam_api_key_here
+
+# Keep-alive configuration (prevents server from sleeping)
+RENDER_EXTERNAL_URL=https://your-render-app.onrender.com
 ```
+
+**Important**: Replace `your-render-app` with your actual Render service name.
 
 ### Step 4: Deploy
 Click "Create Web Service" - Render will automatically build and deploy your backend.

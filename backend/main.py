@@ -4,6 +4,7 @@ import uuid
 import time
 import tempfile
 import base64
+import threading
 from typing import List, Optional
 from contextlib import asynccontextmanager
 
@@ -12,6 +13,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from dotenv import load_dotenv
+
+# Keep-alive imports
+import requests
 
 # Sarvam AI integration
 from sarvamai import SarvamAI
@@ -248,6 +252,12 @@ async def lifespan(app: FastAPI):
         app.state.retriever = retriever
         logging.info("✅ Retriever ready")
         
+        # Start keep-alive thread for Render deployment
+        if os.getenv('RENDER_EXTERNAL_URL'):
+            keep_alive_thread = threading.Thread(target=keep_alive, daemon=True)
+            keep_alive_thread.start()
+            logging.info("✅ Keep-alive thread started for Render deployment")
+        
         logging.info("🎉 Initialization complete!")
         
     except Exception as e:
@@ -261,6 +271,31 @@ async def lifespan(app: FastAPI):
             app.state.graph._driver.close()
         except:
             pass
+
+def keep_alive():
+    """Keep the server awake by calling health endpoint every 15 minutes."""
+    import time
+    import requests
+    
+    # Wait 5 minutes before starting keep-alive (let server fully start)
+    time.sleep(300)
+    
+    while True:
+        try:
+            # Determine the URL - use environment variable if available
+            base_url = os.getenv('RENDER_EXTERNAL_URL', 'http://localhost:8001')
+            health_url = f"{base_url}/health"
+            
+            response = requests.get(health_url, timeout=10)
+            if response.status_code == 200:
+                logging.info(f"✅ Keep-alive ping successful: {health_url}")
+            else:
+                logging.warning(f"⚠️ Keep-alive ping returned status {response.status_code}")
+        except Exception as e:
+            logging.error(f"❌ Keep-alive ping failed: {e}")
+        
+        # Wait 15 minutes (900 seconds) before next ping
+        time.sleep(900)
 
 app = FastAPI(
     title="Mahabharata AI Sage - Ultra Optimized",

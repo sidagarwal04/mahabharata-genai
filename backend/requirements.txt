@@ -2,6 +2,7 @@
 fastapi>=0.104.0
 uvicorn[standard]>=0.24.0
 python-multipart>=0.0.6
+requests>=2.31.0
 
 # Core dependencies
 python-dotenv
@@ -10,26 +11,10 @@ python-dotenv
 sentence-transformers==3.3.1
 
 # LangChain core and necessary integrations
-langchain>=1.1
 langchain-core>=1.1.3
-langchain-community>=0.4.1
 langchain-huggingface>=1.1.0
-
-# Neo4j support
 langchain-neo4j>=0.6.0
-
-# OpenAI for GPT-5.2
 langchain-openai>=1.1.1
-
-# Google Cloud Vertex AI (if needed)
-langchain-google-vertexai>=3.2.0
-google-auth
-google-cloud-aiplatform
 
 # Sarvam AI for translation and TTS
 sarvamai==0.1.23a4
-
-# Optional: Keep gradio and boto3 if legacy app.py is still used
-gradio>=6.1.0
-boto3==1.36.2
-langchain-anthropic>=1.2.0
