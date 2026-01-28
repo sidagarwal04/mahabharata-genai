@@ -5,7 +5,7 @@
       <!-- Header -->
       <header class="header">
         <div class="header-content">
-          <NuxtLink to="/" class="header-brand-link">
+          <button @click="clearChat" class="header-brand-link" :disabled="isLoading">
             <h1 class="header-title">
               <img src="~/assets/logo.png" alt="Logo" />
               MAHABHARATA AI SAGE
@@ -13,7 +13,7 @@
             <p class="header-subtitle">
               Voyage through the cosmic tapestry of the Great Epic
             </p>
-          </NuxtLink>
+          </button>
         </div>
       </header>
 
@@ -24,9 +24,6 @@
         <!-- Chat Messages -->
         <div ref="chatContainer" class="chat-messages">
           <div v-if="messages.length === 0" class="welcome-message">
-            <div class="welcome-icon">
-              <img src="~/assets/logo.png" alt="Logo" />
-            </div>
             <h3 class="welcome-title">Seek Wisdom from the AI Sage</h3>
             <p class="welcome-description">
               Journey through the greatest epic ever told. Discover timeless teachings on dharma, explore the depths of human nature, 
