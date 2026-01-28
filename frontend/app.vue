@@ -147,9 +147,12 @@
         </div>
         
         <div class="footer-credits">
-          <span class="footer-powered">Powered by AI • Built with ❤️ for seekers of ancient wisdom</span>
+          <span class="footer-powered">Powered by GenAI • Built with ❤️ for seekers of ancient wisdom</span>
           <div class="footer-copyright">
             © 2026 Mahabharata AI Sage • <a href="https://meetsid.dev" target="_blank" class="footer-author">meetsid.dev</a>
+          </div>
+          <div class="footer-netlify">
+            This site is powered by <a href="https://netlify.com" target="_blank" class="footer-author">Netlify</a>
           </div>
         </div>
       </div>

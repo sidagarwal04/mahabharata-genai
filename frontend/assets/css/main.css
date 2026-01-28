@@ -697,6 +697,14 @@ body::before {
   letter-spacing: 0.05em;
 }
 
+.footer-netlify {
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  opacity: 0.5;
+  letter-spacing: 0.05em;
+  margin-top: 0.25rem;
+}
+
 .footer-author {
   color: var(--secondary-gold);
   text-decoration: none;
