@@ -3,7 +3,7 @@
 :root {
   --primary-deep: #1a0b2e;
   --primary-glow: #6d28d9;
-  --secondary-gold: #f59e0b;
+  --secondary-gold: #b8860b;
   --accent-cyan: #22d3ee;
   --text-light: #f8fafc;
   --text-muted: #94a3b8;
@@ -15,7 +15,7 @@
 
   --user-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
   --sage-gradient: linear-gradient(180deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
-  --epic-gold-gradient: linear-gradient(to right, #f59e0b, #fbbf24, #f59e0b);
+  --epic-gold-gradient: linear-gradient(to right, #b8860b, #cd853f, #b8860b);
 }
 
 * {
