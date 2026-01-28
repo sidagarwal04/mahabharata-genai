@@ -1,9 +1,0 @@
-# Render Deployment Config
-# Python version
-python_version = "3.11"
-
-# Build command (optional, Render will auto-detect requirements.txt)
-build_command = "pip install -r requirements.txt"
-
-# Start command
-start_command = "uvicorn main:app --host 0.0.0.0 --port $PORT"

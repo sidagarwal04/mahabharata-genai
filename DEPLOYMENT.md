@@ -24,6 +24,8 @@
 - **Build Command**: `pip install -r requirements.txt`
 - **Start Command**: `uvicorn main:app --host 0.0.0.0 --port $PORT`
 
+**Important**: Make sure the Start Command uses `$PORT` (not `${PORT}` or a hardcoded port).
+
 ### Step 3: Set Environment Variables in Render
 Go to your service → Environment tab and add these variables (use values from your `backend/example.backend.env` file):
 
