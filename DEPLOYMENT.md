@@ -25,22 +25,16 @@
 - **Start Command**: `uvicorn main:app --host 0.0.0.0 --port $PORT`
 
 ### Step 3: Set Environment Variables in Render
-Go to your service → Environment tab and add:
+Go to your service → Environment tab and add these variables (use values from your `backend/example.backend.env` file):
 
 ```
-OPENAI_API_KEY=your_openai_api_key_here
 NEO4J_URI=your_neo4j_uri_here
-NEO4J_USERNAME=your_neo4j_username_here
+NEO4J_USERNAME=your_neo4j_username
 NEO4J_PASSWORD=your_neo4j_password_here
 NEO4J_DATABASE=neo4j
-PROJECT_ID=your_google_cloud_project_id
-GOOGLE_CLOUD_PROJECT=your_google_cloud_project_id
+ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
+OPENAI_API_KEY=your_openai_api_key_here
 SARVAM_API_KEY=your_sarvam_api_key_here
-LLM_MODEL_CONFIG_OPENAI_GPT_5_2=gpt-5.2,your_openai_api_key_here
-LLM_MODEL_CONFIG_GEMINI_1_5_PRO=gemini-1.5-pro
-LLM_MODEL_CONFIG_GEMINI_1_5_FLASH=gemini-1.5-flash
-LLM_MODEL_CONFIG_GEMINI_2_0_FLASH=gemini-2.0-flash-001
-LLM_MODEL_CONFIG_GEMINI_2_0_PRO=gemini-2.0-pro-exp-02-05
 ```
 
 ### Step 4: Deploy
