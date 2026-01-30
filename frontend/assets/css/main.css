@@ -760,6 +760,45 @@ body::before {
   margin-bottom: 2rem;
 }
 
+/* Animated message container */
+.typing-message {
+  position: relative;
+  min-height: 1.2em;
+  overflow: hidden;
+}
+
+.typing-message span {
+  display: block;
+  animation: messageSlideIn 0.5s ease-out;
+  transition: all 0.3s ease;
+}
+
+@keyframes messageSlideIn {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes messageSlideOut {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+.typing-message.changing span {
+  animation: messageSlideOut 0.3s ease-in;
+}
+
 .typing-dots {
   display: flex;
   gap: 0.4rem;

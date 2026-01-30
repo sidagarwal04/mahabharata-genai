@@ -91,7 +91,9 @@
               <div class="typing-dot"></div>
               <div class="typing-dot"></div>
             </div>
-            <span style="color: var(--accent-cyan);">AI Sage is recalling....</span>
+            <div class="typing-message" :class="{ changing: isMessageChanging }">
+              <span style="color: var(--accent-cyan);" :key="currentLoadingMessage">{{ currentLoadingMessage }}</span>
+            </div>
           </div>
         </div>
 
@@ -365,6 +367,34 @@ function generateUUID() {
   })
 }
 
+// Loading message rotation with smooth transitions
+function startLoadingMessages() {
+  let index = 0
+  currentLoadingMessage.value = loadingMessages.value[0]
+  
+  loadingInterval.value = setInterval(() => {
+    // Start exit animation
+    isMessageChanging.value = true
+    
+    // Change message after exit animation
+    setTimeout(() => {
+      index = (index + 1) % loadingMessages.value.length
+      currentLoadingMessage.value = loadingMessages.value[index]
+      isMessageChanging.value = false
+    }, 300) // Match exit animation duration
+    
+  }, 2500) // Slightly longer to account for animation time
+}
+
+function stopLoadingMessages() {
+  if (loadingInterval.value) {
+    clearInterval(loadingInterval.value)
+    loadingInterval.value = null
+  }
+  currentLoadingMessage.value = ''
+  isMessageChanging.value = false
+}
+
 // Reactive data
 const messages = ref([])
 const currentMessage = ref('')
@@ -376,6 +406,23 @@ const sessionId = ref('')
 const generatingAudioId = ref(null)
 const showAboutModal = ref(false)
 const showDharmaModal = ref(false)
+
+// Loading messages system
+const loadingMessages = ref([
+  'AI Sage is recalling....',
+  'Consulting the ancient texts....',
+  'Seeking wisdom from the cosmos....',
+  'Channeling dharmic insights....',
+  'Unraveling the threads of destiny....',
+  'Drawing from eternal knowledge....',
+  'Contemplating the great epic....',
+  'Awakening ancient memories....',
+  'Invoking the wisdom of sages....',
+  'Traversing the cosmic library....'
+])
+const currentLoadingMessage = ref('')
+const loadingInterval = ref(null)
+const isMessageChanging = ref(false)
 
 // Watch for messages change to scroll to bottom
 watch(messages, () => {
@@ -417,6 +464,7 @@ watch(messages, async () => {
 // Cleanup event listener
 onUnmounted(() => {
   document.removeEventListener('keydown', handleKeyDown)
+  stopLoadingMessages() // Clean up any running intervals
 })
 
 // Handle ESC key press
@@ -485,6 +533,7 @@ async function sendMessage(message) {
   
   isLoading.value = true
   isTyping.value = true
+  startLoadingMessages() // Start rotating messages
   
   // Add user message
   messages.value.push({
@@ -543,6 +592,7 @@ async function sendMessage(message) {
   } finally {
     isLoading.value = false
     isTyping.value = false
+    stopLoadingMessages() // Stop rotating messages
     await scrollToBottom()
   }
 }
