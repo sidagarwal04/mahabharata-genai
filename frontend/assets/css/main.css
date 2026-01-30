@@ -142,35 +142,37 @@ body::before {
   justify-content: center;
 }
 
-/* Header Navigation */
+/* Header Navigation - Universal Responsive */
 .header-nav {
   display: flex;
-  gap: 1.5rem;
-  margin-top: 1rem;
-  padding: 0.75rem 1.5rem;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  margin-top: clamp(0.5rem, 1.5vw, 1rem);
+  padding: clamp(0.5rem, 1.5vw, 0.75rem) clamp(1rem, 3vw, 1.5rem);
   background: rgba(15, 23, 42, 0.4);
   border-radius: 2rem;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-/* Desktop navigation styles */
 @media (min-width: 1024px) {
   .header-nav {
     margin-top: 0;
     margin-left: 2rem;
+    flex-wrap: nowrap;
   }
 }
 
 .nav-link {
   display: flex;
   align-items: center;
-  gap: 0.875rem;
-  padding: 0.875rem 1.75rem;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
   border-radius: 1rem;
   text-decoration: none;
   color: var(--text-light);
-  font-size: 1.25rem;
+  font-size: 0.875rem;
   font-weight: 500;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid transparent;
@@ -184,12 +186,20 @@ body::before {
 }
 
 .nav-icon {
-  font-size: 1.75rem;
+  font-size: 1.1rem;
   filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.3));
 }
 
 .nav-text {
   letter-spacing: 0.05em;
+  display: none;
+}
+
+/* Show text on larger screens */
+@media (min-width: 640px) {
+  .nav-text {
+    display: inline;
+  }
 }
 
 .header-brand-link {
@@ -288,18 +298,18 @@ body::before {
   background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
 }
 
-/* Messages Area - Main Scrollable Container */
+/* Messages Area - Fully Responsive */
 .chat-messages {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 1rem;
+  padding: clamp(0.75rem, 2vw, 1.5rem);
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: clamp(1rem, 3vw, 2rem);
   scroll-behavior: smooth;
   min-height: 0;
-  max-height: calc(100vh - 300px); /* Ensure it doesn't grow beyond viewport */
+  max-height: clamp(60vh, 80vh, calc(100vh - 250px));
 }
 
 /* Custom Scrollbar */
@@ -381,7 +391,7 @@ body::before {
   align-self: flex-start;
 }
 
-/* Welcome Screen - Hero Style - Compact */
+/* Welcome Screen - Fully Responsive */
 .welcome-message {
   flex: 1;
   display: flex;
@@ -389,77 +399,31 @@ body::before {
   align-items: center;
   justify-content: flex-start;
   text-align: center;
-  padding: 0.25rem 0.5rem;
+  padding: clamp(0.5rem, 3vw, 2rem);
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   min-height: 0;
-  gap: 0.3rem;
+  max-height: clamp(50vh, 70vh, 80vh);
+  gap: clamp(0.5rem, 1.5vw, 1rem);
 }
 
-/* Enable scrolling on mobile */
-@media (max-width: 768px) {
-  .welcome-message {
-    max-height: 60vh;
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
-  }
-  
-  /* Allow natural layout flow on mobile */
-  .app-layout {
-    height: auto;
-    min-height: auto;
-  }
-  
-  .content-container {
-    flex: none;
-    height: auto;
-  }
-  
-  .main-content {
-    padding: 0.1rem 1rem 3rem 1rem;
-  }
-  
-  .chat-container {
-    border-radius: 1.5rem;
-  }
-  
-  .chat-messages {
-    padding: 0.75rem;
-    gap: 1rem;
-    max-height: calc(100vh - 250px);
-  }
-  
-  /* Header navigation mobile styles */
-  .header-nav {
-    gap: 0.75rem;
-    padding: 0.5rem 1rem;
-    margin-top: 0.75rem;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  .nav-link {
-    padding: 0.375rem 0.75rem;
-    font-size: 0.75rem;
-    gap: 0.375rem;
-  }
-  
-  .nav-text {
-    display: none; /* Hide text on very small screens, show only icons */
-  }
-  
-  .nav-icon {
-    font-size: 1.125rem;
-  }
+/* Universal Responsive Design - Works on ALL devices */
+
+/* Fully responsive grid - auto-fits to any screen size */
+.examples-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+  width: 100%;
 }
 
 .welcome-title {
-  font-size: 1.8rem;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
   font-weight: 800;
-  margin-bottom: 0.15rem;
+  margin-bottom: clamp(0.25rem, 1vw, 0.75rem);
   background: var(--primary-gradient);
   -webkit-background-clip: text;
   background-clip: text;
@@ -468,113 +432,67 @@ body::before {
 }
 
 .welcome-description {
-  font-size: 0.9rem;
-  line-height: 1.35;
+  font-size: clamp(0.875rem, 2.5vw, 1.1rem);
+  line-height: 1.5;
   color: var(--text-muted);
-  margin-bottom: 0.25rem;
-  max-width: 700px;
+  margin-bottom: clamp(0.5rem, 2vw, 1rem);
+  max-width: min(90%, 700px);
   text-align: center;
   padding: 0;
 }
 
-/* Example Grid - Optimized */
+/* Example Grid - Fully Responsive */
 .examples-section {
   width: 100%;
   max-width: 1200px;
-  padding: 0 0.5rem;
+  padding: 0 clamp(0.5rem, 2vw, 1rem);
   margin-top: 0;
   margin-bottom: 0;
   flex-shrink: 0;
 }
 
 .examples-title {
-  font-size: 0.65rem;
+  font-size: clamp(0.65rem, 1.5vw, 0.8rem);
   letter-spacing: 0.3em;
   color: var(--secondary-purple);
-  margin-bottom: 0.25rem;
+  margin-bottom: clamp(0.25rem, 1vw, 0.5rem);
   text-transform: uppercase;
   opacity: 0.6;
   text-align: center;
 }
 
-/* Mobile-first responsive grid */
+/* Universal responsive grid */
 .examples-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: clamp(0.75rem, 2vw, 1.5rem);
   width: 100%;
+  max-width: 100%;
 }
 
-/* Small screens - ensure examples are visible */
-@media (max-height: 800px) and (min-width: 640px) {
-  .examples-section {
-    margin-top: 0.25rem;
-    margin-bottom: 0.75rem;
-  }
-  
-  .welcome-description {
-    margin-bottom: 0.75rem;
-    font-size: 1rem;
-    line-height: 1.4;
-  }
-  
-  .welcome-title {
-    font-size: 1.75rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .welcome-message {
-    padding: 0.75rem 1rem;
-    gap: 0.75rem;
-  }
-  
-  .header {
-    padding: 1rem 0;
-  }
-  
-  .header-title {
-    font-size: 2rem;
-  }
-  
-  .header-subtitle {
-    font-size: 0.9rem;
-  }
-  
-  .header-nav {
-    gap: 1rem;
-    margin-top: 0.75rem;
-    padding: 0.5rem 1rem;
-  }
-  
-  .nav-link {
-    padding: 0.375rem 0.75rem;
-    font-size: 0.8rem;
-  }
-  
-  .nav-icon {
-    font-size: 0.9rem;
-  }
+.example-button {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-light);
+  padding: clamp(0.5rem, 2vw, 1rem);
+  border-radius: 0.75rem;
+  font-size: clamp(0.8rem, 1.8vw, 0.95rem);
+  font-weight: 500;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  text-align: center;
+  width: 100%;
+  min-height: clamp(50px, 8vw, 70px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* 13-inch MacBook specific (1440x900, 1280x800) */
-@media (max-height: 900px) and (min-width: 1024px) {
-  .examples-section {
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .welcome-description {
-    margin-bottom: 0.75rem;
-    font-size: 1rem;
-    line-height: 1.4;
-  }
-  
-  .welcome-title {
-    font-size: 1.85rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .welcome-message {
+/* Button hover effects */
+.example-button:hover {
     padding: 0.75rem 1rem;
     gap: 0.75rem;
     overflow-y: auto;
@@ -596,7 +514,6 @@ body::before {
   .app-footer {
     padding: 1rem 2rem 0.75rem 2rem;
   }
-}
 
 /* Tablet breakpoint - 2 columns */
 @media (min-width: 640px) {
@@ -614,7 +531,9 @@ body::before {
     justify-content: flex-start;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 1rem;
+    padding: 1rem 1.25rem;
+    max-height: 75vh;
+    gap: 0.5rem;
   }
   
   /* Show both icon and text on tablet and up */
@@ -636,6 +555,59 @@ body::before {
     padding: 0.25rem 0.5rem;
     justify-content: flex-start;
     text-align: left;
+  }
+}
+
+/* iPad Portrait - Better layout for 768px-1023px width */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .welcome-message {
+    padding: 1.25rem 1.5rem;
+    max-height: 70vh;
+    gap: 0.75rem;
+    justify-content: flex-start;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  
+  .examples-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    max-width: 100%;
+  }
+  
+  .example-button {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    line-height: 1.3;
+    min-height: 60px;
+  }
+  
+  .welcome-title {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .welcome-description {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    max-width: 90%;
+  }
+  
+  .examples-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .examples-section {
+    padding: 0 1.25rem;
+  }
+  
+  /* Optimize chat messages area for iPad */
+  .chat-messages {
+    padding: 1rem 1.25rem;
+    gap: 1.25rem;
+    max-height: calc(100vh - 280px);
   }
 }
 
