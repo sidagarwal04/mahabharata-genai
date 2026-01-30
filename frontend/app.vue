@@ -214,7 +214,7 @@
                 <span class="tech-header-icon">⚡</span>
                 <span class="tech-header-title">Powered By</span>
                 <span class="tech-header-text">
-                  GPT-5.2 intelligence, Neo4j knowledge graph, and Sarvam AI's Indic support for translation and text-to-speech unite in a responsive design to 
+                  GPT-5.2 intelligence, Neo4j knowledge graph, Sarvam AI's Indic support for translation and text-to-speech, and Google Antigravity IDE unite in a responsive design to 
                   deliver fast, contextual answers rooted in the epic’s wisdom.
                 </span>
               </div>
@@ -227,6 +227,9 @@
                 </span>
                 <span class="tech-badge">
                   <img src="/about/sarvam.webp" alt="Sarvam AI" class="tech-logo" /> Indic Support
+                </span>
+                <span class="tech-badge">
+                  <img src="/about/antigravity.webp" alt="Google Antigravity" class="tech-logo" /> Google Antigravity
                 </span>
               </div>
             </div>
@@ -405,6 +408,11 @@ onMounted(async () => {
   // Add ESC key listener for modal
   document.addEventListener('keydown', handleKeyDown)
 })
+
+// Watch for messages changes and auto-scroll
+watch(messages, async () => {
+  await scrollToBottom()
+}, { deep: true })
 
 // Cleanup event listener
 onUnmounted(() => {
@@ -647,6 +655,7 @@ async function clearChat() {
 // Scroll to bottom
 async function scrollToBottom() {
   await nextTick()
+  await new Promise(resolve => setTimeout(resolve, 50)) // Small delay for DOM updates
   if (chatContainer.value) {
     chatContainer.value.scrollTop = chatContainer.value.scrollHeight
   }

@@ -260,7 +260,6 @@ body::before {
   padding: 0.1rem 1.5rem 5rem 1.5rem;
   min-height: 0;
   width: 100%;
-  overflow-y: auto;
 }
 
 .chat-container {
@@ -276,18 +275,8 @@ body::before {
   box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.7);
   position: relative;
   min-height: 0;
-  height: 100%;
 }
 
-/* Mobile adjustments */
-@media (max-width: 768px) {
-  .chat-container {
-    flex: none;
-    height: auto;
-    min-height: auto;
-    overflow: visible;
-  }
-}
 
 .chat-container::before {
   content: '';
@@ -299,7 +288,7 @@ body::before {
   background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
 }
 
-/* Messages Area */
+/* Messages Area - Main Scrollable Container */
 .chat-messages {
   flex: 1;
   overflow-y: auto;
@@ -310,6 +299,7 @@ body::before {
   gap: 1.5rem;
   scroll-behavior: smooth;
   min-height: 0;
+  max-height: calc(100vh - 300px); /* Ensure it doesn't grow beyond viewport */
 }
 
 /* Custom Scrollbar */
@@ -429,15 +419,17 @@ body::before {
   }
   
   .main-content {
-    flex: none;
-    height: auto;
-    overflow-y: visible;
+    padding: 0.1rem 1rem 3rem 1rem;
   }
   
   .chat-container {
-    flex: none;
-    height: auto;
-    overflow: visible;
+    border-radius: 1.5rem;
+  }
+  
+  .chat-messages {
+    padding: 0.75rem;
+    gap: 1rem;
+    max-height: calc(100vh - 250px);
   }
   
   /* Header navigation mobile styles */
