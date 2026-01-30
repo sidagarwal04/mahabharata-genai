@@ -5,15 +5,38 @@
       <!-- Header -->
       <header class="header">
         <div class="header-content">
-          <button @click="clearChat" class="header-brand-link" :disabled="isLoading">
-            <h1 class="header-title">
-              <img src="~/assets/logo.png" alt="Logo" />
-              MAHABHARATA AI SAGE
-            </h1>
-            <p class="header-subtitle">
-              Voyage through the cosmic tapestry of the Great Epic
-            </p>
-          </button>
+          <!-- Brand Section (Left) -->
+          <div class="header-brand">
+            <button @click="clearChat" class="header-brand-link" :disabled="isLoading">
+              <h1 class="header-title">
+                <img src="~/assets/logo.png" alt="Logo" />
+                MAHABHARATA AI SAGE
+              </h1>
+              <p class="header-subtitle">
+                Voyage through the cosmic tapestry of the Great Epic
+              </p>
+            </button>
+          </div>
+          
+          <!-- Top Navigation (Right on desktop, below brand on mobile) -->
+          <nav class="header-nav">
+            <a href="#" @click.prevent="openAboutModal" class="nav-link">
+              <span class="nav-icon">🕉️</span>
+              <span class="nav-text">About</span>
+            </a>
+            <a href="#" @click.prevent="openDharmaModal" class="nav-link">
+              <span class="nav-icon">⚖️</span>
+              <span class="nav-text">Dharma</span>
+            </a>
+            <a href="https://sidagarwal04.medium.com/list/mahabharatachatbot-cbf1d049d017" target="_blank" class="nav-link">
+              <span class="nav-icon">🏹</span>
+              <span class="nav-text">Wisdom</span>
+            </a>
+            <a href="https://github.com/sidagarwal04/mahabharata-genai" target="_blank" class="nav-link">
+              <span class="nav-icon">📖</span>
+              <span class="nav-text">Repository</span>
+            </a>
+          </nav>
         </div>
       </header>
 
@@ -124,32 +147,10 @@
     <!-- Footer (Full Width) -->
     <footer class="app-footer">
       <div class="footer-content">
-        <div class="footer-links">
-          <a href="#" @click.prevent="openAboutModal" class="footer-link">
-            <span class="footer-icon">🕉️</span>
-            About
-          </a>
-          <a href="#" @click.prevent="openDharmaModal" class="footer-link">
-            <span class="footer-icon">⚖️</span>
-            Dharma
-          </a>
-          <a href="https://sidagarwal04.medium.com/list/mahabharatachatbot-cbf1d049d017" target="_blank" class="footer-link">
-            <span class="footer-icon">🏹</span>
-            Wisdom
-          </a>
-          <a href="https://github.com/sidagarwal04/mahabharata-genai" target="_blank" class="footer-link">
-            <span class="footer-icon">📖</span>
-            Repository
-          </a>
-        </div>
-        
         <div class="footer-credits">
           <span class="footer-powered">Powered by GenAI • Built with ❤️ for seekers of ancient wisdom</span>
           <div class="footer-copyright">
-            © 2026 Mahabharata AI Sage • <a href="https://meetsid.dev" target="_blank" class="footer-author">meetsid.dev</a>
-          </div>
-          <div class="footer-netlify">
-            This site is powered by <a href="https://netlify.com" target="_blank" class="footer-author">Netlify</a>
+            © 2026 Mahabharata AI Sage • <a href="https://meetsid.dev" target="_blank" class="footer-author">meetsid.dev</a> • Powered by <a href="https://netlify.com" target="_blank" class="footer-author">Netlify</a>
           </div>
         </div>
       </div>
