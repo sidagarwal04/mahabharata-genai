@@ -4,7 +4,7 @@
 
 ## 🌟 Features
 
-- **🤖 GPT-5.2 Powered**: Advanced AI responses using OpenAI's latest model
+- **🤖 OpenAI Powered**: Advanced AI responses using OpenAI's GPT models
 - **🗄️ Graph Database**: Neo4j-powered knowledge graph for rich contextual information
 - **🎨 Modern UI**: Beautiful Nuxt.js frontend with responsive design
 - **🚀 FastAPI Backend**: High-performance API with automatic documentation
@@ -12,87 +12,40 @@
 - **📱 Responsive**: Works perfectly on desktop and mobile devices
 - **🔍 Source Attribution**: See exactly where information comes from
 - **💬 Session Management**: Maintains conversation context with automatic summarization
+- **🌐 Live Demo**: Ready-to-use deployment on Netlify
 
 ## 🏗️ Architecture
 
-This project has been upgraded from a simple Gradio interface to a modern, scalable architecture:
+This project follows a modern, scalable architecture with separate frontend and backend services:
 
-### Backend (`main.py`)
+### Backend (`backend/`)
 - **FastAPI** server with automatic API documentation
-- **Fixed to GPT-5.2** model (no more model selection)
-- **Neo4j integration** for graph-based retrieval
+- **OpenAI integration** for advanced language processing
+- **Neo4j GraphRAG** for graph-based retrieval augmented generation
 - **Session management** with automatic conversation summarization
+- **Sarvam AI integration** for Hindi translation and text-to-speech
 - **CORS enabled** for frontend integration
 
 ### Frontend (`frontend/`)
 - **Nuxt.js 3** application with TypeScript support
-- **Tailwind CSS** for modern styling
-- **Custom chat interface** replacing Gradio
-- **Real-time typing indicators**
-- **Audio playback** for Hindi translations using Sarvam AI
-- **Responsive design** for all devices
+- **Tailwind CSS** for modern, responsive styling
+- **Custom chat interface** with real-time interactions
+- **Audio playback** for Hindi responses
+- **Mobile-first responsive design**
 
-### Legacy (`app.py`)
-- Original Gradio interface (preserved but not actively used)
-- Multiple model support (kept for reference)
+## 🚀 Live Demo
 
-## 🚀 Quick Start
+🎯 **[https://mb-aisage.netlify.app/](https://mb-aisage.netlify.app/)**
+
+## 💻 Local Development
 
 ### Prerequisites
 
 - **Python 3.8+**
 - **Node.js 16+**
-- **Neo4j Database** (with your Mahabharata data loaded)
+- **Neo4j Database** (with Mahabharata data loaded)
 - **OpenAI API Key**
 - **Sarvam AI API Key** (for Hindi translation and audio)
-
-### 1. Initial Setup
-
-```bash
-# Clone the repository
-git clone https://github.com/sidagarwal04/mahabharata-genai.git
-cd mahabharata-genai
-
-# Run the setup script
-./setup.sh
-```
-
-### 2. Configure Environment
-
-Edit the `.env` file with your credentials:
-
-```env
-# OpenAI Configuration
-OPENAI_API_KEY=your_openai_api_key_here
-
-# Neo4j Database
-NEO4J_URI=your_neo4j_uri
-NEO4J_USERNAME=your_username
-NEO4J_PASSWORD=your_password
-NEO4J_DATABASE=your_database
-
-# Sarvam AI (for Hindi translation and audio)
-SARVAM_API_KEY=your_sarvam_api_key
-
-# COMMENTED OUT: Legacy services (replaced with Sarvam AI)
-# Google Cloud (for translation)
-# PROJECT_ID=your_project_id
-# GOOGLE_APPLICATION_CREDENTIALS=path/to/service-account.json
-# ElevenLabs (for Hindi audio)
-# ELEVENLABS_API_KEY=your_elevenlabs_key
-```
-
-### 3. Start Development Servers
-
-```bash
-# Start both backend and frontend
-./start-dev.sh
-```
-
-This will start:
-- **Backend API**: http://localhost:8000
-- **Frontend**: http://localhost:3000
-- **API Documentation**: http://localhost:8000/docs
 
 ## Background
 Have you ever been captivated by a story brimming with complex relationships? Stories like the Mahabharata, an ancient Indian epic, weave a spell with a multitude of characters and their intricate connections. These connections - familial bonds, alliances, rivalries - form the very foundation of the narrative, driving the plot and shaping the destinies of its heroes and villains.
@@ -109,35 +62,16 @@ Read the three-part blog series on this project:
 + [Bringing the Mahabharata Epic to Life: A Neo4j-Powered Chatbot using Google Gemini — (Part 2)](https://sidagarwal04.medium.com/bringing-the-mahabharata-epic-to-life-a-neo4j-powered-chatbot-using-google-gemini-part-2-6eef8676e757)
 + [From Ancient Epic to Modern Marvel: Demystifying the Mahabharata Chatbot with GraphRAG (Part 3)](https://medium.com/@sidagarwal04/from-ancient-epic-to-modern-marvel-demystifying-the-mahabharata-chatbot-with-graphrag-part-3-5942260a9560)
 
-Read more about GraphRAG here: [Building a GraphRAG application](https://neo4j.com/developer-blog/knowledge-graph-rag-application/)
+Learn more about GraphRAG: [Building a GraphRAG application](https://neo4j.com/developer-blog/knowledge-graph-rag-application/)
 
-## Features
-+ **Contextual Understanding:** Provides answers based on the context of the Mahabharata.
-+ **Interactive Q&A:** Users can ask questions and get detailed answers.
-+ **Relationship Mapping:** Visualizes and explains relationships between characters.
-+ **Deployment Ready:** Easily deployable on platforms like Firebase.
-
-## Architecture
-
-The Mahabharata Chatbot is built using:
-
-+ **Backend:** Python, Google Vertex AI (Google Gemini API), Gradio
-+ **Frontend:** Nuxt.js
-+ **Database:** Neo4j
-+ **Deployment:** Hugging Face Space, Firebase
-
-## Configuration
 ## 🚀 Deployment
 
-This application is deployed using a modern architecture:
-- **Backend**: Deployed on Render (FastAPI + Neo4j)
-- **Frontend**: Deployed on Netlify (Nuxt.js)
+This application supports modern cloud deployment with separate backend and frontend services:
+- **Backend**: Compatible with Render, Railway, or any FastAPI-supporting platform
+- **Frontend**: Deployable on Netlify, Vercel, or similar static hosting services
+- **Database**: Neo4j AuraDB for managed cloud database
 
-### Live Demo
-🎯 **[https://mb-aisage.netlify.app/](https://mb-aisage.netlify.app/)**
-
-### Deploy Your Own
-See [DEPLOYMENT.md](DEPLOYMENT.md) for complete deployment instructions.
+For complete deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ## 💻 Local Development
 
@@ -149,64 +83,145 @@ See [DEPLOYMENT.md](DEPLOYMENT.md) for complete deployment instructions.
 - **Sarvam AI API Key** (for Hindi translation and audio)
 
 ### Backend Setup
+
+1. **Clone and navigate to the project**:
 ```bash
-cd backend
+git clone https://github.com/sidagarwal04/mahabharata-genai.git
+cd mahabharata-genai/backend
+```
+
+2. **Create and activate virtual environment**:
+```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
+```
 
-# Copy and configure environment file
+3. **Install dependencies**:
+```bash
+pip install -r requirements.txt
+```
+
+4. **Configure environment**:
+```bash
 cp example.backend.env .env
 # Edit .env with your API keys and database credentials
+```
 
-# Start backend
+5. **Start the backend server**:
+```bash
 uvicorn main:app --reload --port 8001
 ```
 
 ### Frontend Setup
+
+1. **Navigate to frontend directory**:
 ```bash
 cd frontend
+```
+
+2. **Install dependencies**:
+```bash
 npm install
+```
 
-# Copy and configure environment file
+3. **Configure environment**:
+```bash
 cp example.frontend.env .env
-# Edit .env with your backend URL (default: http://localhost:8001)
+# Edit .env with your backend URL
+```
 
-# Start frontend
+4. **Start development server**:
+```bash
 npm run dev
 ```
 
 ### Database Setup
-1. **Start Neo4j Database**: Follow the official [Neo4j installation guide](https://neo4j.com/developer/)
-2. **Load Data**: Use the provided [mahabharata-db-setup.cypher](backend/mahabharata-db-setup.cypher) script
 
-### Environment Variables
-**Backend (.env)**:
-```
+1. **Install Neo4j**: Follow the official [Neo4j installation guide](https://neo4j.com/docs/operations-manual/current/installation/)
+2. **Load Mahabharata data**: Use the provided [mahabharata-db-setup.cypher](backend/mahabharata-db-setup.cypher) script
+3. **Configure connection**: Update your `.env` file with Neo4j credentials
+
+### Environment Configuration
+
+**Backend Environment (`backend/.env`)**:
+```env
+# OpenAI Configuration
 OPENAI_API_KEY=your_openai_api_key_here
-NEO4J_URI=your_neo4j_uri
-NEO4J_USERNAME=your_neo4j_username
+
+# Neo4j Database
+NEO4J_URI=bolt://localhost:7687
+NEO4J_USERNAME=neo4j
 NEO4J_PASSWORD=your_neo4j_password
+NEO4J_DATABASE=neo4j
+
+# Sarvam AI (for Hindi features)
 SARVAM_API_KEY=your_sarvam_api_key_here
+
+# Optional: Google Cloud Project ID
 PROJECT_ID=your_google_cloud_project_id
 ```
 
-**Frontend (.env)**:
-```
+**Frontend Environment (`frontend/.env`)**:
+```env
+# Backend API URL
 API_BASE_URL=http://localhost:8001
 ```
 
-## Contributing
-Do share your feedback [here](https://docs.google.com/forms/d/e/1FAIpQLSdradX2oOSBpBGAla01tEroQJGDrA62ZsD8Sa_x7IXbGjkRfg/viewform) to make the Mahabharata chatbot the best resource for exploring this epic tale. I am welcoming contributions! Please follow these steps:
+## 🌍 Background & Story
 
-+ Fork the repository.
-+ Create a new branch: `git checkout -b feature/YourFeature`
-+ Make your changes and commit them: `git commit -m 'Add some feature'`.
-+ Push to the branch: `git push origin feature/YourFeature`.
-+ Create a pull request.
+Have you ever been captivated by a story brimming with complex relationships? The Mahabharata, an ancient Indian epic, weaves a spell with a multitude of characters and their intricate connections. These relationships form the foundation of the narrative, driving the plot and shaping destinies.
 
-## License
-This project is licensed under the [Apache License](mahabharata-genai/blob/main/LICENSE).
+It all began with a conversation when my wife, reading C. Rajagopalachari's masterful [Mahabharata translation](https://www.amazon.in/Mahabharata-C-Rajagopalachari/dp/8172764766), sparked my curiosity about the epic's intricate relationship web. This inspired me to translate these connections into a powerful graph model using [Neo4j](https://neo4j.com).
 
-## Acknowledgements
-Special thanks to my friend, [Vrijraj Singh](https://vrijraj.xyz/) for all his support in building web design for this app, [LLM Graph Builder Tool](https://neo4j.com/labs/genai-ecosystem/llm-graph-builder/) for converting external PDF sources into Knowledge Graph and the open-source community for their valuable resources and support.
+![Mahabharata AI Visualization](https://github.com/sidagarwal04/mahabharata-genai/blob/main/frontend/public/images/dall-e-mahabharata.png)
+
+This journey evolved from exploring the Mahabharata through graph theory to creating an innovative Neo4j-powered chatbot that makes the epic's complex relationships accessible to everyone.
+
+### 📖 Blog Series
+
+Read the comprehensive three-part blog series on this project:
+
+1. [Unveiling the Mahabharata's Web: A Graph Journey using Neo4j — (Part 1)](https://sidagarwal04.medium.com/unveiling-the-mahabharatas-web-a-graph-journey-using-neo4j-from-epic-relationships-to-7be4a7a29b6d)
+2. [Bringing the Mahabharata Epic to Life: A Neo4j-Powered Chatbot using Google Gemini — (Part 2)](https://sidagarwal04.medium.com/bringing-the-mahabharata-epic-to-life-a-neo4j-powered-chatbot-using-google-gemini-part-2-6eef8676e757)
+3. [From Ancient Epic to Modern Marvel: Demystifying the Mahabharata Chatbot with GraphRAG (Part 3)](https://medium.com/@sidagarwal04/from-ancient-epic-to-modern-marvel-demystifying-the-mahabharata-chatbot-with-graphrag-part-3-5942260a9560)
+
+Learn more about GraphRAG: [Building a GraphRAG application](https://neo4j.com/developer-blog/knowledge-graph-rag-application/)
+
+## 🚀 Deployment
+
+This application supports modern cloud deployment with separate backend and frontend services:
+
+- **Backend**: Compatible with Render, Railway, or any FastAPI-supporting platform
+- **Frontend**: Deployable on Netlify, Vercel, or similar static hosting services
+- **Database**: Neo4j AuraDB for managed cloud database
+
+For complete deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md).
+
+## 🤝 Contributing
+
+We welcome contributions to make the Mahabharata chatbot the best resource for exploring this epic tale! 
+
+**Share your feedback**: [Feedback Form](https://docs.google.com/forms/d/e/1FAIpQLSdradX2oOSBpBGAla01tEroQJGDrA62ZsD8Sa_x7IXbGjkRfg/viewform)
+
+**Contributing Guidelines**:
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/YourFeature`
+3. Make your changes and commit: `git commit -m 'Add some feature'`
+4. Push to your branch: `git push origin feature/YourFeature`
+5. Create a pull request
+
+## 📄 License
+
+This project is licensed under the [Apache License 2.0](LICENSE).
+
+## 🙏 Acknowledgements
+
+Special thanks to:
+- **[Vrijraj Singh](https://vrijraj.xyz/)** - For exceptional support with web design and development
+- **[LLM Graph Builder Tool](https://neo4j.com/labs/genai-ecosystem/llm-graph-builder/)** - For converting PDF sources into Knowledge Graphs
+- **The open-source community** - For valuable resources and support
+- **C. Rajagopalachari** - For the masterful Mahabharata translation that inspired this project
+
+---
+
+⭐ **If you find this project helpful, please give it a star!** ⭐
