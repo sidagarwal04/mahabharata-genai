@@ -270,6 +270,8 @@ body::before {
   padding: 0.1rem 1.5rem 5rem 1.5rem;
   min-height: 0;
   width: 100%;
+  /* Ensure proper spacing from footer on mobile */
+  margin-bottom: env(safe-area-inset-bottom, 0);
 }
 
 .chat-container {
@@ -310,6 +312,13 @@ body::before {
   scroll-behavior: smooth;
   min-height: 0;
   max-height: clamp(60vh, 80vh, calc(100vh - 250px));
+}
+
+/* Mobile-specific chat messages height */
+@media (max-width: 768px) {
+  .chat-messages {
+    max-height: calc(100vh - 280px);
+  }
 }
 
 /* Custom Scrollbar */
@@ -1529,7 +1538,7 @@ body::before {
   }
 
   .main-content {
-    padding: 0.5rem 0.5rem 1rem 0.5rem;
+    padding: 0.5rem 0.5rem 6rem 0.5rem;
   }
 
   .chat-container {
@@ -1540,6 +1549,7 @@ body::before {
   .chat-messages {
     padding: 1.5rem 1rem;
     gap: 1rem;
+    max-height: calc(100vh - 280px);
   }
   
   .welcome-message {
@@ -1643,7 +1653,7 @@ body::before {
   }
 
   .main-content {
-    padding: 0.25rem 0.25rem 0.5rem 0.25rem;
+    padding: 0.25rem 0.25rem 7rem 0.25rem;
   }
 
   .chat-container {
@@ -1668,6 +1678,7 @@ body::before {
     justify-content: flex-start;
     overflow-y: auto;
     overflow-x: hidden;
+    max-height: calc(100vh - 300px);
   }
   
   .welcome-icon {
@@ -1881,6 +1892,8 @@ body::before {
   /* Additional footer mobile styles */
   .app-footer {
     padding: 0.75rem 1rem 0.5rem 1rem;
+    /* Add margin-top for better visual separation */
+    border-top: 2px solid var(--glass-border);
   }
 
   .footer-content {
@@ -1912,6 +1925,17 @@ body::before {
 
   .footer-copyright {
     font-size: 0.6rem;
+  }
+
+  /* Ensure examples section is properly scrollable on very small screens */
+  .examples-section {
+    max-height: calc(100vh - 400px);
+    overflow-y: auto;
+  }
+
+  /* Chat messages additional mobile constraints for very small screens */
+  .chat-messages {
+    max-height: calc(100vh - 320px) !important;
   }
 
   /* Modal responsive styles */
