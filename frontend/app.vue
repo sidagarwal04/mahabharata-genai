@@ -172,7 +172,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <div class="modal-brand">
-              <img src="~/assets/logo.png" alt="Mahabharata AI Logo" class="modal-logo" />
+              <img :src="logoImage" alt="Mahabharata AI Logo" class="modal-logo" />
               <div class="modal-brand-text">
                 <h2 class="modal-title">Mahabharata AI Sage</h2>
                 <p class="modal-tagline">Dive into the timeless wisdom of an ancient Indian epic</p>
