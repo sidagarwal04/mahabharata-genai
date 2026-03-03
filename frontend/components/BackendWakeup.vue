@@ -2,9 +2,9 @@
   <div class="wakeup-container">
     <div class="wakeup-content">
       <!-- Logo -->
-      <div class="wakeup-logo-section">
+      <!-- <div class="wakeup-logo-section">
         <img src="~/assets/logo.png" alt="Mahabharata AI Sage Logo" class="wakeup-logo" />
-      </div>
+      </div> -->
       
       <!-- Title -->
       <h1 class="wakeup-title">Mahabharata AI Sage</h1>
