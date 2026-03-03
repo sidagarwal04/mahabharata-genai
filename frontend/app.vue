@@ -361,7 +361,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, nextTick, watch } from 'vue'
-import logoImage from './assets/logo.png'
+import logoImage from '~/assets/logo.png'
 
 // Generate UUID without external library
 function generateUUID() {
