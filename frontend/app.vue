@@ -1,5 +1,9 @@
 <template>
-  <div class="app-layout">
+  <!-- Backend Wakeup Screen -->
+  <BackendWakeup v-if="!backendReady" />
+  
+  <!-- Main App -->
+  <div v-else class="app-layout">
     <!-- Content Container (for centered layout) -->
     <div class="content-container">
       <!-- Header -->
@@ -447,8 +451,56 @@ const API_BASE = config.public.apiBase
 // Example questions
 const examples = ref([])
 
+// Backend health check state
+const backendReady = ref(false)
+
+// Check backend health and wait until it's responsive
+async function checkBackendHealth() {
+  const maxRetries = 60 // 60 attempts * 2 seconds = 2 minutes max
+  let retryCount = 0
+  const BACKEND_HEALTH_URL = 'https://mb-aisage.onrender.com/'
+  
+  while (retryCount < maxRetries) {
+    try {
+      const response = await fetch(BACKEND_HEALTH_URL, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
+      
+      if (response.ok) {
+        const data = await response.json()
+        // Check if we got the expected message
+        if (data.message === 'Mahabharata AI Sage - Ultra Optimized') {
+          backendReady.value = true
+          return true
+        }
+      }
+    } catch (error) {
+      // Backend not ready yet, will retry
+      console.log(`Backend health check attempt ${retryCount + 1} failed, retrying...`)
+    }
+    
+    retryCount++
+    
+    // Wait 2 seconds before next retry
+    await new Promise(resolve => setTimeout(resolve, 2000))
+  }
+  
+  // If we get here, backend didn't respond after max retries
+  // Show it as ready anyway to prevent infinite loading
+  console.warn('Backend health check exceeded max retries, showing app anyway')
+  backendReady.value = true
+  return false
+}
+
 // Initialize session
 onMounted(async () => {
+  // Check backend health first before proceeding
+  await checkBackendHealth()
+  
+  // Once backend is ready, initialize the app
   sessionId.value = generateUUID()
   await fetchExamples()
   
