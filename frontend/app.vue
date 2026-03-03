@@ -13,7 +13,7 @@
           <div class="header-brand">
             <button @click="clearChat" class="header-brand-link" :disabled="isLoading">
               <h1 class="header-title">
-                <img src="./assets/logo.png" alt="Logo" />
+                <img :src="logoImage" alt="Logo" />
                 MAHABHARATA AI SAGE
               </h1>
               <p class="header-subtitle">
@@ -361,6 +361,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, nextTick, watch } from 'vue'
+import logoImage from './assets/logo.png'
 
 // Generate UUID without external library
 function generateUUID() {
