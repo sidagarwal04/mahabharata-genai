@@ -7,7 +7,7 @@
         <div class="flex-shrink-0">
           <div class="avatar-container rounded-full overflow-hidden">
             <span v-if="message.role === 'user'" class="avatar-emoji leading-none">🏹</span>
-            <img v-else src="~/assets/logo.png" alt="AI Sage" class="avatar-img" />
+            <img v-else src="/logo.png" alt="AI Sage" class="avatar-img" />
           </div>
         </div>
         

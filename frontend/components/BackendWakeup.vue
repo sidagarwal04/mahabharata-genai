@@ -3,7 +3,7 @@
     <div class="wakeup-content">
       <!-- Logo -->
       <!-- <div class="wakeup-logo-section">
-        <img src="~/assets/logo.png" alt="Mahabharata AI Sage Logo" class="wakeup-logo" />
+        <img src="/logo.png" alt="Mahabharata AI Sage Logo" class="wakeup-logo" />
       </div> -->
       
       <!-- Title -->
